@@ -1,16 +1,92 @@
-import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useState } from "react";
-import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+} from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import colors from "../../../assets/colors/colors";
+import { PieChart } from 'react-native-svg-charts'
 
 const MemoListScreen = () => {
+  const pieData = [
+    {value: 70, color: '#177AD5'},
+    {value: 30, color: 'lightgray'}
+];
+  const navigation = useNavigation();
   const [visibleDatePicker, setVisibleDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const onPressCalendar = useCallback(() => {
     setVisibleDatePicker(true);
   });
+  const onPressRegister = useCallback(() => {
+    navigation.navigate("MemoPost");
+  });
+  const [data, setData] = useState([
+    {
+      id: 0,
+      title: "오늘 저녁 장보기",
+      percentage: 100,
+      totalPrice: 0,
+      createdAt: "2023.02.19",
+      updateAt: "2023.02.19",
+    },
+    {
+      id: 1,
+      title: "오늘 저녁 장보기",
+      percentage: 100,
+      totalPrice: 0,
+      createdAt: "2023.02.19",
+      updateAt: "2023.02.19",
+    },
+    {
+      id: 2,
+      title: "오늘 저녁 장보기",
+      percentage: 100,
+      totalPrice: 0,
+      createdAt: "2023.02.19",
+      updateAt: "2023.02.19",
+    },
+    {
+      id: 3,
+      title: "오늘 저녁 장보기",
+      percentage: 100,
+      totalPrice: 0,
+      createdAt: "2023.02.19",
+      updateAt: "2023.02.19",
+    },
+    {
+      id: 4,
+      title: "오늘 저녁 장보기",
+      percentage: 100,
+      totalPrice: 0,
+      createdAt: "2023.02.19",
+      updateAt: "2023.02.19",
+    },
+    {
+      id: 5,
+      title: "오늘 저녁 장보기",
+      percentage: 100,
+      totalPrice: 0,
+      createdAt: "2023.02.19",
+      updateAt: "2023.02.19",
+    },
+    {
+      id: 6,
+      title: "test6",
+      percentage: 100,
+      totalPrice: 0,
+      createdAt: "2023.02.19",
+      updateAt: "2023.02.19",
+    },
+  ]);
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -19,14 +95,13 @@ const MemoListScreen = () => {
           <Text style={styles.text1}>장보기</Text>
           <Text style={styles.text1}>메모</Text>
         </View>
-        <View style={styles.register}>
-          <MaterialCommunityIcons name="pencil" size={24} color="#00FF9D" />
-          <Text style={styles.text2}>작성</Text>
-        </View>
+        <Pressable onPress={onPressRegister}>
+          <View style={styles.register} onPress={onPressRegister}>
+            <MaterialCommunityIcons name="pencil" size={24} color="#00FF9D" />
+            <Text style={styles.text2}>작성</Text>
+          </View>
+        </Pressable>
       </View>
-
-      {/* <Button title="작성" style={styles.btn1} onPress={onPressCalendar} /> */}
-
       <View style={styles.main}>
         <View style={styles.dateContainer}>
           <Text style={styles.dateText}>
@@ -41,12 +116,43 @@ const MemoListScreen = () => {
             onPress={onPressCalendar}
           />
         </View>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={data}
+          renderItem={({ item }) => {
+            return (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("Memo", { item });
+                }}
+              >
+                <View style={styles.memoContainer}>
+                  <PieChart
+                    donut
+                    innerRadius={80}
+                    data={pieData}
+                    centerLabelComponent={() => {
+                      return <Text style={{ fontSize: 30 }}>70%</Text>;
+                    }}
+                  />
+                  <View style={styles.memoInfo}>
+                    <Text style={styles.createAt}>{item.createdAt}</Text>
+                    <Text style={styles.text2}>{item.title}</Text>
+                  </View>
+                  <Ionicons
+                    name="md-chevron-forward-sharp"
+                    size={24}
+                    color={colors.greenH}
+                  />
+                </View>
+              </Pressable>
+            );
+          }}
+        />
       </View>
       <DateTimePicker
         isVisible={visibleDatePicker}
         mode="date"
-        textColor={colors.red}
-        style={{backgroundColor:colors.green}}
         onConfirm={(date) => {
           setSelectedDate(new Date(date));
           setVisibleDatePicker(false);
@@ -58,13 +164,12 @@ const MemoListScreen = () => {
     </View>
   );
 };
-
 export default MemoListScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ECECEC",
+    backgroundColor: colors.grayLL,
   },
   header: {
     flex: 1,
@@ -90,7 +195,8 @@ const styles = StyleSheet.create({
   },
   main: {
     flex: 7,
-    padding: 12,
+    padding: 15,
+    marginBottom: 90,
   },
   title: {
     flex: 1,
@@ -103,7 +209,7 @@ const styles = StyleSheet.create({
     fontWeight: 800,
   },
   text2: {
-    fontSize: 20,
+    fontSize: 19,
   },
   btn1: {
     fontSize: 20,
@@ -112,10 +218,42 @@ const styles = StyleSheet.create({
   dateContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 12,
   },
   dateText: {
     fontSize: 22,
     color: colors.green,
     marginRight: 2,
+  },
+  memoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    backgroundColor: colors.white,
+    borderRadius: 5,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#ECECEC",
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        shadowOffset: {
+          height: -1,
+          width: 0,
+        },
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  memoInfo: {
+    flex: 1,
+  },
+  createAt: {
+    fontSize: 14,
+    color: colors.gray,
+    fontWeight: 400,
   },
 });

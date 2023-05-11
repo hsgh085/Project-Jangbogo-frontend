@@ -1,10 +1,11 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React from "react";
+import { Text, View, Dimensions } from "react-native";
+import { PieChart } from "react-native-svg-charts";
 
 const MainScreen = () => {
-    return (
-        <Text>메인화면입니다.</Text>
-    );
+    return(
+        <Text>Main</Text>
+    )
 };
 
 export default MainScreen;
