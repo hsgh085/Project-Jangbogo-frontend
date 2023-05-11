@@ -1,12 +1,10 @@
-import { NavigationContainer } from "@react-navigation/native";
-import MemoMainScreen from "./src/screen/memo/MemoMainScreen";
-import BottomTabNavigation from './src/navigations/BottomTabNavigation';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import RootApp from './src/RootApp';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      {/* <MemoMainScreen /> */}
-      <BottomTabNavigation/>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <RootApp/>
+    </SafeAreaProvider>
   );
 }

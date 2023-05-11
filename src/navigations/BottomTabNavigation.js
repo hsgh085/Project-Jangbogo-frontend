@@ -10,7 +10,7 @@ import { StyleSheet, View } from "react-native";
 import colors from "../../assets/colors/colors";
 import AlarmScreen from "../screen/AlarmScreen";
 import MainScreen from "../screen/MainScreen";
-import MemoMainScreen from "../screen/memo/MemoMainScreen";
+import MemoListScreen from '../screen/memo/MemoMainScreen';
 import MypageMainScreen from "../screen/mypage/MypageMainScreen";
 
 const Tabs = createBottomTabNavigator();
@@ -48,7 +48,7 @@ const BottomTabNavigation = () => {
               );
             }
             return <Ionicons name="person" size={23} color={colors.gray} />;
-          } else if (route.name === "MemoMain") {
+          } else if (route.name === "MemoList") {
             if (focused) {
               return (
                 <View style={styles.icons}>
@@ -81,7 +81,7 @@ const BottomTabNavigation = () => {
     >
       <Tabs.Screen name="Main" component={MainScreen} />
       <Tabs.Screen name="MyPageMain" component={MypageMainScreen} />
-      <Tabs.Screen name="MemoMain" component={MemoMainScreen} />
+      <Tabs.Screen name="MemoList" component={MemoListScreen} />
       <Tabs.Screen name="Alarm" component={AlarmScreen} />
     </Tabs.Navigator>
   );

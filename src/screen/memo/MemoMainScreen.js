@@ -5,10 +5,9 @@ import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import colors from "../../../assets/colors/colors";
 
-const MemoMainScreen = () => {
-  const today = new Date();
+const MemoListScreen = () => {
   const [visibleDatePicker, setVisibleDatePicker] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const onPressCalendar = useCallback(() => {
     setVisibleDatePicker(true);
   });
@@ -31,20 +30,23 @@ const MemoMainScreen = () => {
       <View style={styles.main}>
         <View style={styles.dateContainer}>
           <Text style={styles.dateText}>
-            {selectedDate === null
-              ? `${today.getFullYear()}.${
-                  today.getMonth() + 1
-                }.${today.getDate()}`
-              : `${selectedDate.getFullYear()}.${
-                  selectedDate.getMonth() + 1
-                }.${selectedDate.getDate()}`}
+            {`${selectedDate.getFullYear()}.${
+              selectedDate.getMonth() + 1
+            }.${selectedDate.getDate()}`}
           </Text>
-          <Feather name="calendar" size={22} color={colors.red} onPress={onPressCalendar}/>
+          <Feather
+            name="calendar"
+            size={22}
+            color={colors.red}
+            onPress={onPressCalendar}
+          />
         </View>
       </View>
       <DateTimePicker
         isVisible={visibleDatePicker}
         mode="date"
+        textColor={colors.red}
+        style={{backgroundColor:colors.green}}
         onConfirm={(date) => {
           setSelectedDate(new Date(date));
           setVisibleDatePicker(false);
@@ -57,7 +59,7 @@ const MemoMainScreen = () => {
   );
 };
 
-export default MemoMainScreen;
+export default MemoListScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     padding: 15,
-    paddingTop: 30,
+    paddingTop: 40,
     alignItems: "center",
     backgroundColor: "white",
     ...Platform.select({
@@ -87,8 +89,8 @@ const styles = StyleSheet.create({
     }),
   },
   main: {
-    flex: 6,
-    padding:12,
+    flex: 7,
+    padding: 12,
   },
   title: {
     flex: 1,
@@ -107,13 +109,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     backgroundColor: colors.white,
   },
-  dateContainer:{
-    flexDirection: 'row',
-    alignItems:'center',
+  dateContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  dateText:{
-    fontSize:22,
+  dateText: {
+    fontSize: 22,
     color: colors.green,
-    marginRight:2,
-  }
+    marginRight: 2,
+  },
 });
