@@ -1,9 +1,12 @@
-import MemoMain from "./src/screen/memo/MemoMain";
+import { NavigationContainer } from "@react-navigation/native";
+import MemoMainScreen from "./src/screen/memo/MemoMainScreen";
+import BottomTabNavigation from './src/navigations/BottomTabNavigation';
 
 export default function App() {
   return (
-    <>
-      <MemoMain />
-    </>
+    <NavigationContainer>
+      {/* <MemoMainScreen /> */}
+      <BottomTabNavigation/>
+    </NavigationContainer>
   );
 }
