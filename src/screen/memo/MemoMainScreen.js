@@ -13,13 +13,8 @@ import {
 } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import colors from "../../../assets/colors/colors";
-import { PieChart } from 'react-native-svg-charts'
 
 const MemoListScreen = () => {
-  const pieData = [
-    {value: 70, color: '#177AD5'},
-    {value: 30, color: 'lightgray'}
-];
   const navigation = useNavigation();
   const [visibleDatePicker, setVisibleDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -27,7 +22,9 @@ const MemoListScreen = () => {
     setVisibleDatePicker(true);
   });
   const onPressRegister = useCallback(() => {
-    navigation.navigate("MemoPost");
+    navigation.navigate("MemoPost",{date:`${selectedDate.getFullYear()}.${
+      selectedDate.getMonth() + 1
+    }.${selectedDate.getDate()}`});
   });
   const [data, setData] = useState([
     {
@@ -127,14 +124,6 @@ const MemoListScreen = () => {
                 }}
               >
                 <View style={styles.memoContainer}>
-                  <PieChart
-                    donut
-                    innerRadius={80}
-                    data={pieData}
-                    centerLabelComponent={() => {
-                      return <Text style={{ fontSize: 30 }}>70%</Text>;
-                    }}
-                  />
                   <View style={styles.memoInfo}>
                     <Text style={styles.createAt}>{item.createdAt}</Text>
                     <Text style={styles.text2}>{item.title}</Text>
