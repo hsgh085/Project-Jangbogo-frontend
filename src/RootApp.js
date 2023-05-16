@@ -1,7 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useState, ViewPropTypes } from "react";
 import RootStackNavigation from "./navigations/RootStackNavigation";
-import SplashView from "./SplashView";
 
 const RootApp = () => {
   const [initialized, setInitialized] = useState(false);
