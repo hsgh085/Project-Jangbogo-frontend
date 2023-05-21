@@ -7,6 +7,7 @@ const SingleLineInput = (props) => {
             value={props.value}
             onChangeText={props.onChangeText}
             placeholder={props.placeholder}
+            keyboardType={props.type}
             style={props.style}
         />
     );

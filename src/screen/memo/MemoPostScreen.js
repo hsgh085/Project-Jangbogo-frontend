@@ -1,5 +1,5 @@
 import { FontAwesome5, AntDesign } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Text,
   View,
@@ -8,29 +8,136 @@ import {
   Pressable,
   Alert,
   Button,
+  FlatList,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import colors from "../../../assets/colors/colors";
 import Header from "../../components/Header/Header";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Spacer from "../../components/Spacer";
 import SingleLineInput from "../../components/SingleLineInput";
+import ShoppingItem from "../../components/ShoppingItem";
 
 const MemoPostScreen = (props) => {
+  let flatListRef = useRef();
   const route = useRoute();
+  const navigate = useNavigation();
   const [memo, setMemo] = useState({
     date: route.params?.date,
     title: "무제",
     totalPrice: 0,
   });
+  const setShoppingListById = (id, key, value) => {
+    const newList = shoppingList.map((e) => {
+      if (e.id == id) {
+        return { ...e, [key]: value };
+      }
+      return e;
+    });
+    setShoppingList(newList);
+    setMemo({
+      ...memo,
+      ["totalPrice"]: newList.reduce((p, c) => p + c.cnt * c.price, 0),
+    });
+  };
+  const [shoppingList, setShoppingList] = useState([
+    {
+      id: 0,
+      name: "짜파게티",
+      cnt: 0,
+      price: 0,
+      state: false,
+    },
+    {
+      id: 1,
+      name: "오뚜기 3분 카레",
+      cnt: 0,
+      price: 0,
+      state: false,
+    },
+    {
+      id: 2,
+      name: "가나다라마바사아자차카타파하",
+      cnt: 0,
+      price: 0,
+      state: false,
+    },
+    {
+      id: 3,
+      name: "test4",
+      cnt: 0,
+      price: 0,
+      state: false,
+    },
+    {
+      id: 4,
+      name: "제로펩시",
+      cnt: 0,
+      price: 0,
+      state: false,
+    },
+    {
+      id: 5,
+      name: "양파",
+      cnt: 0,
+      price: 0,
+      state: false,
+    },
+    {
+      id: 6,
+      name: "계란 10구",
+      cnt: 0,
+      price: 0,
+      state: false,
+    },
+    {
+      id: 7,
+      name: "고구마 1kg",
+      cnt: 0,
+      price: 0,
+      state: false,
+    },
+  ]);
+
   const handleChange = (title) => {
     setMemo({ ...memo, ["title"]: title });
   };
-  const handleDelte = () => {
+  const handleAddShopping = () => {
+    //NOTE: 백엔드에서 id값 auto increment속성으로 주면 id값 지정해줄 필요없음
+    const len = shoppingList.length;
+    const lastId = len === 0 ? 0 : shoppingList[len - 1].id;
+    const newShoppingList = [
+      ...shoppingList,
+      {
+        id: lastId + 1,
+        name: "",
+        cnt: 0,
+        price: 0,
+        state: false,
+      },
+    ];
+    setShoppingList(newShoppingList);
+    scrollToEnd();
+  };
+  const handleDeleteShopping = (shoppingId) => {
+    const newShoppingList = shoppingList.filter(
+      (shopping) => shopping.id !== shoppingId
+    );
+    setShoppingList(newShoppingList);
+  };
+  const handleDeleteMemo = () => {
     Alert.alert(
       "주의",
       "전체 삭제하시겠습니까?",
       [
-        { text: "예", onPress: () => console.log("yes") },
+        {
+          text: "예",
+          onPress: () => {
+            console.log("yes");
+            navigate.goBack();
+          },
+        },
         {
           text: "아니오",
           onPress: () => console.log("no"),
@@ -40,11 +147,26 @@ const MemoPostScreen = (props) => {
       { cancelable: false }
     );
   };
+  const handleSubmit = () => {
+    Alert.alert("", "저장되었습니다😊", [
+      {
+        text: "확인",
+        onPress: () => {
+          navigate.goBack();
+        },
+      },
+    ]);
+  };
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      flatListRef.current?.scrollToEnd();
+    }, 200);
+  };
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
       <Header>
         <Header.Title size={18}>장보기 작성</Header.Title>
-        <Pressable onPress={handleDelte}>
+        <Pressable onPress={handleDeleteMemo}>
           <FontAwesome5 name="trash" size={18} color={colors.red} />
         </Pressable>
       </Header>
@@ -61,22 +183,43 @@ const MemoPostScreen = (props) => {
           <Text style={s.text2}>{memo.totalPrice}원</Text>
         </View>
       </View>
-      <View style={{ flex:1,padding: 20 }}>
-        <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+      <View style={s.mainContainer}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginBottom: 20,
+          }}
+        >
           <Text>장보기 리스트</Text>
-          <Pressable style={{flexDirection:'row', alignItems:'center'}}>
-          <AntDesign name="pluscircleo" size={18} color={colors.greenH} />
-          <Spacer horizontal={true} space={5}/>
+          <Pressable
+            onPress={handleAddShopping}
+            style={{ flexDirection: "row", alignItems: "center" }}
+          >
+            <AntDesign name="pluscircleo" size={18} color={colors.greenH} />
+            <Spacer horizontal={true} space={5} />
             <Text>추가</Text>
           </Pressable>
         </View>
-        <View>
-
-        </View>
-        <Pressable style={s.btnSave}>
-            <Text style={s.textSave}>저장하기</Text>
-        </Pressable>
+        <FlatList
+          ref={flatListRef}
+          removeClippedSubviews={false}
+          showsVerticalScrollIndicator={false}
+          data={shoppingList}
+          renderItem={({ item }) => {
+            return (
+              <ShoppingItem
+                data={item}
+                setShopping={setShoppingListById}
+                handleDeleteShopping={handleDeleteShopping}
+              />
+            );
+          }}
+        />
       </View>
+      <Pressable onPress={handleSubmit} style={s.btnSave}>
+        <Text style={s.textSave}>저장하기</Text>
+      </Pressable>
     </View>
   );
 };
@@ -107,16 +250,23 @@ const s = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  btnSave:{
-    alignItems: 'center',
-    justifyContent: 'center',
-    position:'absolute',
-    left:30,
-    right:30,
-    bottom:30,
+  mainContainer: {
+    flex: 1,
+    padding: 20,
+    paddingBottom: 5,
+    // marginBottom: 80,
+  },
+  btnSave: {
+    alignItems: "center",
+    justifyContent: "center",
+    // position: "absolute",
+    // left: 30,
+    // right: 30,
+    // bottom: 30,
     paddingVertical: 12,
+    marginHorizontal: 40,
     borderRadius: 50,
-    backgroundColor:colors.greenH,
+    backgroundColor: colors.greenH,
   },
   text1: {
     fontSize: 20,
@@ -127,9 +277,9 @@ const s = StyleSheet.create({
     fontSize: 30,
     color: colors.white,
   },
-  textSave:{
+  textSave: {
     fontSize: 16,
     lineHeight: 21,
     letterSpacing: 0.25,
-  }
+  },
 });
