@@ -1,13 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useState } from "react";
 import RootStackNavigation from "./navigations/RootStackNavigation";
-import SplashView from "./SplashView";
+import Onboarding from "./screen/onboarding/Onboarding"
 
 const RootApp = () => {
-  const [initialized, setInitialized] = useState(false);
-  if (!initialized) {
-    return <SplashView onFinishLoad={() => setInitialized(true)} />;
-  }
+  //NOTE: Onboarding 화면으로 이동
+  // const [initialized, setInitialized] = useState(false);
+  // if (!initialized) {
+  //   return <Onboarding onFinishLoad={() => setInitialized(true)} />;
+  // }
   return (
     <NavigationContainer>
       <RootStackNavigation />
