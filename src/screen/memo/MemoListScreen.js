@@ -9,7 +9,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Dimensions,
 } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import colors from "../../../assets/colors/colors";
@@ -22,14 +21,27 @@ const MemoListScreen = () => {
     setVisibleDatePicker(true);
   });
   const onPressRegister = useCallback(() => {
-    navigation.navigate("MemoPost",{date:`${selectedDate.getFullYear()}.${
-      selectedDate.getMonth() + 1
-    }.${selectedDate.getDate()}`});
+    navigation.navigate("Memo", {
+      type: "post",
+      date: `${selectedDate.getFullYear()}.${
+        selectedDate.getMonth() + 1
+      }.${selectedDate.getDate()}`,
+    });
+  });
+  const onPressDetail = useCallback((item) => {
+    navigation.navigate("Memo", {
+      id: item.id,
+      title: item.title,
+      type: "detail",
+      date: `${selectedDate.getFullYear()}.${
+        selectedDate.getMonth() + 1
+      }.${selectedDate.getDate()}`,
+    });
   });
   const [data, setData] = useState([
     {
       id: 0,
-      title: "오늘 저녁 장보기",
+      title: "오늘 아침 장보기",
       percentage: 100,
       totalPrice: 0,
       createdAt: "2023.02.19",
@@ -37,7 +49,7 @@ const MemoListScreen = () => {
     },
     {
       id: 1,
-      title: "오늘 저녁 장보기",
+      title: "오늘 점심은 머먹지",
       percentage: 100,
       totalPrice: 0,
       createdAt: "2023.02.19",
@@ -45,7 +57,7 @@ const MemoListScreen = () => {
     },
     {
       id: 2,
-      title: "오늘 저녁 장보기",
+      title: "저녁은 또 뭐해먹지",
       percentage: 100,
       totalPrice: 0,
       createdAt: "2023.02.19",
@@ -53,7 +65,7 @@ const MemoListScreen = () => {
     },
     {
       id: 3,
-      title: "오늘 저녁 장보기",
+      title: "test1",
       percentage: 100,
       totalPrice: 0,
       createdAt: "2023.02.19",
@@ -61,7 +73,7 @@ const MemoListScreen = () => {
     },
     {
       id: 4,
-      title: "오늘 저녁 장보기",
+      title: "test2",
       percentage: 100,
       totalPrice: 0,
       createdAt: "2023.02.19",
@@ -69,7 +81,7 @@ const MemoListScreen = () => {
     },
     {
       id: 5,
-      title: "오늘 저녁 장보기",
+      title: "test3",
       percentage: 100,
       totalPrice: 0,
       createdAt: "2023.02.19",
@@ -77,7 +89,7 @@ const MemoListScreen = () => {
     },
     {
       id: 6,
-      title: "test6",
+      title: "test4",
       percentage: 100,
       totalPrice: 0,
       createdAt: "2023.02.19",
@@ -92,11 +104,9 @@ const MemoListScreen = () => {
           <Text style={styles.text1}>장보기</Text>
           <Text style={styles.text1}>메모</Text>
         </View>
-        <Pressable onPress={onPressRegister}>
-          <View style={styles.register} onPress={onPressRegister}>
-            <MaterialCommunityIcons name="pencil" size={24} color="#00FF9D" />
-            <Text style={styles.text2}>작성</Text>
-          </View>
+        <Pressable style={styles.register} onPress={onPressRegister}>
+          <MaterialCommunityIcons name="pencil" size={24} color="#00FF9D" />
+          <Text style={styles.text2}>작성</Text>
         </Pressable>
       </View>
       <View style={styles.main}>
@@ -118,11 +128,7 @@ const MemoListScreen = () => {
           data={data}
           renderItem={({ item }) => {
             return (
-              <Pressable
-                onPress={() => {
-                  navigation.navigate("Memo", { item });
-                }}
-              >
+              <Pressable onPress={() => onPressDetail(item)}>
                 <View style={styles.memoContainer}>
                   <View style={styles.memoInfo}>
                     <Text style={styles.createAt}>{item.createdAt}</Text>

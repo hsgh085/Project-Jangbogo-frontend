@@ -9,6 +9,7 @@ const RootApp = () => {
   // if (!initialized) {
   //   return <Onboarding onFinishLoad={() => setInitialized(true)} />;
   // }
+
   return (
     <NavigationContainer>
       <RootStackNavigation />
