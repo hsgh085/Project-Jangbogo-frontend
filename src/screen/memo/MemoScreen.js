@@ -1,25 +1,21 @@
-import { FontAwesome5, AntDesign } from "@expo/vector-icons";
+import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Alert,
+  FlatList,
+  Pressable,
+  StyleSheet,
   Text,
   View,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Alert,
-  Button,
-  FlatList,
-  KeyboardAvoidingView,
-  ScrollView,
 } from "react-native";
 import colors from "../../../assets/colors/colors";
 import Header from "../../components/Header/Header";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import Spacer from "../../components/Spacer";
-import SingleLineInput from "../../components/SingleLineInput";
 import ShoppingItem from "../../components/ShoppingItem";
+import SingleLineInput from "../../components/SingleLineInput";
+import Spacer from "../../components/Spacer";
 
-const MemoPostScreen = (props) => {
+const MemoScreen = (props) => {
   let flatListRef = useRef();
   const route = useRoute();
   const navigate = useNavigation();
@@ -41,64 +37,7 @@ const MemoPostScreen = (props) => {
       ["totalPrice"]: newList.reduce((p, c) => p + c.cnt * c.price, 0),
     });
   };
-  const [shoppingList, setShoppingList] = useState([
-    {
-      id: 0,
-      name: "짜파게티",
-      cnt: 0,
-      price: 0,
-      state: false,
-    },
-    {
-      id: 1,
-      name: "오뚜기 3분 카레",
-      cnt: 0,
-      price: 0,
-      state: false,
-    },
-    {
-      id: 2,
-      name: "가나다라마바사아자차카타파하",
-      cnt: 0,
-      price: 0,
-      state: false,
-    },
-    {
-      id: 3,
-      name: "test4",
-      cnt: 0,
-      price: 0,
-      state: false,
-    },
-    {
-      id: 4,
-      name: "제로펩시",
-      cnt: 0,
-      price: 0,
-      state: false,
-    },
-    {
-      id: 5,
-      name: "양파",
-      cnt: 0,
-      price: 0,
-      state: false,
-    },
-    {
-      id: 6,
-      name: "계란 10구",
-      cnt: 0,
-      price: 0,
-      state: false,
-    },
-    {
-      id: 7,
-      name: "고구마 1kg",
-      cnt: 0,
-      price: 0,
-      state: false,
-    },
-  ]);
+  const [shoppingList, setShoppingList] = useState([]);
 
   const handleChange = (title) => {
     setMemo({ ...memo, ["title"]: title });
@@ -162,6 +101,17 @@ const MemoPostScreen = (props) => {
       flatListRef.current?.scrollToEnd();
     }, 200);
   };
+  useEffect(() => {
+    if (route.params?.type === "detail") {
+      console.log(route.params?.id);
+      // 백엔드에서 get 통신
+      setMemo({ ...memo, ["title"]: route.params?.title });
+      setShoppingList([
+        { id: 0, name: "detail1", cnt: 0, price: 0, state: false },
+        { id: 1, name: "detail2", cnt: 0, price: 0, state: false },
+      ]);
+    }
+  }, []);
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <Header>
@@ -224,7 +174,7 @@ const MemoPostScreen = (props) => {
   );
 };
 
-export default MemoPostScreen;
+export default MemoScreen;
 
 const s = StyleSheet.create({
   title: {

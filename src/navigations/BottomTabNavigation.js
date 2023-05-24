@@ -10,7 +10,7 @@ import { StyleSheet, View } from "react-native";
 import colors from "../../assets/colors/colors";
 import AlarmScreen from "../screen/AlarmScreen";
 import MainScreen from "../screen/MainScreen";
-import MemoListScreen from '../screen/memo/MemoMainScreen';
+import MemoListScreen from '../screen/memo/MemoListScreen';
 import MypageMainScreen from "../screen/mypage/MypageMainScreen";
 
 const Tabs = createBottomTabNavigator();
