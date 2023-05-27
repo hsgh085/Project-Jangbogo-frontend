@@ -45,7 +45,7 @@ const MainScreen = () => {
             source={exp}
             text="지출내역"
             onPress={() => {
-              navigation.navigate("Expenditure");
+              navigation.navigate("ExpenditureTab");
             }}
           />
           <ButtonMain source={theme} text=" 테마별장보기" onPress={() => {}} />

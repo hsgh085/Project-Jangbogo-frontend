@@ -2,7 +2,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Onboarding from './src/screen/onboarding/Onboarding';
 import * as SplashScreen from "expo-splash-screen";
 import RootApp from './src/RootApp';
-import TabViewExample from './src/screen/expenditure/TabViewExample';
  
 function sleep (ms) {
   return new Promise(
@@ -20,8 +19,8 @@ export default function App() {
   delay_splash()
   return (
     <SafeAreaProvider>
-      {/* <RootApp/> */}
-      <TabViewExample/>
+      <RootApp/>
+      
     </SafeAreaProvider>
   );
 }
