@@ -16,7 +16,6 @@ const HeaderMain = (props) => {
           <View
             style={{
               width: width,
-              height: 70,
               flexDirection: "row",
               alignItems: "center",
             }}
