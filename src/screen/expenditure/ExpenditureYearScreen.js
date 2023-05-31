@@ -50,7 +50,7 @@ const ExpenditureYearScreen = () => {
           height={Dimensions.get("window").width - 50}
           fromZero={true}
           showValuesOnTopOfBars={true}
-          yAxisSuffix={"K"}
+          yAxisSuffix={"만원"}
           horizontalLabelRotation={270}
           verticalLabelRotation={270}
           chartConfig={{
@@ -60,7 +60,7 @@ const ExpenditureYearScreen = () => {
             backgroundGradientTo: "#FAFAFA",
             fillShadowGradient: colors.greenH,
             fillShadowGradientOpacity: 1,
-            decimalPlaces: 2, //소수점 자리수
+            decimalPlaces: 0, //소수점 자리수
             color: (opacity = 1) => `rgba(102, 102, 102, ${opacity})`,
             style: {
               borderRadius: 16,
@@ -85,10 +85,10 @@ const s = StyleSheet.create({
   },
   chartConatiner: {
     transform: [{ rotate: "90deg" }],
-    width: Dimensions.get("window").width + 100,
+    width: Dimensions.get("window").width + 50,
     position: "relative",
-    left: -65,
-    top: 70,
+    left: -40,
+    top: 45,
   },
   chartStyle: {
     marginVertical: 10,

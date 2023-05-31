@@ -9,9 +9,9 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import colors from "../../assets/colors/colors";
 import AlarmScreen from "../screen/AlarmScreen";
-import MainScreen from "../screen/MainScreen";
-import MemoListScreen from '../screen/memo/MemoListScreen';
+import LatestMemoScreen from "../screen/LatestMemoScreen";
 import MypageMainScreen from "../screen/mypage/MypageMainScreen";
+import MainStackNavigation from "./MainStackNavigation";
 
 const Tabs = createBottomTabNavigator();
 
@@ -22,7 +22,7 @@ const BottomTabNavigation = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarIcon: ({ focused }) => {
-          if (route.name === "Main") {
+          if (route.name === "MainStack") {
             if (focused) {
               return (
                 <View style={styles.icons}>
@@ -48,7 +48,7 @@ const BottomTabNavigation = () => {
               );
             }
             return <Ionicons name="person" size={23} color={colors.gray} />;
-          } else if (route.name === "MemoList") {
+          } else if (route.name === "LatestMemo") {
             if (focused) {
               return (
                 <View style={styles.icons}>
@@ -79,9 +79,9 @@ const BottomTabNavigation = () => {
         tabBarStyle: styles.container,
       })}
     >
-      <Tabs.Screen name="Main" component={MainScreen} />
+      <Tabs.Screen name="MainStack" component={MainStackNavigation} />
       <Tabs.Screen name="MyPageMain" component={MypageMainScreen} />
-      <Tabs.Screen name="MemoList" component={MemoListScreen} />
+      <Tabs.Screen name="LatestMemo" component={LatestMemoScreen} />
       <Tabs.Screen name="Alarm" component={AlarmScreen} />
     </Tabs.Navigator>
   );

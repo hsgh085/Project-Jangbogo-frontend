@@ -29,7 +29,7 @@ const MemoListScreen = () => {
     });
   });
   const onPressDetail = useCallback((item) => {
-    navigation.navigate("Memo", {
+    navigation.navigate("Memo",{
       id: item.id,
       title: item.title,
       type: "detail",

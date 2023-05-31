@@ -3,7 +3,7 @@ import React from "react";
 import colors from "../../assets/colors/colors";
 import ExpenditureMonthScreen from "../screen/expenditure/ExpenditureMonthScreen";
 import ExpenditureYearScreen from "../screen/expenditure/ExpenditureYearScreen";
-import { Text, View,StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import HeaderMain from "../components/HeaderMain";
 
 const Tab = createMaterialTopTabNavigator();
@@ -44,15 +44,15 @@ const ExpenditureNavigation = () => {
 
 export default ExpenditureNavigation;
 
-const s=StyleSheet.create({
-    container:{
-        backgroundColor: colors.white,
-    },
-    headerText:{
-        fontSize:30,
-        fontWeight:800,
-        marginLeft:5,
-        marginTop:20,
-        marginBottom:5,
-    }
-})
+const s = StyleSheet.create({
+  container: {
+    backgroundColor: colors.white,
+  },
+  headerText: {
+    fontSize: 30,
+    fontWeight: 800,
+    marginLeft: 5,
+    marginTop: 20,
+    marginBottom: 5,
+  },
+});
