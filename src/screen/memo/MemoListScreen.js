@@ -169,7 +169,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grayLL,
   },
   header: {
-    flexDirection: "row",
     alignItems: "center",
     backgroundColor: "white",
     ...Platform.select({

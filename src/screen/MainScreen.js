@@ -57,7 +57,7 @@ const MainScreen = () => {
             source={ripe}
             text="후숙도예측"
             onPress={() => {
-              navigation.navigate("Ripness");
+              navigation.navigate("MainStack", { screen: "Ripeness" });
             }}
           />
         </View>

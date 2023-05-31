@@ -3,6 +3,7 @@ import React from "react";
 import MainScreen from "../screen/MainScreen";
 import MemoListScreen from "../screen/memo/MemoListScreen";
 import ExpenditureNavigation from "./ExpenditureNavigation";
+import RipenessScreen from '../screen/ripeness/RipenessScreen';
 const Stack = createNativeStackNavigator();
 
 const MainStackNavigation = () => {
@@ -16,6 +17,7 @@ const MainStackNavigation = () => {
       <Stack.Screen name="Main" component={MainScreen} />
       <Stack.Screen name="MemoList" component={MemoListScreen} />
       <Stack.Screen name="Expenditure" component={ExpenditureNavigation} />
+      <Stack.Screen name="Ripeness" component={RipenessScreen} />
     </Stack.Navigator>
   );
 };
