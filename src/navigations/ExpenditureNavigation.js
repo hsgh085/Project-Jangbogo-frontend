@@ -51,8 +51,5 @@ const s = StyleSheet.create({
   headerText: {
     fontSize: 30,
     fontWeight: 800,
-    marginLeft: 5,
-    marginTop: 20,
-    marginBottom: 5,
   },
 });
