@@ -19,7 +19,11 @@ const ExpenditureYearScreen = () => {
         <Picker.Item label="2020년" value="2020" />
         <Picker.Item label="2019년" value="2019" />
       </Picker>
-      <ScrollView horizontal={true} style={s.chartConatiner}>
+      <ScrollView
+        style={s.chartConatiner}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+      >
         <BarChart
           data={{
             labels: [
@@ -62,11 +66,7 @@ const ExpenditureYearScreen = () => {
               borderRadius: 16,
             },
           }}
-          style={{
-            marginVertical: 10,
-            borderRadius: 16,
-            flex: 1,
-          }}
+          style={s.chartStyle}
         />
       </ScrollView>
     </View>
@@ -85,5 +85,13 @@ const s = StyleSheet.create({
   },
   chartConatiner: {
     transform: [{ rotate: "90deg" }],
+    width: Dimensions.get("window").width + 100,
+    position: "relative",
+    left: -65,
+    top: 70,
+  },
+  chartStyle: {
+    marginVertical: 10,
+    borderRadius: 16,
   },
 });
