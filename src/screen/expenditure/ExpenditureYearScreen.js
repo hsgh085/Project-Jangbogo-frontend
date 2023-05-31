@@ -46,7 +46,7 @@ const ExpenditureYearScreen = () => {
               },
             ],
           }}
-          width={550}
+          width={450}
           height={Dimensions.get("window").width - 50}
           fromZero={true}
           showValuesOnTopOfBars={true}

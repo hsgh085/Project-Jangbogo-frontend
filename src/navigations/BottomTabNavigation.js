@@ -5,6 +5,7 @@ import {
   Octicons,
 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import colors from "../../assets/colors/colors";
@@ -16,6 +17,7 @@ import MainStackNavigation from "./MainStackNavigation";
 const Tabs = createBottomTabNavigator();
 
 const BottomTabNavigation = () => {
+  const navigation = useNavigation();
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
@@ -79,7 +81,15 @@ const BottomTabNavigation = () => {
         tabBarStyle: styles.container,
       })}
     >
-      <Tabs.Screen name="MainStack" component={MainStackNavigation} />
+      <Tabs.Screen
+        name="MainStack"
+        component={MainStackNavigation}
+        listeners={{
+          tabPress: () => {
+            navigation.navigate("Main");
+          },
+        }}
+      />
       <Tabs.Screen name="MyPageMain" component={MypageMainScreen} />
       <Tabs.Screen name="LatestMemo" component={LatestMemoScreen} />
       <Tabs.Screen name="Alarm" component={AlarmScreen} />
