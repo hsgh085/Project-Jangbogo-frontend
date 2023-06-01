@@ -5,24 +5,26 @@ import {
   Octicons,
 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import colors from "../../assets/colors/colors";
 import AlarmScreen from "../screen/AlarmScreen";
-import MainScreen from "../screen/MainScreen";
-import MemoListScreen from '../screen/memo/MemoListScreen';
+import LatestMemoScreen from "../screen/LatestMemoScreen";
 import MypageMainScreen from "../screen/mypage/MypageMainScreen";
+import MainStackNavigation from "./MainStackNavigation";
 
 const Tabs = createBottomTabNavigator();
 
 const BottomTabNavigation = () => {
+  const navigation = useNavigation();
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarShowLabel: false,
         tabBarIcon: ({ focused }) => {
-          if (route.name === "Main") {
+          if (route.name === "MainStack") {
             if (focused) {
               return (
                 <View style={styles.icons}>
@@ -48,7 +50,7 @@ const BottomTabNavigation = () => {
               );
             }
             return <Ionicons name="person" size={23} color={colors.gray} />;
-          } else if (route.name === "MemoList") {
+          } else if (route.name === "LatestMemo") {
             if (focused) {
               return (
                 <View style={styles.icons}>
@@ -79,9 +81,17 @@ const BottomTabNavigation = () => {
         tabBarStyle: styles.container,
       })}
     >
-      <Tabs.Screen name="Main" component={MainScreen} />
+      <Tabs.Screen
+        name="MainStack"
+        component={MainStackNavigation}
+        listeners={{
+          tabPress: () => {
+            navigation.navigate("Main");
+          },
+        }}
+      />
       <Tabs.Screen name="MyPageMain" component={MypageMainScreen} />
-      <Tabs.Screen name="MemoList" component={MemoListScreen} />
+      <Tabs.Screen name="LatestMemo" component={LatestMemoScreen} />
       <Tabs.Screen name="Alarm" component={AlarmScreen} />
     </Tabs.Navigator>
   );

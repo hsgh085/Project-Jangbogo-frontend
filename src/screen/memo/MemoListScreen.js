@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import colors from "../../../assets/colors/colors";
+import HeaderMain from "../../components/HeaderMain";
 
 const MemoListScreen = () => {
   const navigation = useNavigation();
@@ -98,16 +99,17 @@ const MemoListScreen = () => {
   ]);
   return (
     <View style={styles.container}>
-      <StatusBar style="dark" />
       <View style={styles.header}>
-        <View style={styles.title}>
-          <Text style={styles.text1}>장보기</Text>
-          <Text style={styles.text1}>메모</Text>
-        </View>
-        <Pressable style={styles.register} onPress={onPressRegister}>
-          <MaterialCommunityIcons name="pencil" size={24} color="#00FF9D" />
-          <Text style={styles.text2}>작성</Text>
-        </Pressable>
+        <HeaderMain>
+          <View style={styles.title}>
+            <Text style={styles.text1}>장보기</Text>
+            <Text style={styles.text1}>메모</Text>
+          </View>
+          <Pressable style={styles.register} onPress={onPressRegister}>
+            <MaterialCommunityIcons name="pencil" size={24} color="#00FF9D" />
+            <Text style={styles.text2}>작성</Text>
+          </Pressable>
+        </HeaderMain>
       </View>
       <View style={styles.main}>
         <View style={styles.dateContainer}>
@@ -167,10 +169,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grayLL,
   },
   header: {
-    flex: 1,
-    flexDirection: "row",
-    padding: 15,
-    paddingTop: 40,
     alignItems: "center",
     backgroundColor: "white",
     ...Platform.select({

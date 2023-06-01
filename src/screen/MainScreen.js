@@ -38,14 +38,14 @@ const MainScreen = () => {
             source={memo}
             text="장보기 메모"
             onPress={() => {
-              navigation.navigate("MemoList");
+              navigation.navigate("MainStack",{ screen: "MemoList" });
             }}
           />
           <ButtonMain
             source={exp}
             text="지출내역"
             onPress={() => {
-              navigation.navigate("ExpenditureTab");
+              navigation.navigate("MainStack", { screen: "Expenditure" });
             }}
           />
           <ButtonMain source={theme} text=" 테마별장보기" onPress={() => {}} />
@@ -57,7 +57,7 @@ const MainScreen = () => {
             source={ripe}
             text="후숙도예측"
             onPress={() => {
-              navigation.navigate("Ripness");
+              navigation.navigate("MainStack", { screen: "Ripeness" });
             }}
           />
         </View>
