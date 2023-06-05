@@ -4,6 +4,7 @@ import MainScreen from "../screen/MainScreen";
 import MemoListScreen from "../screen/memo/MemoListScreen";
 import ExpenditureNavigation from "./ExpenditureNavigation";
 import RipenessScreen from '../screen/ripeness/RipenessScreen';
+
 const Stack = createNativeStackNavigator();
 
 const MainStackNavigation = () => {
