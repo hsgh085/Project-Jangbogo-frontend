@@ -13,7 +13,13 @@ import colors from "../../../assets/colors/colors";
 import { AntDesign } from "@expo/vector-icons";
 import fruit1 from "../../../assets/images/SelectFruit1.png";
 const RipenessScreen = () => {
+  // const {status, requestPermission}= ImagePicker.useCameraPermissions();
   const handleClick = () => {};
+  // const getPermission=async()=>{
+  //   if(Platform.OS!=='web'){
+  //       const {status}=await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  //   }
+  // }
   return (
     <>
       <View style={s.title}>
