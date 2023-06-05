@@ -19,7 +19,7 @@ export default function App() {
   delay_splash()
   return (
     <SafeAreaProvider>
-      <RootApp/>
+      <Onboarding/>
       
     </SafeAreaProvider>
   );
