@@ -16,8 +16,8 @@ const CameraScreen = () => {
       const data = await camera.takePictureAsync(null);
       console.log(data);
       setImageUri(data.uri);
+      navigation.navigate("Ripeness", {screen: 'RipenessResult', params: { imageUri: data.uri },});
     }
-    navigation.navigate("Ripeness", {screen: 'RipenessResult', params: { imageUri }});
   }
   return (
     <>

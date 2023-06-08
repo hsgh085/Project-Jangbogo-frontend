@@ -15,6 +15,7 @@ import gb from "../../assets/images/ButtonGB.png";
 import memo from "../../assets/images/ButtonMemo.png";
 import ripe from "../../assets/images/ButtonRipe.png";
 import theme from "../../assets/images/ButtonTheme.png";
+import price from "../../assets/images/ButtonPrice.png";
 import ButtonMain from "../components/ButtonMain";
 import HeaderMain from "../components/HeaderMain";
 const { width } = Dimensions.get("window");
@@ -52,7 +53,7 @@ const MainScreen = () => {
         </View>
         <View style={s.categoryInner2}>
           <ButtonMain source={memo} text="장보기 메모" onPress={() => {}} />
-          <ButtonMain source={memo} text="장보기 메모" onPress={() => {}} />
+          <ButtonMain source={price} text="가격예측" onPress={() => {}} />
           <ButtonMain
             source={ripe}
             text="후숙도예측"
