@@ -4,6 +4,8 @@ import MainScreen from "../screen/MainScreen";
 import MemoListScreen from "../screen/memo/MemoListScreen";
 import ExpenditureNavigation from "./ExpenditureNavigation";
 import RipenessScreen from '../screen/ripeness/RipenessScreen';
+import RipenessStackNavigation from './RipenessStackNavigation';
+import GroupBuyingListScreen from '../screen/groupbuying/GroupBuyingListScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +20,8 @@ const MainStackNavigation = () => {
       <Stack.Screen name="Main" component={MainScreen} />
       <Stack.Screen name="MemoList" component={MemoListScreen} />
       <Stack.Screen name="Expenditure" component={ExpenditureNavigation} />
-      <Stack.Screen name="Ripeness" component={RipenessScreen} />
+      <Stack.Screen name="Ripeness" component={RipenessStackNavigation} />
+      <Stack.Screen name="GroupBuying" component={GroupBuyingListScreen} />
     </Stack.Navigator>
   );
 };
