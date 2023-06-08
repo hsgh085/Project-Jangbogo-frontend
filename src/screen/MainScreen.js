@@ -1,13 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import {
-  Dimensions,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import {Pressable, Dimensions, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import colors from "../../assets/colors/colors";
 import banner1 from "../../assets/images/Banner1.png";
 import exp from "../../assets/images/ButtonExp.png";
@@ -29,17 +22,14 @@ const MainScreen = () => {
       <View>
         <Image source={banner1} />
       </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={s.categoryContainer}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} style={s.categoryContainer}>
         <Text>카테고리</Text>
         <View style={s.categoryInner1}>
           <ButtonMain
             source={memo}
             text="장보기 메모"
             onPress={() => {
-              navigation.navigate("MainStack",{ screen: "MemoList" });
+              navigation.navigate("MainStack", { screen: "MemoList" });
             }}
           />
           <ButtonMain
@@ -62,7 +52,9 @@ const MainScreen = () => {
             }}
           />
         </View>
-        <Image source={gb} style={{ marginBottom: 140 }}></Image>
+        <Pressable onPress={()=>navigation.navigate("MainStack", { screen: "GroupBuying" })}>
+          <Image source={gb} style={{ marginBottom: 140 }}></Image>
+        </Pressable>
       </ScrollView>
     </View>
   );

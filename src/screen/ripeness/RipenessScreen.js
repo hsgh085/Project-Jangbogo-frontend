@@ -43,7 +43,7 @@ const RipenessScreen = () => {
 
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
-      // setModalVisible(false);
+      setModalVisible(false);
       navigation.navigate("RipenessResult", { imageUri: result.assets[0].uri});
     }
   };
