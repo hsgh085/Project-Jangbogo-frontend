@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { TouchableOpacity, Modal, Text, View, ScrollView, Pressable, Image, StyleSheet, Dimensions } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, TouchableOpacity, Modal, Text, View, ScrollView, Pressable, Image, StyleSheet, Dimensions } from "react-native";
 import HeaderMain from "../../components/HeaderMain";
 import colors from "../../../assets/colors/colors";
 import { AntDesign } from "@expo/vector-icons";
@@ -7,22 +7,64 @@ import fruit1 from "../../../assets/images/SelectFruit1.png";
 import fruit2 from "../../../assets/images/SelectFruit2.png";
 import fruit3 from "../../../assets/images/SelectFruit3.png";
 import fruit4 from "../../../assets/images/SelectFruit4.png";
+import { Camera } from "expo-camera";
+import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
 
 const RipenessScreen = () => {
+  const navigation = useNavigation();
+  const [cameraPermission, setCameraPermission] = useState(null);
+  const [galleryPermission, setGalleryPermission] = useState(null);
+  const [imageUri, setImageUri] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isClick, setIsClick] = useState(false);
   const handleClick = () => {
     setModalVisible(true);
   };
+  const permisionFunction = async () => {
+    const cameraPermission = await Camera.requestCameraPermissionsAsync();
+    setCameraPermission(cameraPermission.status === "granted");
 
+    const imagePermission = await ImagePicker.getMediaLibraryPermissionsAsync();
+    setGalleryPermission(imagePermission.status === "granted");
+
+    if (imagePermission.status !== "granted" && cameraPermission.status !== "granted") {
+      alert("권한을 허용한 유저만 사용할 수 있는 기능입니다.");
+    }
+  };
+  const handlePickImage = async () => {
+    setIsClick((prev) => !prev);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImageUri(result.assets[0].uri);
+      // setModalVisible(false);
+      navigation.navigate("RipenessResult", { imageUri: result.assets[0].uri});
+    }
+  };
+  useEffect(() => {
+    permisionFunction();
+  }, [isClick]);
   return (
     <>
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={s.modalContainer}>
-          <TouchableOpacity style={s.modalButton}>
+          <TouchableOpacity
+            style={s.modalButton}
+            onPress={() => {
+              navigation.navigate("Camera");
+              setModalVisible(false);
+            }}
+          >
             <Text style={s.modalButtonText}>사진 촬영하기</Text>
             <View style={s.underline} />
           </TouchableOpacity>
-          <TouchableOpacity style={s.modalButton}>
+          <TouchableOpacity style={s.modalButton} onPress={handlePickImage}>
             <Text style={s.modalButtonText}>갤러리에서 이미지 가져오기</Text>
             <View style={s.underline} />
           </TouchableOpacity>
@@ -154,7 +196,7 @@ const s = StyleSheet.create({
     paddingTop: 20,
   },
   modalButtonText: {
-    marginBottom:10,
+    marginBottom: 10,
     color: colors.white,
     fontSize: 17,
     textAlign: "center",

@@ -36,7 +36,7 @@ const Header = (props) => {
                 <MaterialCommunityIcons
                   name="keyboard-backspace"
                   size={24}
-                  color="black"
+                  color={props.color?props.color:"black"}
                 />
               </Pressable>
               {props.children}
