@@ -14,12 +14,24 @@ import image from '../../../assets/images/Onboarding.png';
 
 
 const onboardingScreen = (props) => {
+
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
 
     const [isPIPPScreenOpen, setIsPIPPScreenOpen] = useState(false);
     const [isTCSScreenOpen, setIsTCSScreenOpen] = useState(false);
+    const [isSignUpScreenOpen, setIsSignUpScreenOpen] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
+
+    // const clickTCS = () => {
+    //     setIsTCSScreenOpen(true);
+    //     setModalVisible(!modalVisible);
+    // }
+
+    // const clickPIPP = () => {
+    //     setIsPIPPScreenOpen(true);
+    //     setModalVisible(!modalVisible);
+    // }
 
 
     useEffect(() => {
@@ -46,6 +58,13 @@ const onboardingScreen = (props) => {
         }
       }, [isPIPPScreenOpen, isTCSScreenOpen]);
 
+      useEffect(() => {
+        if (isSignUpScreenOpen) {
+            // Open TCS.js screen
+            navigation.navigate("SignUp");
+        }
+    }, [isSignUpScreenOpen]);
+
 
     return (
         <SafeAreaProvider>
@@ -62,17 +81,20 @@ const onboardingScreen = (props) => {
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
                             <Text style={styles.modalText1}>다음을 읽고 동의해 주십시오.</Text>
-                            <Text style={styles.modalText2} onPress={() => setIsTCSScreenOpen(true)}>
+                            <Text style={styles.modalText2}
+                             onPress={() => {setIsTCSScreenOpen(true);
+                                setModalVisible(!modalVisible);}}>
                                 서비스 이용 약관
                             </Text>
                             <Text>및</Text>
-                            <Text style={styles.modalText2} onPress={() => setIsPIPPScreenOpen(true)}>
+                            <Text style={styles.modalText2} onPress={() => {setIsPIPPScreenOpen(true);
+                                setModalVisible(!modalVisible);}}>
                                 개인정보 처리방침
                             </Text>
                             <Pressable
-                                style={[styles.button, styles.buttonOpen]}
                                 disabled={isDisabled}
-                                onPress={() => setModalVisible(!modalVisible)}>
+                                style={{isDisabled} ? [styles.button, styles.buttonDisable] : [styles.button, styles.buttonOpen]}
+                                onPress={() => {setModalVisible(!modalVisible); setIsSignUpScreenOpen(true);}}>
                                 <Text style={styles.textStyle}>동의하고 계속하기</Text>
                             </Pressable>
                         </View>
@@ -144,6 +166,9 @@ const styles = StyleSheet.create({
     },
     buttonClose: {
         backgroundColor: '#FFFFFF',
+    },
+    buttonDisable: {
+        backgroundColor: '#747474',
     },
     textStyle: {
         color: 'black',
