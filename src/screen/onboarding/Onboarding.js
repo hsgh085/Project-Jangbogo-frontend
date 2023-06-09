@@ -21,6 +21,7 @@ const onboardingScreen = (props) => {
     const [isPIPPScreenOpen, setIsPIPPScreenOpen] = useState(false);
     const [isTCSScreenOpen, setIsTCSScreenOpen] = useState(false);
     const [isSignUpScreenOpen, setIsSignUpScreenOpen] = useState(false);
+    const [isSignInScreenOpen, setIsSignInScreenOpen] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
 
     // const clickTCS = () => {
@@ -65,6 +66,13 @@ const onboardingScreen = (props) => {
         }
     }, [isSignUpScreenOpen]);
 
+    useEffect(() => {
+        if (isSignInScreenOpen) {
+            // Open TCS.js screen
+            navigation.navigate("SignIn");
+        }
+    }, [isSignInScreenOpen]);
+
 
     return (
         <SafeAreaProvider>
@@ -108,7 +116,7 @@ const onboardingScreen = (props) => {
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonClose]}
-                        onPress={() => setModalVisible(!modalVisible)}>
+                        onPress={() => {setModalVisible(!modalVisible); setIsSignInScreenOpen(true);}}>
                         <Text style={styles.textStyle}>로그인</Text>
                     </Pressable>
                 </View>
