@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
+import Header from '../../components/Header/Header';
 
 const SignInWPassword = () => {
   const [phone, setPhone] = useState("");
@@ -42,6 +43,9 @@ const SignInWPassword = () => {
 
   return (
     <View style={styles.container}>
+      <Header>
+          <Header.Title size={18} style={styles.Header}>로그인</Header.Title>
+        </Header>
       <Text style={styles.title}>안녕하세요!👋{"\n"}반가워요🥰</Text>
       <Text style={styles.subtitle}>비밀번호로 로그인</Text>
       <View style={styles.inputContainer}>

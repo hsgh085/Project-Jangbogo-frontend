@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
+import Header from '../../components/Header/Header';
 // import PhoneAuth from "react-native-phone-auth";
 
 const SignUp = () => {
@@ -32,7 +33,11 @@ const SignUp = () => {
 
 
   return (
+    
     <View style={styles.container}>
+      <Header>
+          <Header.Title size={18} style={styles.Header}>회원가입</Header.Title>
+        </Header>
       <Text style={styles.title}>안녕하세요!👋{"\n"}반가워요🥰</Text>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Phone Number</Text>
