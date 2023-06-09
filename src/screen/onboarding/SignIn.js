@@ -1,62 +1,91 @@
-import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 
-export default class SignIn extends Component {
-  constructor(props) {
-    super(props);
-    
-    this.state = {
-      username: '',
-      password: '',
-    };
-  }
-  
-  onLogin() {
-    const { username, password } = this.state;
+const SignIn = () => {
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
 
-    Alert.alert('Credentials', `${username} + ${password}`);
-  }
+  useEffect(() => {
+    // Check if the user is already logged in
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn) {
+      // Redirect to the home screen
+      navigate("Home");
+    }
+  }, []);
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <TextInput
-          value={this.state.username}
-          onChangeText={(username) => this.setState({ username })}
-          placeholder={'Username'}
-          style={styles.input}
-        />
-        <TextInput
-          value={this.state.password}
-          onChangeText={(password) => this.setState({ password })}
-          placeholder={'Password'}
-          secureTextEntry={true}
-          style={styles.input}
-        />
-        
-        <Button
-          title={'Login'}
-          style={styles.input}
-          onPress={this.onLogin.bind(this)}
-        />
-      </View>
-    );
-  }
-}
+  const onLogin = () => {
+    // Make an API call to log the user in
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phone,
+        password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // Store the user's ID in localStorage
+          localStorage.setItem("userId", data.userId);
+          // Redirect to the home screen
+          navigate("Home");
+        } else {
+          // Show an error message
+          alert(data.message);
+        }
+      });
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
+      <TextInput
+        placeholder="Phone Number"
+        onChangeText={(text) => setPhone(text)}
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="Password"
+        onChangeText={(text) => setPassword(text)}
+        secureTextEntry
+        style={styles.input}
+      />
+      <Button
+        title="Login"
+        onPress={onLogin}
+        style={styles.button}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
   input: {
     width: 200,
-    height: 44,
-    padding: 10,
+    borderColor: "black",
     borderWidth: 1,
-    borderColor: 'black',
-    marginBottom: 10,
+    padding: 10,
+  },
+  button: {
+    backgroundColor: "blue",
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+    padding: 10,
   },
 });
+
+export default SignIn;
