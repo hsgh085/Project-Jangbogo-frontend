@@ -4,17 +4,17 @@ import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from '../../components/Header/Header';
 
-const SignUp = () => {
+const SignUpForm = () => {
   const navigation = useNavigation();
 
-  const [isVerifyScreenOpen, setIsVerifyScreenOpen] = useState(false);
+  const [isSignUpFormScreenOpen, setIsSignUpFormScreenOpen] = useState(false);
 
   useEffect(() => {
-    if (isVerifyScreenOpen) {
-      // Verification.js screen 열기
-      navigation.navigate("Verify");
+    if (isSignUpFormScreenOpen) {
+      // SignUpForm.js screen 열기
+      navigation.navigate("SignUpForm");
     }
-  }, [isVerifyScreenOpen]);
+  }, [isSignUpFormScreenOpen]);
 
   return (
     <View>
@@ -122,4 +122,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default SignUp;
+export default SignUpForm;
