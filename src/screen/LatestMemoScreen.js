@@ -121,7 +121,7 @@ const LatestMemoScreen = () => {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            marginBottom: 20,
+            marginBottom: 10,
           }}
         >
           <Text>장보기 리스트</Text>
@@ -177,18 +177,13 @@ const s = StyleSheet.create({
   mainContainer: {
     flex: 1,
     padding: 20,
-    paddingBottom: 5,
+    paddingBottom: 90,
     marginBottom: 20,
   },
   btnSave: {
     alignItems: "center",
     justifyContent: "center",
-    // position: "absolute",
-    // left: 30,
-    // right: 30,
-    // bottom: 30,
-    paddingVertical: 10,
-    // marginHorizontal: 40,
+    paddingVertical: 7,
     marginBottom: 10,
     borderRadius: 50,
     backgroundColor: colors.greenH,
@@ -201,10 +196,5 @@ const s = StyleSheet.create({
   text2: {
     fontSize: 30,
     color: colors.white,
-  },
-  textSave: {
-    fontSize: 16,
-    lineHeight: 21,
-    letterSpacing: 0.25,
   },
 });
