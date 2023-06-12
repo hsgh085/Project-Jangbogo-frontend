@@ -102,7 +102,7 @@ const LatestMemoScreen = () => {
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <Header>
-        <Header.Title size={18}>장보기 작성</Header.Title>
+        <Header.Title size={18}>최근 장보기 작성</Header.Title>
         <Pressable onPress={handleDeleteMemo}>
           <FontAwesome5 name="trash" size={18} color={colors.red} />
         </Pressable>
