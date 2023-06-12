@@ -8,7 +8,6 @@ import {
     StyleSheet,
     Alert, Modal, Pressable
 } from "react-native";
-import ColorButton from '../../components/ColorButton';
 import image from '../../../assets/images/Onboarding.png';
 
 
@@ -61,7 +60,6 @@ const onboardingScreen = (props) => {
 
       useEffect(() => {
         if (isSignUpScreenOpen) {
-            // Open TCS.js screen
             navigation.navigate("SignUp");
         }
     }, [isSignUpScreenOpen]);

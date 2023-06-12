@@ -12,8 +12,9 @@ const RootApp = () => {
 
   return (
     <NavigationContainer>
-      <RootStackNavigation />
+      <Onboarding />
     </NavigationContainer>
+
   );
 };
 
