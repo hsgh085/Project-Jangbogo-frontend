@@ -20,7 +20,7 @@ const MainStackNavigation = () => {
       <Stack.Screen name="Main" component={MainScreen} />
       <Stack.Screen name="MemoList" component={MemoListScreen} />
       <Stack.Screen name="Expenditure" component={ExpenditureNavigation} />
-      <Stack.Screen name="Ripeness" component={RipenessStackNavigation} />
+      <Stack.Screen name="RipenessStack" component={RipenessStackNavigation} />
       <Stack.Screen name="GroupBuying" component={GroupBuyingListScreen} />
     </Stack.Navigator>
   );
