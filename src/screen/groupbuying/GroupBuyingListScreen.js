@@ -5,9 +5,10 @@ import colors from "../../../assets/colors/colors";
 import banner from "../../../assets/images/GroupBuyingBanner.png";
 import HeaderMain from "../../components/HeaderMain";
 import SingleLineInput from "../../components/SingleLineInput";
-import { ScrollView } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 const GroupBuyingListScreen = () => {
+  const navigation = useNavigation();
   const [data, setData] = useState([
     { id: 0, name: "너구리 2+1", currPeople: 1, people: 3, endTime: "2023-06-12" },
     { id: 1, name: "세제 공구해여", currPeople: 1, people: 3, endTime: "2023-06-12" },
@@ -20,7 +21,9 @@ const GroupBuyingListScreen = () => {
     { id: 8, name: "test8", currPeople: 1, people: 3, endTime: "2023-06-12" },
     { id: 9, name: "test9", currPeople: 1, people: 3, endTime: "2023-06-12" },
   ]);
-  const handleClickPost = () => {};
+  const handleClickPost = () => {
+    navigation.navigate("GBPost");
+  };
   const handleClickDetail = useCallback((item) => {});
   return (
     <>
@@ -41,10 +44,10 @@ const GroupBuyingListScreen = () => {
             <SingleLineInput placeholder="상품명을 입력해주세요." />
           </View>
         </View>
-        <Pressable onPress={handleClickPost} style={s.btnSave}>
+        <TouchableOpacity onPress={handleClickPost} style={s.btnSave}>
           <MaterialCommunityIcons name="pencil" size={20} color={colors.white} />
           <Text style={s.textSave}>등록하기</Text>
-        </Pressable>
+        </TouchableOpacity>
         <FlatList
           showsVerticalScrollIndicator={false}
           data={data}

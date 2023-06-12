@@ -52,7 +52,7 @@ const MainScreen = () => {
             }}
           />
         </View>
-        <Pressable onPress={() => navigation.navigate("MainStack", { screen: "GroupBuying" })}>
+        <Pressable onPress={() => navigation.navigate("MainStack", { screen: "GroupBuyingStack" })}>
           <Image source={gb} style={{ marginBottom: 140 }}></Image>
           <Text style={s.bannerGBText1}>공동구매</Text>
           <Text style={s.bannerGBText2}>참여하기</Text>

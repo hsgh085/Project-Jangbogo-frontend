@@ -4,6 +4,7 @@ import MemoScreen from "../screen/memo/MemoScreen";
 import BottomTabNavigation from "./BottomTabNavigation";
 import SignStackNavigation from "./SignStackNavigation";
 import CameraScreen from '../screen/ripeness/CameraScreen';
+import GroupBuyingPostScreen from '../screen/groupbuying/GroupBuyingPostScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,10 +17,11 @@ const RootStackNavigation = () => {
       }}
     >
       <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
-      {<Stack.Screen name="Sign" component={SignStackNavigation} />
-      /* Bottom Tab 안보이게 하고 싶은 Screen 여기에 배치 */}
+      {/* Bottom Tab 안보이게 하고 싶은 Screen 여기에 배치 */}
+      {/* {<Stack.Screen name="Sign" component={SignStackNavigation} />*/}
       <Stack.Screen name="Memo" component={MemoScreen} /> 
       <Stack.Screen name="Camera" component={CameraScreen}/>
+      <Stack.Screen name="GBPost" component={GroupBuyingPostScreen}/>
     </Stack.Navigator>
   );
 };
