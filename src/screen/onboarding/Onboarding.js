@@ -55,11 +55,14 @@ const OnboardingScreen = (props) => {
 
     useEffect(() => {
         if (isSignInScreenOpen) {
-            // Open TCS.js screen
             navigation.navigate("SignIn");
         }
     }, [isSignInScreenOpen]);
 
+    /** 버튼 활성화 함수 */
+    const getButtonStyle = () => {
+        return isDisabled ? [styles.button, styles.buttonDisable] : [styles.button, styles.buttonOpen];
+    }
 
     return (
         <SafeAreaProvider>
@@ -88,7 +91,7 @@ const OnboardingScreen = (props) => {
                             </Text>
                             <Pressable
                                 disabled={isDisabled}
-                                style={{isDisabled} ? [styles.button, styles.buttonDisable] : [styles.button, styles.buttonOpen]}
+                                style={getButtonStyle()}
                                 onPress={() => {setModalVisible(!modalVisible); setIsSignUpScreenOpen(true);}}>
                                 <Text style={styles.textStyle}>동의하고 계속하기</Text>
                             </Pressable>
