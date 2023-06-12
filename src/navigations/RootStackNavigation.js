@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator();
 const RootStackNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Sign"
+      initialRouteName="BottomTab"
       screenOptions={{
         headerShown: false,
       }}
