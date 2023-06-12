@@ -15,30 +15,32 @@ const SignInWPassword = () => {
     }
   }, []);
 
-  const onLogin = () => {
-    // Make an API call to log the user in
-    fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        phone,
-        password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          // Store the user's ID in localStorage
-          localStorage.setItem("userId", data.userId);
-          // Redirect to the home screen
-          navigate("Home");
-        } else {
-          // Show an error message
-          alert(data.message);
-        }
+  const onSignIn = async () => {
+    try {
+      if (phoneNumber.trim() === '' || password.trim() === '') {
+        return;
+      }
+      const response = await fetch('http://localhost:8001/auth/signin', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          hp: phoneNumber,
+          pw: password,
+        }),
       });
+      const result = await response.json();
+      if (response.ok) {
+        // 로그인 성공 시 사용자의 ID를 로컬 저장소에 저장하고
+        // Home 화면으로 이동(navigate)하게 됩니다.
+      } else {
+        // 로그인 실패 시, 에러 메시지 출력
+      }
+    } catch (error) {
+      console.error('로그인 실패', error);
+    }
   };
 
   return (
@@ -67,7 +69,7 @@ const SignInWPassword = () => {
       </View>
       <Pressable
         style={styles.button}
-        // onPress={onSignIn}
+        onPress={onSignIn}
         >
         <Text style={styles.textStyle}>로그인</Text>
       </Pressable>
