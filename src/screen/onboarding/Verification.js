@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native';
+import Header from '../../components/Header/Header';
 
 const Verification = () => {
   /** 커서 이동 변수 */
@@ -54,6 +55,10 @@ const Verification = () => {
 
   return (
     <View style={styles.container}>
+      {/* 회원가입 헤더 */}
+      <Header>
+        <Header.Title size={18} style={styles.Header}>회원가입</Header.Title>
+      </Header>
       {/* 인증번호 타이틀 */}
       <View style={styles.container_title}>
         <Text style = {styles.h1}>인증번호 입력</Text>

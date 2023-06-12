@@ -37,7 +37,9 @@ const SignUp = () => {
       <View style={styles.verification_verify}>
         <Pressable
           style={styles.verification_button}
-          onPress={setIsVerifyScreenOpen(true)}
+          onPress={() => {
+            setIsVerifyScreenOpen(true);
+          }}
         >
           <Text style={styles.h2}>인증번호 전송</Text>
         </Pressable>
