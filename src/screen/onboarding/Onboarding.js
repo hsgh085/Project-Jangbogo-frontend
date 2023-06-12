@@ -60,7 +60,6 @@ const onboardingScreen = (props) => {
 
       useEffect(() => {
         if (isSignUpScreenOpen) {
-            // Open TCS.js screen
             navigation.navigate("SignUp");
         }
     }, [isSignUpScreenOpen]);

@@ -1,117 +1,120 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from '../../components/Header/Header';
-// import PhoneAuth from "react-native-phone-auth";
 
 const SignUp = () => {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [isVerified, setIsVerified] = useState(false);
+  const navigation = useNavigation();
 
-  // useEffect(() => {
-  //   PhoneAuth.initialize();
-  // }, []);
+  const [isVerifyScreenOpen, setIsVerifyScreenOpen] = useState(false);
 
-  const onPhoneNumberChange = (event) => {
-    setPhoneNumber(event.nativeEvent.text);
-  };
-
-  // const onVerificationCodeChange = (event) => {
-  //   setVerificationCode(event.nativeEvent.text);
-  // };
-
-  // 
-  // const onSubmit = () => {
-  //   PhoneAuth.requestVerificationCode(phoneNumber, (error, data) => {
-  //     if (error) {
-  //       console.log(error);
-  //     } else {
-  //       setVerificationCode(data.verificationCode);
-  //     }
-  //   });
-  // };
-
+  useEffect(() => {
+    if (isVerifyScreenOpen) {
+      // Verification.js screen 열기
+      navigation.navigate("Verify");
+    }
+  }, [isVerifyScreenOpen]);
 
   return (
-    
     <View style={styles.container}>
+      {/* 회원가입 헤더 */}
       <Header>
-          <Header.Title size={18} style={styles.Header}>회원가입</Header.Title>
-        </Header>
-      <Text style={styles.title}>안녕하세요!👋{"\n"}반가워요🥰</Text>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Phone Number</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="휴대폰 번호 입력"
-          onChangeText={onPhoneNumberChange}
-        />
+        <Header.Title size={18} style={styles.Header}>회원가입</Header.Title>
+      </Header>
+      {/* 인증번호 타이틀 */}
+      <View style={styles.container_title}>
+        <Text style={styles.h1}>안녕하세요!👋{"\n"}반가워요🥰</Text>
       </View>
-      {/* <View style={styles.inputContainer}>
-        <Text style={styles.label}>Verification Code</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your verification code"
-          onChangeText={onVerificationCodeChange}
-        />
-      </View> */}
-      <Pressable
-        style={styles.button}
-        // onPress={() => setModalVisible(true)}
+      {/* 휴대폰 번호 입력칸 */}
+      <View style={styles.inputContainer}>
+        <TextInput style={styles.input}
+          keyboardType="numeric"
+          maxLength={11}
+          placeholder='휴대폰 번호 입력' />
+      </View>
+      {/* 인증번호 전송 버튼 */}
+      <View style={styles.verification_verify}>
+        <Pressable
+          style={styles.verification_button}
+          onPress={setIsVerifyScreenOpen(true)}
         >
-        <Text style={styles.textStyle}>인증번호 받기</Text>
-      </Pressable>
-      {isVerified ? null : (
-        <Text style={styles.error}>잘못입력하셨습니다</Text>
-      )}
+          <Text style={styles.h2}>인증번호 전송</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: 250,
     marginTop: 100,
-    marginLeft: 50,
-    justifyContent: "start",
-    alignItems: "stretch",
+    marginLeft: 60,
+    marginRight: 60,
   },
-  title: {
-    fontSize: 28,
+  container_title: {
+
+  },
+  h1: {
+    fontSize: 30,
     fontWeight: "bold",
-    marginBottom: 20,
   },
-  inputContainer: {
-    backgroundColor: "skyblue",
-    width: "100%",
-    marginTop: 10,
-    justifyContent: "center",
+  h2: {
+    fontSize: 16,
   },
 
+  highlight: {
+    color: '#00FF9D',
+  },
+  verification_fields: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
   input: {
-    width: '100%',
-    height: 50,
+    height: 60,
     borderRadius: 16,
     borderColor: "black",
     borderWidth: 1,
     fontSize: 18,
     paddingHorizontal: 15,
-    keyboardType: "number-pad",
-    // keyboardType: "numeric"
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  verification_input: {
+    width: 55,
+    height: 60,
+    marginHorizontal: 10,
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 10,
+    textAlign: 'center',
+    fontSize: 24,
+  },
+  verification_verify: {
+
+  },
+  verification_button: {
+    backgroundColor: '#00FF9D',
+    alignItems: 'center',
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 20,
   },
 
-  button: {
-    width: 315,
-    height: 60,
-    borderRadius: 16,
-    padding: 10,
-    elevation: 2,
-},
-  error: {
-    color: "red",
-    fontSize: 20,
+  verification_time: {
+    margintop: 10,
+    marginLeft: 'auto',
+    marginBottom: 5,
   },
+  verification_retry: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+
+  }
+
 });
 
 export default SignUp;
