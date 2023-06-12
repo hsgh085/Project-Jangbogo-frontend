@@ -1,14 +1,7 @@
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Alert,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import Header from "../../components/Header/Header";
 import ShoppingItem from "../../components/ShoppingItem";
@@ -60,9 +53,7 @@ const MemoScreen = (props) => {
     scrollToEnd();
   };
   const handleDeleteShopping = (shoppingId) => {
-    const newShoppingList = shoppingList.filter(
-      (shopping) => shopping.id !== shoppingId
-    );
+    const newShoppingList = shoppingList.filter((shopping) => shopping.id !== shoppingId);
     setShoppingList(newShoppingList);
   };
   const handleDeleteMemo = () => {
@@ -122,11 +113,7 @@ const MemoScreen = (props) => {
       </Header>
       <View style={s.title}>
         <Text style={s.text1}>{memo.date}</Text>
-        <SingleLineInput
-          style={s.text2}
-          value={memo.title}
-          onChangeText={handleChange}
-        />
+        <SingleLineInput style={s.text2} value={memo.title} onChangeText={handleChange} />
         <Spacer space={15} />
         <View style={s.priceContainer}>
           <Text style={s.text1}>총 금액</Text>
@@ -142,34 +129,25 @@ const MemoScreen = (props) => {
           }}
         >
           <Text>장보기 리스트</Text>
-          <Pressable
-            onPress={handleAddShopping}
-            style={{ flexDirection: "row", alignItems: "center" }}
-          >
+          <Pressable onPress={handleAddShopping} style={{ flexDirection: "row", alignItems: "center" }}>
             <AntDesign name="pluscircleo" size={18} color={colors.greenH} />
             <Spacer horizontal={true} space={5} />
             <Text>추가</Text>
           </Pressable>
         </View>
+        <Pressable onPress={handleSubmit} style={s.btnSave}>
+          <Text style={s.textSave}>저장하기</Text>
+        </Pressable>
         <FlatList
           ref={flatListRef}
           removeClippedSubviews={false}
           showsVerticalScrollIndicator={false}
           data={shoppingList}
           renderItem={({ item }) => {
-            return (
-              <ShoppingItem
-                data={item}
-                setShopping={setShoppingListById}
-                handleDeleteShopping={handleDeleteShopping}
-              />
-            );
+            return <ShoppingItem data={item} setShopping={setShoppingListById} handleDeleteShopping={handleDeleteShopping} />;
           }}
         />
       </View>
-      <Pressable onPress={handleSubmit} style={s.btnSave}>
-        <Text style={s.textSave}>저장하기</Text>
-      </Pressable>
     </View>
   );
 };
@@ -204,7 +182,7 @@ const s = StyleSheet.create({
     flex: 1,
     padding: 20,
     paddingBottom: 5,
-    // marginBottom: 80,
+    marginBottom: 20,
   },
   btnSave: {
     alignItems: "center",
@@ -213,8 +191,9 @@ const s = StyleSheet.create({
     // left: 30,
     // right: 30,
     // bottom: 30,
-    paddingVertical: 12,
-    marginHorizontal: 40,
+    paddingVertical: 10,
+    // marginHorizontal: 40,
+    marginBottom: 10,
     borderRadius: 50,
     backgroundColor: colors.greenH,
   },
