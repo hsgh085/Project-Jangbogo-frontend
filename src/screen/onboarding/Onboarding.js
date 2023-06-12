@@ -12,9 +12,9 @@ import image from '../../../assets/images/Onboarding.png';
 
 
 
-const onboardingScreen = (props) => {
-
+const OnboardingScreen = (props) => {
     const navigation = useNavigation();
+
     const [modalVisible, setModalVisible] = useState(false);
 
     const [isPIPPScreenOpen, setIsPIPPScreenOpen] = useState(false);
@@ -22,17 +22,6 @@ const onboardingScreen = (props) => {
     const [isSignUpScreenOpen, setIsSignUpScreenOpen] = useState(false);
     const [isSignInScreenOpen, setIsSignInScreenOpen] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
-
-    // const clickTCS = () => {
-    //     setIsTCSScreenOpen(true);
-    //     setModalVisible(!modalVisible);
-    // }
-
-    // const clickPIPP = () => {
-    //     setIsPIPPScreenOpen(true);
-    //     setModalVisible(!modalVisible);
-    // }
-
 
     useEffect(() => {
         if (isPIPPScreenOpen) {
@@ -109,7 +98,10 @@ const onboardingScreen = (props) => {
                 <View style={styles.buttondiv1}>
                     <Pressable
                         style={[styles.button, styles.buttonOpen]}
-                        onPress={() => setModalVisible(true)}>
+                        onPress={() => {
+                            setModalVisible(true);
+                          }}
+                    >
                         <Text style={styles.textStyle}>회원가입</Text>
                     </Pressable>
                     <Pressable
@@ -199,4 +191,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default onboardingScreen;
+export default OnboardingScreen;
