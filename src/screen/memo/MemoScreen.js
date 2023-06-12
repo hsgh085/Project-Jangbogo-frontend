@@ -7,6 +7,7 @@ import Header from "../../components/Header/Header";
 import ShoppingItem from "../../components/ShoppingItem";
 import SingleLineInput from "../../components/SingleLineInput";
 import Spacer from "../../components/Spacer";
+import { ROOT_API } from '../../constants/api';
 
 const MemoScreen = (props) => {
   let flatListRef = useRef();
@@ -31,7 +32,13 @@ const MemoScreen = (props) => {
     });
   };
   const [shoppingList, setShoppingList] = useState([]);
-
+  const toast = (message) => {
+    Alert.alert("", `${message}`, [
+      {
+        text: "확인",
+      },
+    ]);
+  };
   const handleChange = (title) => {
     setMemo({ ...memo, ["title"]: title });
   };
@@ -42,6 +49,7 @@ const MemoScreen = (props) => {
     const newShoppingList = [
       ...shoppingList,
       {
+        //TODO: id값 백엔드에서 auto increment로 지정해주면 지워야함
         id: lastId + 1,
         name: "",
         cnt: 0,
@@ -78,14 +86,35 @@ const MemoScreen = (props) => {
     );
   };
   const handleSubmit = () => {
-    Alert.alert("", "저장되었습니다😊", [
-      {
-        text: "확인",
-        onPress: () => {
-          navigate.goBack();
-        },
+    if(shoppingList.length === 0){
+      toast("장보기 리스트를 추가해주세요😊");
+    }
+    //TODO: post 통신
+     fetch(`${ROOT_API}/memo/creatememo`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaHAiOiIwMTA1NjkxNzU4NiIsImlhdCI6MTY4NjU4MDIwOCwiZXhwIjoxNjg3MTg1MDA4fQ.Az1HeKCb4B6k3-UKbQghrNDr2wJ8zySUyMTG-iA97uw`,
       },
-    ]);
+      body: JSON.stringify({
+        memoListName: memo.title,
+        memoListDate: memo.date,
+        memoPrice: memo.totalPrice,
+        memos:shoppingList,
+      }),
+    })
+      .then(() => {
+        Alert.alert("", "저장되었습니다😊", [
+          {
+            text: "확인",
+            onPress: () => {
+              navigate.goBack();
+            },
+          },
+        ]);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
   const scrollToEnd = () => {
     setTimeout(() => {
