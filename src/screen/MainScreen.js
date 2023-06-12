@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import {Pressable, Dimensions, Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, Dimensions, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import colors from "../../assets/colors/colors";
 import banner1 from "../../assets/images/Banner1.png";
 import exp from "../../assets/images/ButtonExp.png";
@@ -48,12 +48,15 @@ const MainScreen = () => {
             source={ripe}
             text="후숙도예측"
             onPress={() => {
-              navigation.navigate("MainStack", { screen: "Ripeness" });
+              navigation.navigate("MainStack", { screen: "RipenessStack" });
             }}
           />
         </View>
-        <Pressable onPress={()=>navigation.navigate("MainStack", { screen: "GroupBuying" })}>
+        <Pressable onPress={() => navigation.navigate("MainStack", { screen: "GroupBuyingStack" })}>
           <Image source={gb} style={{ marginBottom: 140 }}></Image>
+          <Text style={s.bannerGBText1}>공동구매</Text>
+          <Text style={s.bannerGBText2}>참여하기</Text>
+          <Text style={s.bannerGBText3}>확인하러가기</Text>
         </Pressable>
       </ScrollView>
     </View>
@@ -80,4 +83,24 @@ const s = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 20,
   },
+  bannerGBText1:{
+    position: "absolute",
+    top: 25,
+    left: 20,
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  bannerGBText2:{
+    position: "absolute",
+    top: 65,
+    left: 20,
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  bannerGBText3:{
+    position: "absolute",
+    top: 68,
+    left: 180,
+    fontSize: 20,
+  }
 });

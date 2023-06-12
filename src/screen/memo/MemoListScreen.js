@@ -106,7 +106,7 @@ const MemoListScreen = () => {
             <Text style={styles.text1}>메모</Text>
           </View>
           <Pressable style={styles.register} onPress={onPressRegister}>
-            <MaterialCommunityIcons name="pencil" size={24} color="#00FF9D" />
+            <MaterialCommunityIcons name="pencil" size={24} color={colors.greenH} />
             <Text style={styles.text2}>작성</Text>
           </Pressable>
         </HeaderMain>

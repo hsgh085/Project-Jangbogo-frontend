@@ -1,9 +1,4 @@
-import {
-  FontAwesome5,
-  Ionicons,
-  MaterialIcons,
-  Octicons,
-} from "@expo/vector-icons";
+import { FontAwesome5, Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
@@ -28,18 +23,12 @@ const BottomTabNavigation = () => {
             if (focused) {
               return (
                 <View style={styles.icons}>
-                  <MaterialIcons
-                    name="home-filled"
-                    size={25}
-                    color={colors.greenH}
-                  />
+                  <MaterialIcons name="home-filled" size={25} color={colors.greenH} />
                   <Octicons name="dot-fill" size={10} color={colors.greenL} />
                 </View>
               );
             }
-            return (
-              <MaterialIcons name="home-filled" size={25} color={colors.gray} />
-            );
+            return <MaterialIcons name="home-filled" size={25} color={colors.gray} />;
           } else if (route.name === "MyPageMain") {
             if (focused) {
               return (
@@ -54,18 +43,12 @@ const BottomTabNavigation = () => {
             if (focused) {
               return (
                 <View style={styles.icons}>
-                  <FontAwesome5
-                    name="shopping-bag"
-                    size={20}
-                    color={colors.greenH}
-                  />
+                  <FontAwesome5 name="shopping-bag" size={20} color={colors.greenH} />
                   <Octicons name="dot-fill" size={10} color={colors.greenL} />
                 </View>
               );
             }
-            return (
-              <FontAwesome5 name="shopping-bag" size={20} color={colors.gray} />
-            );
+            return <FontAwesome5 name="shopping-bag" size={20} color={colors.gray} />;
           } else if (route.name === "Alarm") {
             if (focused) {
               return (
