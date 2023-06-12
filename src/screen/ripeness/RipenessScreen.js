@@ -87,7 +87,7 @@ const RipenessScreen = () => {
           <Text style={{ fontSize: 18, marginRight: 5 }}>품목 종류 선택</Text>
           <AntDesign name="checksquare" size={22} color={colors.greenH} />
         </View>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View>
             <Image source={fruit4} style={s.image} />
             <Text
@@ -165,7 +165,7 @@ const s = StyleSheet.create({
     flex: 1,
     padding: 20,
     paddingTop: 0,
-    marginBottom: 90,
+    paddingBottom:110,
     backgroundColor: colors.white,
   },
   textContainer: {
