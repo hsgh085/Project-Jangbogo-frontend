@@ -59,6 +59,7 @@ const OnboardingScreen = (props) => {
         }
     }, [isSignInScreenOpen]);
 
+
     /** 버튼 활성화 함수 */
     const getButtonStyle = () => {
         return isDisabled ? [styles.button, styles.buttonDisable] : [styles.button, styles.buttonOpen];
@@ -109,7 +110,9 @@ const OnboardingScreen = (props) => {
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonClose]}
-                        onPress={() => {setModalVisible(!modalVisible); setIsSignInScreenOpen(true);}}>
+                        onPress={() => {navigation.navigate("Verify");}}
+                        // onPress={() => {setModalVisible(!modalVisible); setIsSignUpScreenOpen(true);}}
+                        >
                         <Text style={styles.textStyle}>로그인</Text>
                     </Pressable>
                 </View>
@@ -154,6 +157,9 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 2,
         top: "100%",
+        justifyContent: 'space-between',  // 추가된 부분
+        flexDirection: 'column',  // 추가된 부분
+        minHeight: 300, // 추가된 부분
     },
     button: {
         width: 315,
@@ -179,11 +185,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     modalText1: {
-        fontStyle: 'normal',
-        fontWeight: 900,
+        fontWeight: 'bold',
         fontSize: 21,
         marginBottom: 15,
         textAlign: 'center',
+        marginTop: 20, // 추가된 부분
 
     },
     modalText2: {
