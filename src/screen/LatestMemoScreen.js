@@ -1,5 +1,5 @@
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from "react";
 import { Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import colors from "../../assets/colors/colors";
@@ -7,16 +7,19 @@ import Header from "../components/Header/Header";
 import ShoppingItem from "../components/ShoppingItem";
 import SingleLineInput from "../components/SingleLineInput";
 import Spacer from "../components/Spacer";
+import { ROOT_API, TOKEN } from "../constants/api";
 
 const LatestMemoScreen = () => {
   let flatListRef = useRef();
-  const route = useRoute();
   const navigate = useNavigation();
+  const isFocused = useIsFocused();
   const [memo, setMemo] = useState({
+    id: 0,
     date: "",
     title: "무제",
     totalPrice: 0,
   });
+  const [shoppingList, setShoppingList] = useState([]);
   const setShoppingListById = (id, key, value) => {
     const newList = shoppingList.map((e) => {
       if (e.id == id) {
@@ -30,13 +33,17 @@ const LatestMemoScreen = () => {
       ["totalPrice"]: newList.reduce((p, c) => p + c.cnt * c.price, 0),
     });
   };
-  const [shoppingList, setShoppingList] = useState([]);
-
+  const toast = (message) => {
+    Alert.alert("", `${message}`, [
+      {
+        text: "확인",
+      },
+    ]);
+  };
   const handleChange = (title) => {
     setMemo({ ...memo, ["title"]: title });
   };
   const handleAddShopping = () => {
-    //NOTE: 백엔드에서 id값 auto increment속성으로 주면 id값 지정해줄 필요없음
     const len = shoppingList.length;
     const lastId = len === 0 ? 0 : shoppingList[len - 1].id;
     const newShoppingList = [
@@ -46,7 +53,7 @@ const LatestMemoScreen = () => {
         name: "",
         cnt: 0,
         price: 0,
-        state: false,
+        status: false,
       },
     ];
     setShoppingList(newShoppingList);
@@ -64,13 +71,30 @@ const LatestMemoScreen = () => {
         {
           text: "예",
           onPress: () => {
-            console.log("yes");
-            navigate.goBack();
+            fetch(`${ROOT_API}/memo/deletememo?memoId=${memo.id}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${TOKEN}`,
+              },
+            })
+              .then(() => {
+                Alert.alert("", "삭제되었습니다😊", [
+                  {
+                    text: "확인",
+                    onPress: () => {
+                      // navigate.navigate("MainStack", { screen: "MemoList" });
+                      navigate.goBack();
+                    },
+                  },
+                ]);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           },
         },
         {
           text: "아니오",
-          onPress: () => console.log("no"),
           style: "cancle",
         },
       ],
@@ -78,14 +102,37 @@ const LatestMemoScreen = () => {
     );
   };
   const handleSubmit = () => {
-    Alert.alert("", "저장되었습니다😊", [
-      {
-        text: "확인",
-        onPress: () => {
-          navigate.goBack();
+    if (shoppingList.length === 0) {
+      toast("장보기 리스트를 추가해주세요😊");
+    } else {
+      fetch(`${ROOT_API}/memo/updatememo`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
         },
-      },
-    ]);
+        body: JSON.stringify({
+          memoId: memo.id,
+          memoListName: memo.title,
+          memoListDate: memo.date,
+          memoPrice: memo.totalPrice,
+          memos: shoppingList,
+        }),
+      })
+        .then(() => {
+          Alert.alert("", "수정되었습니다😊", [
+            {
+              text: "확인",
+              onPress: () => {
+                navigate.goBack();
+              },
+            },
+          ]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   const scrollToEnd = () => {
     setTimeout(() => {
@@ -93,12 +140,26 @@ const LatestMemoScreen = () => {
     }, 200);
   };
   useEffect(() => {
-    setMemo({ ...memo, ["title"]: "최근 장보기", ["date"]: "2023.06.12" });
-    setShoppingList([
-      { id: 0, name: "latest1", cnt: 0, price: 0, state: false },
-      { id: 1, name: "latest2", cnt: 0, price: 0, state: false },
-    ]);
-  }, []);
+    fetch(`${ROOT_API}/memo/recentmemo`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setMemo({
+          id: data.memoinform.id,
+          date: data.memoinform.date.split("T")[0],
+          title: data.memoinform.name,
+          totalPrice: data.memoinform.total_price,
+        });
+        setShoppingList(data.memoItems);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [isFocused]);
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <Header>
