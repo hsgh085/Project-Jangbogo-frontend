@@ -47,6 +47,13 @@ const RipenessScreen = () => {
       navigation.navigate("RipenessResult", { imageUri: result.assets[0].uri});
     }
   };
+  const toastReady=()=>{
+    Alert.alert("", "해당 품목은 준비 중입니다.😊", [
+      {
+        text: "확인",
+      },
+    ]);
+  }
   useEffect(() => {
     permisionFunction();
   }, [isClick]);
@@ -88,7 +95,7 @@ const RipenessScreen = () => {
           <AntDesign name="checksquare" size={22} color={colors.greenH} />
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View>
+          <Pressable onPress={toastReady}>
             <Image source={fruit4} style={s.image} />
             <Text
               style={{
@@ -101,8 +108,8 @@ const RipenessScreen = () => {
             >
               토마토
             </Text>
-          </View>
-          <View>
+          </Pressable>
+          <Pressable onPress={toastReady}>
             <Image source={fruit2} style={s.image} />
             <Text
               style={{
@@ -115,8 +122,8 @@ const RipenessScreen = () => {
             >
               망고
             </Text>
-          </View>
-          <View>
+          </Pressable>
+          <Pressable onPress={toastReady}>
             <Image source={fruit3} style={s.image} />
             <Text
               style={{
@@ -129,7 +136,7 @@ const RipenessScreen = () => {
             >
               바나나
             </Text>
-          </View>
+          </Pressable>
           <Pressable onPress={handleClick}>
             <Image source={fruit1} style={s.image} />
             <Text
