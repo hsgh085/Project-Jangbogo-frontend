@@ -70,7 +70,26 @@ const MemoScreen = (props) => {
         {
           text: "예",
           onPress: () => {
-            navigate.goBack();
+            fetch(`${ROOT_API}/memo/deletememo?memoId=${route.params?.id}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${TOKEN}`,
+              },
+            })
+              .then(() => {
+                Alert.alert("", "삭제되었습니다😊", [
+                  {
+                    text: "확인",
+                    onPress: () => {
+                      // navigate.navigate("MainStack", { screen: "MemoList" });
+                      navigate.goBack();
+                    },
+                  },
+                ]);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           },
         },
         {
@@ -120,20 +139,17 @@ const MemoScreen = (props) => {
   };
   useEffect(() => {
     if (route.params?.type === "detail") {
-      console.log(route.params?.id);
       // 백엔드에서 get 통신
       fetch(`${ROOT_API}/memo/memolist/memoitem?fk_memo_id=${route.params?.id}`, {
         method: "GET",
         headers: {
-          // "Content-Type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           setMemo({
-            date: data.memoinform.date,
+            date: route.params?.date,
             title: data.memoinform.name,
             totalPrice: data.memoinform.total_price,
           });
@@ -142,7 +158,7 @@ const MemoScreen = (props) => {
         .catch((err) => {
           console.log(err);
         });
-    } 
+    }
   }, []);
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>

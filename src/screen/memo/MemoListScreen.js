@@ -1,15 +1,15 @@
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import colors from "../../../assets/colors/colors";
 import HeaderMain from "../../components/HeaderMain";
-import { ROOT_API, TOKEN } from '../../constants/api';
+import { ROOT_API, TOKEN } from "../../constants/api";
 
 const MemoListScreen = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const [data, setData] = useState([]);
   const [visibleDatePicker, setVisibleDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -28,7 +28,7 @@ const MemoListScreen = () => {
       id: item.id,
       title: item.title,
       type: "detail",
-      date: `${selectedDate.getFullYear()}.${selectedDate.getMonth() + 1}.${selectedDate.getDate()}`,
+      date: date,
     });
   });
   useEffect(() => {
@@ -45,7 +45,7 @@ const MemoListScreen = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [date]);
+  }, [date, isFocused]);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -65,7 +65,7 @@ const MemoListScreen = () => {
           <Text style={styles.dateText}>{date}</Text>
           <Feather name="calendar" size={22} color={colors.red} onPress={onPressCalendar} />
         </View>
-        {data.length === 0? (
+        {data.length === 0 ? (
           <Text>작성한 장보기 메모가 없습니다.</Text>
         ) : (
           <FlatList
