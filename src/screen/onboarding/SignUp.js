@@ -3,18 +3,45 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from '../../components/Header/Header';
+import Verification from "./Verification";
 
 const SignUp = () => {
   const navigation = useNavigation();
 
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [isVerifyScreenOpen, setIsVerifyScreenOpen] = useState(false);
 
-  useEffect(() => {
-    if (isVerifyScreenOpen) {
-      // Verification.js screen 열기
-      navigation.navigate("Verify");
+
+
+  /** 백엔드와 통신하여 인증번호를 요청하는 함수 */
+  const requestVerificationCode = async () => {
+    // console.log("phoneNumber 값: ", phoneNumber);
+    try {
+      const response = await fetch(
+        'http://3.34.24.220/auth/send-verification-code',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hp: phoneNumber }),
+        }
+      );
+
+      if (response.status === 200) {
+        navigation.navigate("Verify", {hp: phoneNumber});
+      } else {
+        console.error('Error requesting verification code: ', response.status);
+      }
+    } catch (error) {
+      console.error('Error requesting verification code:', error);
     }
-  }, [isVerifyScreenOpen]);
+  };
+
+  // useEffect(() => {
+  //   if (isVerifyScreenOpen) {
+  //     // Verification.js screen 열기
+  //     navigation.navigate("Verify");
+  //   }
+  // }, [isVerifyScreenOpen]);
 
   return (
     <View>
@@ -23,6 +50,7 @@ const SignUp = () => {
         <Header.Title size={18} style={styles.Header}>회원가입</Header.Title>
         <View></View>
       </Header>
+      {!isVerifyScreenOpen ? (
       <View style={styles.container}>
         {/* 인증번호 타이틀 */}
         <View style={styles.container_title}>
@@ -33,20 +61,27 @@ const SignUp = () => {
           <TextInput style={styles.input}
             keyboardType="numeric"
             maxLength={11}
-            placeholder='휴대폰 번호 입력' />
+            placeholder='휴대폰 번호 입력'
+            value={phoneNumber}
+            onChangeText={(text) => {setPhoneNumber(text);}}/>
         </View>
         {/* 인증번호 전송 버튼 */}
         <View style={styles.verification_verify}>
           <Pressable
             style={styles.verification_button}
             onPress={() => {
-              setIsVerifyScreenOpen(true);
+              // console.log("이전: ",phoneNumber)
+              // navigation.navigate("Verify", {hp: phoneNumber})
+              requestVerificationCode()
             }}
           >
             <Text style={styles.h2}>인증번호 전송</Text>
           </Pressable>
         </View>
       </View>
+      ) : (
+        <Verification phoneNumber={phoneNumber} />
+      )}
     </View>
   );
 };

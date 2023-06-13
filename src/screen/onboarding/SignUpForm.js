@@ -46,7 +46,7 @@ const SignUpForm = () => {
         <View style={styles.label_fields}>
           <Text>성별</Text>
         </View>
-        <ButtonGroup
+        {/* <ButtonGroup
           buttonStyle={styles.buttonGroup}
           selectedButtonStyle={{
             backgroundColor: "#00FF9D",
@@ -58,7 +58,7 @@ const SignUpForm = () => {
             setSelectedIndex(value);
           }}
           containerStyle={{ fontSize: 18, borderColor: "white", width: 250, height: 60 }}
-        />
+        /> */}
         {/* 비밀번호 입력 */}
         <View>
           <View style={styles.label_fields}>
