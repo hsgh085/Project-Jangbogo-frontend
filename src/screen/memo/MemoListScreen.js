@@ -6,7 +6,7 @@ import { FlatList, Platform, Pressable, StyleSheet, Text, View } from "react-nat
 import DateTimePicker from "react-native-modal-datetime-picker";
 import colors from "../../../assets/colors/colors";
 import HeaderMain from "../../components/HeaderMain";
-import { ROOT_API } from '../../constants/api';
+import { ROOT_API, TOKEN } from '../../constants/api';
 
 const MemoListScreen = () => {
   const navigation = useNavigation();
@@ -35,7 +35,7 @@ const MemoListScreen = () => {
     fetch(`${ROOT_API}/memo/memolist?date=${date}`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaHAiOiIwMTA1NjkxNzU4NiIsImlhdCI6MTY4NjU4MDIwOCwiZXhwIjoxNjg3MTg1MDA4fQ.Az1HeKCb4B6k3-UKbQghrNDr2wJ8zySUyMTG-iA97uw`,
+        Authorization: `Bearer ${TOKEN}`,
       },
     })
       .then((res) => res.json())
@@ -43,7 +43,7 @@ const MemoListScreen = () => {
         setData(data);
       })
       .catch((err) => {
-        console.log(err.response);
+        console.log(err);
       });
   }, [date]);
   return (

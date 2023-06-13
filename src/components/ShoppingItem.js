@@ -10,9 +10,9 @@ const ShoppingItem = (props) => {
     props.setShopping(props.data.id, key, value);
   });
 
-  const handleCntMinus = useCallback((key) => {
+  const handleCntMinus = useCallback(() => {
     if (props.data.cnt > 0) {
-      props.setShopping(props.data.id, key, props.data.cnt - 1);
+      props.setShopping(props.data.id, "cnt", shopping.cnt - 1);
     }
   });
   return (
@@ -21,17 +21,17 @@ const ShoppingItem = (props) => {
         flexDirection: "row",
         alignItems: "center",
         backgroundColor:
-          props.data.state === true ? colors.grayLL : colors.greenLL,
+          props.data.status === true ? colors.grayLL : colors.greenLL,
         borderRadius: 10,
         padding: 12,
         marginBottom: 10,
       }}
     >
-      <Pressable onPress={() => handleChange("state", !props.data.state)}>
+      <Pressable onPress={() => handleChange("status", !props.data.status)}>
         <FontAwesome5
           name="check-circle"
           size={20}
-          color={props.data.state === true ? colors.green : colors.gray}
+          color={props.data.status === true ? colors.green : colors.gray}
         />
       </Pressable>
       <SingleLineInput
@@ -41,15 +41,15 @@ const ShoppingItem = (props) => {
         style={s.itemName}
       />
       <View style={s.cntContainer}>
-        <Pressable onPress={() => handleCntMinus("cnt")}>
+        <Pressable onPress={handleCntMinus}>
           <Feather name="chevron-left" size={24} color={colors.gray} />
         </Pressable>
         <Text style={s.cntText}>{shopping.cnt}</Text>
-        <Pressable onPress={() => handleChange("cnt", props.data.cnt + 1)}>
+        <Pressable onPress={() => handleChange("cnt", shopping.cnt + 1)}>
           <Feather name="chevron-right" size={24} color={colors.gray} />
         </Pressable>
       </View>
-      {props.data.state === true ? (
+      {props.data.status === true ? (
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <SingleLineInput
             value={parseInt(shopping.price)}
