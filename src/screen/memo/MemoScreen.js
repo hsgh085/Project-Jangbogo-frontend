@@ -104,32 +104,63 @@ const MemoScreen = (props) => {
     if (shoppingList.length === 0) {
       toast("장보기 리스트를 추가해주세요😊");
     } else {
-      fetch(`${ROOT_API}/memo/creatememo`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${TOKEN}`,
-        },
-        body: JSON.stringify({
-          memoListName: memo.title,
-          memoListDate: memo.date,
-          memoPrice: memo.totalPrice,
-          memos: shoppingList,
-        }),
-      })
-        .then(() => {
-          Alert.alert("", "저장되었습니다😊", [
-            {
-              text: "확인",
-              onPress: () => {
-                navigate.goBack();
-              },
-            },
-          ]);
+      if(route.params?.type === "detail"){
+        fetch(`${ROOT_API}/memo/updatememo`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${TOKEN}`,
+          },
+          body: JSON.stringify({
+            memoId: route.params?.id,
+            memoListName: memo.title,
+            memoListDate: memo.date,
+            memoPrice: memo.totalPrice,
+            memos: shoppingList,
+          }),
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then(() => {
+            Alert.alert("", "수정되었습니다😊", [
+              {
+                text: "확인",
+                onPress: () => {
+                  navigate.goBack();
+                },
+              },
+            ]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      else{
+        fetch(`${ROOT_API}/memo/creatememo`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${TOKEN}`,
+          },
+          body: JSON.stringify({
+            memoListName: memo.title,
+            memoListDate: memo.date,
+            memoPrice: memo.totalPrice,
+            memos: shoppingList,
+          }),
+        })
+          .then(() => {
+            Alert.alert("", "저장되었습니다😊", [
+              {
+                text: "확인",
+                onPress: () => {
+                  navigate.goBack();
+                },
+              },
+            ]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
   };
   const scrollToEnd = () => {
