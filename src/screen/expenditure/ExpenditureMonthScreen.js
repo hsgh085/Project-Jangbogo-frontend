@@ -1,26 +1,38 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import { Feather } from "@expo/vector-icons";
-import colors from "../../../assets/colors/colors";
+import { Picker } from "@react-native-picker/picker";
+import React, { useEffect, useState } from "react";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { BarChart } from "react-native-chart-kit";
+import colors from "../../../assets/colors/colors";
+import { ROOT_API, TOKEN } from "../../constants/api";
 
 const ExpenditureMonthScreen = () => {
-  const [visibleDatePicker, setVisibleDatePicker] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const currYear = new Date().getFullYear().toString();
+  const [selectedYear, setSelectedYear] = useState(currYear);
+  const [selectedMonth, setSelectedMonth] = useState(1);
   const [labels, setLabels] = useState([]);
-  const onPressCalendar = useCallback(() => {
-    setVisibleDatePicker(true);
-  });
+  const [data, setData] = useState([]);
   useEffect(() => {
+    fetch(`${ROOT_API}/expenditure/expendmonth?year=${selectedYear}&month=${selectedMonth}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     if (
-      selectedDate.getMonth() + 1 === 1 ||
-      selectedDate.getMonth() + 1 === 3 ||
-      selectedDate.getMonth() + 1 === 5 ||
-      selectedDate.getMonth() + 1 === 7 ||
-      selectedDate.getMonth() + 1 === 8 ||
-      selectedDate.getMonth() + 1 === 10 ||
-      selectedDate.getMonth() + 1 === 12
+      selectedMonth === 1 ||
+      selectedMonth === 3 ||
+      selectedMonth === 5 ||
+      selectedMonth === 7 ||
+      selectedMonth === 8 ||
+      selectedMonth === 10 ||
+      selectedMonth === 12
     ) {
       setLabels([
         "1일",
@@ -55,7 +67,7 @@ const ExpenditureMonthScreen = () => {
         "30일",
         "31일",
       ]);
-    } else if (selectedDate.getMonth() + 1 === 2) {
+    } else if (selectedMonth === 2) {
       setLabels([
         "1일",
         "2일",
@@ -120,47 +132,39 @@ const ExpenditureMonthScreen = () => {
         "30일",
       ]);
     }
-  }, [selectedDate]);
+  }, [selectedYear, selectedMonth]);
   return (
     <View style={s.container}>
-      <View style={s.dateContainer}>
-        <Text style={s.dateText}>
-          {`${selectedDate.getFullYear()}.${
-            selectedDate.getMonth() + 1
-          }.${selectedDate.getDate()}`}
-        </Text>
-        <Feather
-          name="calendar"
-          size={18}
-          color={colors.red}
-          onPress={onPressCalendar}
-        />
+      <View style={{ flexDirection: "row" }}>
+        <Picker mode='dropdown' selectedValue={selectedYear} onValueChange={(itemValue, itemIndex) => setSelectedYear(itemValue)} style={s.selectYear}>
+          <Picker.Item label={`${currYear}년`} value={currYear} />
+          <Picker.Item label={`${currYear - 1}년`} value={currYear - 1} />
+          <Picker.Item label={`${currYear - 2}년`} value={currYear - 2} />
+          <Picker.Item label={`${currYear - 3}년`} value={currYear - 3} />
+          <Picker.Item label={`${currYear - 4}년`} value={currYear - 4} />
+        </Picker>
+        <Picker mode='dropdown' selectedValue={selectedMonth} onValueChange={(itemValue, itemIndex) => setSelectedMonth(itemValue)} style={s.selectYear}>
+          <Picker.Item label={"1월"} value={1} />
+          <Picker.Item label={"2월"} value={2} />
+          <Picker.Item label={"3월"} value={3} />
+          <Picker.Item label={"4월"} value={4} />
+          <Picker.Item label={"5월"} value={5} />
+          <Picker.Item label={"6월"} value={6} />
+          <Picker.Item label={"7월"} value={7} />
+          <Picker.Item label={"8월"} value={8} />
+          <Picker.Item label={"9월"} value={9} />
+          <Picker.Item label={"10월"} value={10} />
+          <Picker.Item label={"11월"} value={11} />
+          <Picker.Item label={"12월"} value={12} />
+        </Picker>
       </View>
-      <DateTimePicker
-        isVisible={visibleDatePicker}
-        mode="date"
-        onConfirm={(date) => {
-          setSelectedDate(new Date(date));
-          setVisibleDatePicker(false);
-        }}
-        onCancel={() => {
-          setVisibleDatePicker(false);
-        }}
-      />
-      <ScrollView
-        style={s.chartConatiner}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-      >
+      <ScrollView style={s.chartConatiner} horizontal={true} showsHorizontalScrollIndicator={false}>
         <BarChart
           data={{
             labels: labels,
             datasets: [
               {
-                data: [
-                  20, 45, 28, 80, 99, 43, 77, 62, 12, 10, 90, 50, 40, 30, 20,
-                  10, 20, 30, 40, 50, 60, 70, 80, 90, 80, 70, 60, 50, 40, 30,
-                ],
+                data: data,
               },
             ],
           }}
@@ -168,7 +172,7 @@ const ExpenditureMonthScreen = () => {
           height={Dimensions.get("window").width - 50}
           fromZero={true}
           showValuesOnTopOfBars={true}
-          yAxisSuffix={"만원"}
+          yAxisSuffix={"원"}
           horizontalLabelRotation={270}
           verticalLabelRotation={270}
           chartConfig={{
@@ -195,24 +199,18 @@ export default ExpenditureMonthScreen;
 
 const s = StyleSheet.create({
   container: {
-    padding: 30,
+    padding: 15,
   },
-  dateContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 12,
-  },
-  dateText: {
-    fontSize: 17,
+  selectYear: {
+    width: 140,
     color: colors.gray,
-    marginRight: 2,
   },
   chartConatiner: {
     transform: [{ rotate: "90deg" }],
     width: Dimensions.get("window").width + 50,
     position: "relative",
-    left: -55,
-    top: 50,
+    left: -40,
+    top: 45,
   },
   chartStyle: {
     marginVertical: 10,

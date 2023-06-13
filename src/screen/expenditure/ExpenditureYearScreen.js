@@ -18,7 +18,6 @@ const ExpenditureYearScreen = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setData(data);
       })
       .catch((error) => {
@@ -27,7 +26,7 @@ const ExpenditureYearScreen = () => {
   }, [selectedYear]);
   return (
     <View style={s.container}>
-      <Picker selectedValue={selectedYear} onValueChange={(itemValue, itemIndex) => setSelectedYear(itemValue)} style={s.selectYear}>
+      <Picker mode='dropdown' selectedValue={selectedYear} onValueChange={(itemValue, itemIndex) => setSelectedYear(itemValue)} style={s.selectYear}>
         <Picker.Item label={`${currYear}년`} value={currYear} />
         <Picker.Item label={`${currYear - 1}년`} value={currYear - 1} />
         <Picker.Item label={`${currYear - 2}년`} value={currYear - 2} />
