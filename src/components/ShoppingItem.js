@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { Feather, FontAwesome5 } from "@expo/vector-icons";
+import React, { useCallback } from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import colors from "../../assets/colors/colors";
-import { FontAwesome5, Feather } from "@expo/vector-icons";
 import SingleLineInput from "./SingleLineInput";
 
 const ShoppingItem = (props) => {
@@ -10,9 +10,9 @@ const ShoppingItem = (props) => {
     props.setShopping(props.data.id, key, value);
   });
 
-  const handleCntMinus = useCallback((key) => {
+  const handleCntMinus = useCallback(() => {
     if (props.data.cnt > 0) {
-      props.setShopping(props.data.id, key, props.data.cnt - 1);
+      props.setShopping(props.data.id, "cnt", shopping.cnt - 1);
     }
   });
   return (
@@ -20,39 +20,29 @@ const ShoppingItem = (props) => {
       style={{
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor:
-          props.data.state === true ? colors.grayLL : colors.greenLL,
+        backgroundColor: props.data.status === true ? colors.grayLL : colors.greenLL,
         borderRadius: 10,
         padding: 12,
         marginBottom: 10,
       }}
     >
-      <Pressable onPress={() => handleChange("state", !props.data.state)}>
-        <FontAwesome5
-          name="check-circle"
-          size={20}
-          color={props.data.state === true ? colors.green : colors.gray}
-        />
+      <Pressable onPress={() => handleChange("status", !props.data.status)}>
+        <FontAwesome5 name="check-circle" size={20} color={props.data.status === true ? colors.green : colors.gray} />
       </Pressable>
-      <SingleLineInput
-        value={shopping.name}
-        placeholder={"상품입력"}
-        onChangeText={(text) => handleChange("name", text)}
-        style={s.itemName}
-      />
+      <SingleLineInput value={shopping.name} placeholder={"상품입력"} onChangeText={(text) => handleChange("name", text)} style={s.itemName} />
       <View style={s.cntContainer}>
-        <Pressable onPress={() => handleCntMinus("cnt")}>
+        <Pressable onPress={handleCntMinus}>
           <Feather name="chevron-left" size={24} color={colors.gray} />
         </Pressable>
         <Text style={s.cntText}>{shopping.cnt}</Text>
-        <Pressable onPress={() => handleChange("cnt", props.data.cnt + 1)}>
+        <Pressable onPress={() => handleChange("cnt", shopping.cnt + 1)}>
           <Feather name="chevron-right" size={24} color={colors.gray} />
         </Pressable>
       </View>
-      {props.data.state === true ? (
+      {props.data.status === true ? (
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <SingleLineInput
-            value={parseInt(shopping.price)}
+            value={shopping.price.toString()}
             placeholder={"가격입력"}
             onChangeText={(text) => handleChange("price", text)}
             type="numeric"
@@ -61,7 +51,7 @@ const ShoppingItem = (props) => {
           <Text style={{ color: colors.green }}>(원)</Text>
         </View>
       ) : (
-        <Pressable onPress={()=>props.handleDeleteShopping(shopping.id)}>
+        <Pressable onPress={() => props.handleDeleteShopping(shopping.id)}>
           <FontAwesome5 name="trash" size={15} color={colors.green} />
         </Pressable>
       )}
@@ -72,14 +62,6 @@ const ShoppingItem = (props) => {
 export default ShoppingItem;
 
 const s = StyleSheet.create({
-  // container: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   backgroundColor: props.data.state === true ? colors.grayLL : colors.greenLL,
-  //   borderRadius: 10,
-  //   padding: 12,
-  //   marginBottom: 10,
-  // },
   itemName: {
     marginLeft: 10,
     width: 100,

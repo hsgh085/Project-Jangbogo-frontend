@@ -1,32 +1,26 @@
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
-import React, { useCallback, useState } from "react";
-import {
-  FlatList,
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import React, { useCallback, useEffect, useState } from "react";
+import { FlatList, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import colors from "../../../assets/colors/colors";
 import HeaderMain from "../../components/HeaderMain";
+import { ROOT_API, TOKEN } from "../../constants/api";
 
 const MemoListScreen = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const [data, setData] = useState([]);
   const [visibleDatePicker, setVisibleDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [date, setDate] = useState(`${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`);
   const onPressCalendar = useCallback(() => {
     setVisibleDatePicker(true);
   });
   const onPressRegister = useCallback(() => {
     navigation.navigate("Memo", {
       type: "post",
-      date: `${selectedDate.getFullYear()}.${
-        selectedDate.getMonth() + 1
-      }.${selectedDate.getDate()}`,
+      date: date,
     });
   });
   const onPressDetail = useCallback((item) => {
@@ -34,69 +28,24 @@ const MemoListScreen = () => {
       id: item.id,
       title: item.title,
       type: "detail",
-      date: `${selectedDate.getFullYear()}.${
-        selectedDate.getMonth() + 1
-      }.${selectedDate.getDate()}`,
+      date: date,
     });
   });
-  const [data, setData] = useState([
-    {
-      id: 0,
-      title: "오늘 아침 장보기",
-      percentage: 100,
-      totalPrice: 0,
-      createdAt: "2023.02.19",
-      updateAt: "2023.02.19",
-    },
-    {
-      id: 1,
-      title: "오늘 점심은 머먹지",
-      percentage: 100,
-      totalPrice: 0,
-      createdAt: "2023.02.19",
-      updateAt: "2023.02.19",
-    },
-    {
-      id: 2,
-      title: "저녁은 또 뭐해먹지",
-      percentage: 100,
-      totalPrice: 0,
-      createdAt: "2023.02.19",
-      updateAt: "2023.02.19",
-    },
-    {
-      id: 3,
-      title: "test1",
-      percentage: 100,
-      totalPrice: 0,
-      createdAt: "2023.02.19",
-      updateAt: "2023.02.19",
-    },
-    {
-      id: 4,
-      title: "test2",
-      percentage: 100,
-      totalPrice: 0,
-      createdAt: "2023.02.19",
-      updateAt: "2023.02.19",
-    },
-    {
-      id: 5,
-      title: "test3",
-      percentage: 100,
-      totalPrice: 0,
-      createdAt: "2023.02.19",
-      updateAt: "2023.02.19",
-    },
-    {
-      id: 6,
-      title: "test4",
-      percentage: 100,
-      totalPrice: 0,
-      createdAt: "2023.02.19",
-      updateAt: "2023.02.19",
-    },
-  ]);
+  useEffect(() => {
+    fetch(`${ROOT_API}/memo/memolist?date=${date}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [date, isFocused]);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -113,45 +62,37 @@ const MemoListScreen = () => {
       </View>
       <View style={styles.main}>
         <View style={styles.dateContainer}>
-          <Text style={styles.dateText}>
-            {`${selectedDate.getFullYear()}.${
-              selectedDate.getMonth() + 1
-            }.${selectedDate.getDate()}`}
-          </Text>
-          <Feather
-            name="calendar"
-            size={22}
-            color={colors.red}
-            onPress={onPressCalendar}
-          />
+          <Text style={styles.dateText}>{date}</Text>
+          <Feather name="calendar" size={22} color={colors.red} onPress={onPressCalendar} />
         </View>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={data}
-          renderItem={({ item }) => {
-            return (
-              <Pressable onPress={() => onPressDetail(item)}>
-                <View style={styles.memoContainer}>
-                  <View style={styles.memoInfo}>
-                    <Text style={styles.createAt}>{item.createdAt}</Text>
-                    <Text style={styles.text2}>{item.title}</Text>
+        {data.length === 0 ? (
+          <Text>작성한 장보기 메모가 없습니다.</Text>
+        ) : (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={data}
+            renderItem={({ item }) => {
+              return (
+                <Pressable onPress={() => onPressDetail(item)}>
+                  <View style={styles.memoContainer}>
+                    <View style={styles.memoInfo}>
+                      <Text style={styles.createAt}>{date}</Text>
+                      <Text style={styles.text2}>{item.name}</Text>
+                    </View>
+                    <Ionicons name="md-chevron-forward-sharp" size={24} color={colors.greenH} />
                   </View>
-                  <Ionicons
-                    name="md-chevron-forward-sharp"
-                    size={24}
-                    color={colors.greenH}
-                  />
-                </View>
-              </Pressable>
-            );
-          }}
-        />
+                </Pressable>
+              );
+            }}
+          />
+        )}
       </View>
       <DateTimePicker
         isVisible={visibleDatePicker}
         mode="date"
         onConfirm={(date) => {
           setSelectedDate(new Date(date));
+          setDate(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`);
           setVisibleDatePicker(false);
         }}
         onCancel={() => {

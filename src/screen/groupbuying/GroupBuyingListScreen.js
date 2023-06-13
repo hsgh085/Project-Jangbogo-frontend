@@ -24,7 +24,9 @@ const GroupBuyingListScreen = () => {
   const handleClickPost = () => {
     navigation.navigate("GBPost");
   };
-  const handleClickDetail = useCallback((item) => {});
+  const handleClickDetail = useCallback((item) => {
+    navigation.navigate("GBDetail", { item });
+  });
   return (
     <>
       <View style={s.container}>

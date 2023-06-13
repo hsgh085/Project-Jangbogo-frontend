@@ -7,6 +7,7 @@ import Header from "../../components/Header/Header";
 import ShoppingItem from "../../components/ShoppingItem";
 import SingleLineInput from "../../components/SingleLineInput";
 import Spacer from "../../components/Spacer";
+import { ROOT_API, TOKEN } from "../../constants/api";
 
 const MemoScreen = (props) => {
   let flatListRef = useRef();
@@ -17,6 +18,7 @@ const MemoScreen = (props) => {
     title: "무제",
     totalPrice: 0,
   });
+  const [shoppingList, setShoppingList] = useState([]);
   const setShoppingListById = (id, key, value) => {
     const newList = shoppingList.map((e) => {
       if (e.id == id) {
@@ -30,13 +32,17 @@ const MemoScreen = (props) => {
       ["totalPrice"]: newList.reduce((p, c) => p + c.cnt * c.price, 0),
     });
   };
-  const [shoppingList, setShoppingList] = useState([]);
-
+  const toast = (message) => {
+    Alert.alert("", `${message}`, [
+      {
+        text: "확인",
+      },
+    ]);
+  };
   const handleChange = (title) => {
     setMemo({ ...memo, ["title"]: title });
   };
   const handleAddShopping = () => {
-    //NOTE: 백엔드에서 id값 auto increment속성으로 주면 id값 지정해줄 필요없음
     const len = shoppingList.length;
     const lastId = len === 0 ? 0 : shoppingList[len - 1].id;
     const newShoppingList = [
@@ -46,7 +52,7 @@ const MemoScreen = (props) => {
         name: "",
         cnt: 0,
         price: 0,
-        state: false,
+        status: false,
       },
     ];
     setShoppingList(newShoppingList);
@@ -64,13 +70,30 @@ const MemoScreen = (props) => {
         {
           text: "예",
           onPress: () => {
-            console.log("yes");
-            navigate.goBack();
+            fetch(`${ROOT_API}/memo/deletememo?memoId=${route.params?.id}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${TOKEN}`,
+              },
+            })
+              .then(() => {
+                Alert.alert("", "삭제되었습니다😊", [
+                  {
+                    text: "확인",
+                    onPress: () => {
+                      // navigate.navigate("MainStack", { screen: "MemoList" });
+                      navigate.goBack();
+                    },
+                  },
+                ]);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           },
         },
         {
           text: "아니오",
-          onPress: () => console.log("no"),
           style: "cancle",
         },
       ],
@@ -78,14 +101,67 @@ const MemoScreen = (props) => {
     );
   };
   const handleSubmit = () => {
-    Alert.alert("", "저장되었습니다😊", [
-      {
-        text: "확인",
-        onPress: () => {
-          navigate.goBack();
-        },
-      },
-    ]);
+    if (shoppingList.length === 0) {
+      toast("장보기 리스트를 추가해주세요😊");
+    } else {
+      if(route.params?.type === "detail"){
+        fetch(`${ROOT_API}/memo/updatememo`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${TOKEN}`,
+          },
+          body: JSON.stringify({
+            memoId: route.params?.id,
+            memoListName: memo.title,
+            memoListDate: memo.date,
+            memoPrice: memo.totalPrice,
+            memos: shoppingList,
+          }),
+        })
+          .then(() => {
+            Alert.alert("", "수정되었습니다😊", [
+              {
+                text: "확인",
+                onPress: () => {
+                  navigate.goBack();
+                },
+              },
+            ]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      else{
+        fetch(`${ROOT_API}/memo/creatememo`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${TOKEN}`,
+          },
+          body: JSON.stringify({
+            memoListName: memo.title,
+            memoListDate: memo.date,
+            memoPrice: memo.totalPrice,
+            memos: shoppingList,
+          }),
+        })
+          .then(() => {
+            Alert.alert("", "저장되었습니다😊", [
+              {
+                text: "확인",
+                onPress: () => {
+                  navigate.goBack();
+                },
+              },
+            ]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    }
   };
   const scrollToEnd = () => {
     setTimeout(() => {
@@ -94,13 +170,25 @@ const MemoScreen = (props) => {
   };
   useEffect(() => {
     if (route.params?.type === "detail") {
-      console.log(route.params?.id);
       // 백엔드에서 get 통신
-      setMemo({ ...memo, ["title"]: route.params?.title });
-      setShoppingList([
-        { id: 0, name: "detail1", cnt: 0, price: 0, state: false },
-        { id: 1, name: "detail2", cnt: 0, price: 0, state: false },
-      ]);
+      fetch(`${ROOT_API}/memo/memolist/memoitem?fk_memo_id=${route.params?.id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setMemo({
+            date: route.params?.date,
+            title: data.memoinform.name,
+            totalPrice: data.memoinform.total_price,
+          });
+          setShoppingList(data.memoItems);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, []);
   return (
