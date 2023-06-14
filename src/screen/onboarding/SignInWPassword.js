@@ -17,9 +17,6 @@ const SignInWPassword = () => {
 
   const onSignIn = async () => {
     try {
-      if (phoneNumber.trim() === '' || password.trim() === '') {
-        return;
-      }
       const response = await fetch('http://localhost:8001/auth/signin', {
         method: 'POST',
         headers: {

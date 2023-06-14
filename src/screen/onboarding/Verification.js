@@ -10,8 +10,10 @@ const Verification = (props) => {
     // const [isSignUpFormScreenOpen, setIsSignUpFormScreenOpen] = useState(false);
     /** 에러 메세지 상태 변수 */
     const [errorMessage, setErrorMessage] = useState('');
-    /** 인증번호 상자의 상태 변수 */
-    const [inputBorderColor, setInputBorderColor] = useState('#000');
+    const [inputBorderColor, setInputBorderColor] = useState('black');
+
+    /** 타이머 */
+    const [isOnVerificationPage, setIsOnVerificationPage] = useState(true);
 
     // useEffect(() => {
     //     if (isSignUpFormScreenOpen) {
@@ -37,32 +39,53 @@ const Verification = (props) => {
     const [input3, setInput3] = useState('');
     const [input4, setInput4] = useState('');
 
+    const allClear = () => {
+        setInput1('');
+        setInput2('');
+        setInput3('');
+        setInput4('');
+
+        input1Ref.current.clear();
+        input2Ref.current.clear();
+        input3Ref.current.clear();
+        input4Ref.current.clear();
+
+        //input1Ref.current.focus();
+    }
+    const handleOnFocus = () => {
+        setInputBorderColor('black');
+        setErrorMessage('');
+    };
+
     // 인증번호 합치기
     const fullCode = Number(input1 + input2 + input3 + input4);
 
     const fetchVerificationCode = async (hp, fullCode) => {
-        console.log("서버전달전code 값: ", fullCode);
-        console.log("서버전달전hp 값: ", hp);
-        const response = await fetch(
-            'http://3.34.24.220/auth/verify-verification-code',
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ hp: hp, verificationCode: fullCode }),
+        // console.log("검증서버전달전code 값: ", fullCode);
+        // console.log("검증서버전달전hp 값: ", hp);
+        try {
+            const response = await fetch(
+                'http://3.34.24.220/auth/verify-verification-code',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ hp: hp, verificationCode: fullCode }),
+                }
+            );
+    
+            if (response.status === 200) {
+                setIsOnVerificationPage(false);
+                navigation.navigate("SignUpForm", { hp: phoneNumber });
+            } else {
+                throw new Error('인증번호 다름');
             }
-        )
-            .then(navigation.navigate("SignUpForm"))
-            .catch((err) => {
-                console.log(err)
-                setErrorMessage('인증번호가 올바르지 않습니다.');
-                setInputBorderColor('red');
-                setInput1('');
-                setInput2('');
-                setInput3('');
-                setInput4('');
-                input1Ref.current.focus();
-            });
-
+        }
+        catch (err) {
+            //console.log(err);
+            setErrorMessage('인증번호가 올바르지 않습니다.');
+            setInputBorderColor('red');
+            allClear();
+        }
     }
 
     /** 커서 이동과 입력값 저장 */
@@ -93,43 +116,44 @@ const Verification = (props) => {
 
     /** 타이머 관련 함수 */
     useEffect(() => {
-        const interval = setInterval(() => {
+        if (isOnVerificationPage) {
+          const interval = setInterval(() => {
             if (timer > 0) {
-                setTimer(timer - 1);
+              setTimer(timer - 1);
             }
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [timer]);
+          }, 1000);
+      
+          return () => clearInterval(interval);
+        }
+      }, [timer, isOnVerificationPage]);
 
     /** 새로운 인증번호 요청 및 타이머 초기화 */
-    // const handleResendVerification = async () => {
-    //     await requestVerificationCode(phoneNumber);
-    //     setTimer(180);
-    // };
+    const handleResendVerification = async () => {
+        await requestVerificationCode(phoneNumber);
+        setTimer(180);
+    };
 
     /** 타이머 만료 시 */
     useEffect(() => {
         const timerExpired = timer === 0;
 
         if (timerExpired) {
-            //handleResendVerification(phoneNumber);
-            setTimer(180);
+            setErrorMessage('재전송을 눌러주세요');
         }
     }, [timer, phoneNumber]);
 
 
     const requestVerificationCode = async () => {
         try {
-            console.log("재전송할때 phoneNumber 값: ", phoneNumber);
-            const response = await fetch(
-                'http://3.34.24.220/auth/send-verification-code',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ hp: phoneNumber }),
-                }
-            );
+            //console.log("재전송할때 phoneNumber 값: ", phoneNumber);
+            // const response = await fetch(
+            //     'http://3.34.24.220/auth/send-verification-code',
+            //     {
+            //         method: 'POST',
+            //         headers: { 'Content-Type': 'application/json' },
+            //         body: JSON.stringify({ hp: phoneNumber }),
+            //     }
+            // );
 
             if (response.status === 200) {
                 // 인증번호 요청 성공
@@ -156,7 +180,7 @@ const Verification = (props) => {
                 {/* 인증번호 타이틀 */}
                 <View style={styles.container_title}>
                     <Text style={styles.h1}>인증번호 입력</Text>
-                    <Text style={styles.h2}>인증번호 4자리가 발송되었습니다</Text>
+                    <Text style={styles.h2}>{phoneNumber}로 인증번호 4자리가 발송되었습니다</Text>
                 </View>
                 {/* 인증번호 타이머 */}
                 <View style={styles.verification_time}>
@@ -164,33 +188,37 @@ const Verification = (props) => {
                 </View>
                 {/* 에러 메세지 */}
                 <View style={styles.verification_time}>
-                    <Text style={[styles.h2, styles.highlight]} >{errorMessage}</Text>
+                    <Text style={[styles.h2, styles.error]} >{errorMessage}</Text>
                 </View>
                 {/* 인증번호 입력칸 */}
                 <View style={styles.verification_fields}>
-                    <TextInput style={styles.verification_input}
+                    <TextInput style={[styles.verification_input, { borderColor: inputBorderColor }]}
                         ref={input1Ref}
                         keyboardType="numeric"
                         maxLength={1}
                         onChangeText={onChangeText1}
+                        onFocus={handleOnFocus}
                         placeholder='-' />
-                    <TextInput style={styles.verification_input}
+                    <TextInput style={[styles.verification_input, { borderColor: inputBorderColor }]}
                         ref={input2Ref}
                         keyboardType="numeric"
                         maxLength={1}
                         onChangeText={onChangeText2}
+                        onFocus={handleOnFocus}
                         placeholder='-' />
-                    <TextInput style={styles.verification_input}
+                    <TextInput style={[styles.verification_input, { borderColor: inputBorderColor }]}
                         ref={input3Ref}
                         keyboardType="numeric"
                         maxLength={1}
                         onChangeText={onChangeText3}
+                        onFocus={handleOnFocus}
                         placeholder='-' />
-                    <TextInput style={styles.verification_input}
+                    <TextInput style={[styles.verification_input, { borderColor: inputBorderColor }]}
                         ref={input4Ref}
                         keyboardType="numeric"
                         maxLength={1}
                         onChangeText={onChangeText4}
+                        onFocus={handleOnFocus}
                         placeholder='-' />
                 </View>
                 {/* 인증번호 버튼 */}
@@ -198,7 +226,7 @@ const Verification = (props) => {
                     <Pressable
                         style={styles.verification_button}
                         onPress={() => {
-                            console.log("버튼 클릭시 핸드폰: ", phoneNumber);
+                            //console.log("버튼 클릭시 핸드폰: ", phoneNumber);
                             fetchVerificationCode(phoneNumber, fullCode);
                             //setIsSignUpFormScreenOpen(true);
                         }}
@@ -210,7 +238,7 @@ const Verification = (props) => {
                 <View style={styles.verification_retry}>
                     <Text style={styles.h2}>인증번호가 오지 않아요!</Text>
                     <Text style={[styles.highlight, styles.h2]}
-                    //   onPress={handleResendVerification}
+                      onPress={handleResendVerification}
                     > 재전송</Text>
 
                 </View>
@@ -239,6 +267,9 @@ const styles = StyleSheet.create({
     highlight: {
         color: '#00FF9D',
     },
+    error: {
+        color: 'red',
+    },
     verification_fields: {
         flexDirection: "row",
         justifyContent: "center",
@@ -246,11 +277,13 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     verification_input: {
+        borderColor: "black",
         width: 55,
         height: 60,
         marginHorizontal: 10,
         borderRadius: 16,
         borderWidth: 1,
+        borderColor: "black",
         padding: 10,
         textAlign: 'center',
         fontSize: 24,

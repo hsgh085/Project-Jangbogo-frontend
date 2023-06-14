@@ -11,8 +11,6 @@ const SignUp = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isVerifyScreenOpen, setIsVerifyScreenOpen] = useState(false);
 
-
-
   /** 백엔드와 통신하여 인증번호를 요청하는 함수 */
   const requestVerificationCode = async () => {
     // console.log("phoneNumber 값: ", phoneNumber);
