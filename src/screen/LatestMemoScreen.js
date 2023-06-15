@@ -13,6 +13,7 @@ const LatestMemoScreen = () => {
   let flatListRef = useRef();
   const navigate = useNavigation();
   const isFocused = useIsFocused();
+  const [error, setError] = useState(false);
   const [memo, setMemo] = useState({
     id: 0,
     date: "",
@@ -158,53 +159,66 @@ const LatestMemoScreen = () => {
       })
       .catch((err) => {
         console.log(err);
+        setError(true);
       });
   }, [isFocused]);
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <Header>
         <Header.Title size={18}>최근 장보기 작성</Header.Title>
-        <Pressable onPress={handleDeleteMemo}>
-          <FontAwesome5 name="trash" size={18} color={colors.red} />
-        </Pressable>
-      </Header>
-      <View style={s.title}>
-        <Text style={s.text1}>{memo.date}</Text>
-        <SingleLineInput style={s.text2} value={memo.title} onChangeText={handleChange} />
-        <Spacer space={15} />
-        <View style={s.priceContainer}>
-          <Text style={s.text1}>총 금액</Text>
-          <Text style={s.text2}>{memo.totalPrice}원</Text>
-        </View>
-      </View>
-      <View style={s.mainContainer}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginBottom: 10,
-          }}
-        >
-          <Text>장보기 리스트</Text>
-          <Pressable onPress={handleAddShopping} style={{ flexDirection: "row", alignItems: "center" }}>
-            <AntDesign name="pluscircleo" size={18} color={colors.greenH} />
-            <Spacer horizontal={true} space={5} />
-            <Text>추가</Text>
+        {error ? (
+          <View />
+        ) : (
+          <Pressable onPress={handleDeleteMemo}>
+            <FontAwesome5 name="trash" size={18} color={colors.red} />
           </Pressable>
+        )}
+      </Header>
+      {error ? (
+        <View style={{ padding: 20, alignItems:"center"}}>
+          <Text>작성하신 메모가 없습니다.😢</Text>
         </View>
-        <Pressable onPress={handleSubmit} style={s.btnSave}>
-          <Text style={s.textSave}>저장하기</Text>
-        </Pressable>
-        <FlatList
-          ref={flatListRef}
-          removeClippedSubviews={false}
-          showsVerticalScrollIndicator={false}
-          data={shoppingList}
-          renderItem={({ item }) => {
-            return <ShoppingItem data={item} setShopping={setShoppingListById} handleDeleteShopping={handleDeleteShopping} />;
-          }}
-        />
-      </View>
+      ) : (
+        <View>
+          <View style={s.title}>
+            <Text style={s.text1}>{memo.date}</Text>
+            <SingleLineInput style={s.text2} value={memo.title} onChangeText={handleChange} />
+            <Spacer space={15} />
+            <View style={s.priceContainer}>
+              <Text style={s.text1}>총 금액</Text>
+              <Text style={s.text2}>{memo.totalPrice}원</Text>
+            </View>
+          </View>
+          <View style={s.mainContainer}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: 10,
+              }}
+            >
+              <Text>장보기 리스트</Text>
+              <Pressable onPress={handleAddShopping} style={{ flexDirection: "row", alignItems: "center" }}>
+                <AntDesign name="pluscircleo" size={18} color={colors.greenH} />
+                <Spacer horizontal={true} space={5} />
+                <Text>추가</Text>
+              </Pressable>
+            </View>
+            <Pressable onPress={handleSubmit} style={s.btnSave}>
+              <Text style={s.textSave}>저장하기</Text>
+            </Pressable>
+            <FlatList
+              ref={flatListRef}
+              removeClippedSubviews={false}
+              showsVerticalScrollIndicator={false}
+              data={shoppingList}
+              renderItem={({ item }) => {
+                return <ShoppingItem data={item} setShopping={setShoppingListById} handleDeleteShopping={handleDeleteShopping} />;
+              }}
+            />
+          </View>
+        </View>
+      )}
     </View>
   );
 };
