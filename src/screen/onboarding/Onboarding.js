@@ -6,7 +6,7 @@ import {
     View,
     Image,
     StyleSheet,
-    Alert, Modal, Pressable
+    Alert, Modal, Pressable, TouchableOpacity
 } from "react-native";
 import image from '../../../assets/images/Onboarding.png';
 
@@ -39,15 +39,15 @@ const OnboardingScreen = (props) => {
 
     useEffect(() => {
         if (isPIPPScreenOpen && isTCSScreenOpen) {
-          // Set Agree to enabled
-          setIsDisabled(false);
+            // Set Agree to enabled
+            setIsDisabled(false);
         } else {
-          // Set Agree to disabled
-          setIsDisabled(true);
+            // Set Agree to disabled
+            setIsDisabled(true);
         }
-      }, [isPIPPScreenOpen, isTCSScreenOpen]);
+    }, [isPIPPScreenOpen, isTCSScreenOpen]);
 
-      useEffect(() => {
+    useEffect(() => {
         if (isSignUpScreenOpen) {
             navigation.navigate("SignUp");
         }
@@ -74,46 +74,60 @@ const OnboardingScreen = (props) => {
                     transparent={true}
                     visible={modalVisible}
                     onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                        setModalVisible(!modalVisible);
-                    }}>
-                    <View style={styles.centeredView}>
+                        setModalVisible(!modalVisible);}}
+                >
+                    <TouchableOpacity style={styles.centeredView}
+                                      activeOpacity={1}
+                                      onPress={() => setModalVisible(!modalVisible)}
+                    >
                         <View style={styles.modalView}>
                             <Text style={styles.modalText1}>다음을 읽고 동의해 주십시오.</Text>
-                            <Text style={styles.modalText2}
-                             onPress={() => {setIsTCSScreenOpen(true);
-                                setModalVisible(!modalVisible);}}>
-                                서비스 이용 약관
-                            </Text>
-                            <Text>및</Text>
-                            <Text style={styles.modalText2} onPress={() => {setIsPIPPScreenOpen(true);
-                                setModalVisible(!modalVisible);}}>
-                                개인정보 처리방침
-                            </Text>
+                            <View style={styles.modalText}>
+                                <Text style={styles.modalText2}
+                                    onPress={() => {
+                                        setIsTCSScreenOpen(true);
+                                        setModalVisible(!modalVisible);
+                                    }}>
+                                    서비스 이용 약관
+                                </Text>
+                                <Text>및</Text>
+                                <Text style={styles.modalText2} onPress={() => {
+                                    setIsPIPPScreenOpen(true);
+                                    setModalVisible(!modalVisible);
+                                }}>
+                                    개인정보 처리방침
+                                </Text>
+                            </View>
                             <Pressable
                                 disabled={isDisabled}
                                 style={getButtonStyle()}
-                                onPress={() => {setModalVisible(!modalVisible); setIsSignUpScreenOpen(true);}}>
+                                onPress={() => { setModalVisible(!modalVisible); setIsSignUpScreenOpen(true); }}>
                                 <Text style={styles.textStyle}>동의하고 계속하기</Text>
                             </Pressable>
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 </Modal>
                 <View style={styles.buttondiv1}>
                     <Pressable
                         style={[styles.button, styles.buttonOpen]}
                         onPress={() => {
                             setModalVisible(true);
-                          }}
+                        }}
                     >
                         <Text style={styles.textStyle}>회원가입</Text>
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonClose]}
-                        onPress={() => {navigation.navigate("Verify");}}
-                        // onPress={() => {setModalVisible(!modalVisible); setIsSignUpScreenOpen(true);}}
-                        >
+                        onPress={() => { navigation.navigate("SignIn"); }}
+                    // onPress={() => {setModalVisible(!modalVisible); setIsSignUpScreenOpen(true);}}
+                    >
                         <Text style={styles.textStyle}>로그인</Text>
+                    </Pressable>
+                    <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => { navigation.navigate("SignUpForm"); }}
+                    >
+                        <Text style={styles.textStyle}>회원가입폼</Text>
                     </Pressable>
                 </View>
             </View>
@@ -155,11 +169,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 2,
         top: "100%",
-        justifyContent: 'space-between',  // 추가된 부분
-        flexDirection: 'column',  // 추가된 부분
-        minHeight: 300, // 추가된 부분
     },
     button: {
         width: 315,
@@ -184,18 +194,21 @@ const styles = StyleSheet.create({
         top: '25%',
         fontSize: 18,
     },
+    modalText: {
+        flexDirection: 'row',
+
+    },
     modalText1: {
         fontWeight: 'bold',
         fontSize: 21,
         marginBottom: 15,
         textAlign: 'center',
-        marginTop: 20, // 추가된 부분
-
     },
     modalText2: {
         color: '#747474',
+        marginHorizontal: 2,
         marginBottom: 15,
-        flexDirection: 'row',
+
     },
 });
 

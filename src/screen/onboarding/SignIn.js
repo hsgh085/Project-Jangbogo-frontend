@@ -5,14 +5,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from '../../components/Header/Header';
 import Verification from "./Verification";
 
-const SignUp = () => {
+const SignIn = () => {
   const navigation = useNavigation();
 
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [isVerifyScreenOpen, setIsVerifyScreenOpen] = useState(false);
+  const [password, setPassword] = useState('');
 
-  /** 백엔드와 통신하여 인증번호를 요청하는 함수 */
-  const requestVerificationCode = async () => {
+  /** 백엔드와 통신하여 로그인 하는 함수 */
+  const signin = async (phoneNumber, Password) => {
     // console.log("phoneNumber 값: ", phoneNumber);
     try {
       const response = await fetch(
@@ -25,7 +25,7 @@ const SignUp = () => {
       );
 
       if (response.status === 200) {
-        navigation.navigate("Verify", {hp: phoneNumber});
+        navigation.navigate("Verify", { hp: phoneNumber });
       } else {
         console.error('Error requesting verification code: ', response.status);
       }
@@ -45,10 +45,9 @@ const SignUp = () => {
     <View>
       {/* 회원가입 헤더 */}
       <Header>
-        <Header.Title size={18} style={styles.Header}>회원가입</Header.Title>
+        <Header.Title size={18} style={styles.Header}>로그인</Header.Title>
         <View></View>
       </Header>
-      {!isVerifyScreenOpen ? (
       <View style={styles.container}>
         {/* 인증번호 타이틀 */}
         <View style={styles.container_title}>
@@ -61,98 +60,42 @@ const SignUp = () => {
             maxLength={11}
             placeholder='휴대폰 번호 입력'
             value={phoneNumber}
-            onChangeText={(text) => {setPhoneNumber(text);}}/>
+            onChangeText={(text) => { setPhoneNumber(text); }} />
         </View>
-        {/* 인증번호 전송 버튼 */}
+        <View style={styles.label_fields}>
+                <Text style={styles.label}>비밀번호</Text>
+                <Text style={styles.error}>잘못된 비밀번호입니다.</Text>
+              </View>
+              <View style={styles.input_notice}>
+                <Text style={styles.innertext}>8~12자리, 대문자, 특수문자 포함</Text>
+                <TextInput
+                  placeholder="비밀번호 입력"
+                  maxLength={12}
+                  value={password}
+                  onChangeText={(text) => setPassword(text)}
+                />
+              </View>
+        {/* 로그인 버튼 */}
         <View style={styles.verification_verify}>
           <Pressable
             style={styles.verification_button}
             onPress={() => {
               // console.log("이전: ",phoneNumber)
               // navigation.navigate("Verify", {hp: phoneNumber})
-              requestVerificationCode()
+              signin(phoneNumber, password)
             }}
           >
-            <Text style={styles.h2}>인증번호 전송</Text>
+            <Text style={styles.h2}>로그인</Text>
           </Pressable>
         </View>
       </View>
-      ) : (
-        <Verification phoneNumber={phoneNumber} />
-      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 100,
-    marginLeft: 60,
-    marginRight: 60,
-  },
-  container_title: {
-
-  },
-  h1: {
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-  h2: {
-    fontSize: 16,
-  },
-
-  highlight: {
-    color: '#00FF9D',
-  },
-  verification_fields: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  input: {
-    height: 60,
-    borderRadius: 16,
-    borderColor: "black",
-    borderWidth: 1,
-    fontSize: 18,
-    paddingHorizontal: 15,
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  verification_input: {
-    width: 55,
-    height: 60,
-    marginHorizontal: 10,
-    borderRadius: 16,
-    borderWidth: 1,
-    padding: 10,
-    textAlign: 'center',
-    fontSize: 24,
-  },
-  verification_verify: {
-
-  },
-  verification_button: {
-    backgroundColor: '#00FF9D',
-    alignItems: 'center',
-    padding: 20,
-    borderRadius: 16,
-    marginBottom: 20,
-  },
-
-  verification_time: {
-    margintop: 10,
-    marginLeft: 'auto',
-    marginBottom: 5,
-  },
-  verification_retry: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-
-  }
+  
 
 });
 
-export default SignUp;
+export default SignIn;

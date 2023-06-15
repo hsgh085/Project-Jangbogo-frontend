@@ -12,6 +12,7 @@ import price from "../../assets/images/ButtonPrice.png";
 import ButtonMain from "../components/ButtonMain";
 import HeaderMain from "../components/HeaderMain";
 const { width } = Dimensions.get("window");
+
 const MainScreen = () => {
   const navigation = useNavigation();
   return (
@@ -39,7 +40,7 @@ const MainScreen = () => {
               navigation.navigate("MainStack", { screen: "Expenditure" });
             }}
           />
-          <ButtonMain source={theme} text=" 테마별장보기" onPress={() => {}} />
+          <ButtonMain source={theme} text=" 테마별장보기" onPress={()=>{navigation.navigate("Sign", { screen: "Onboarding" });}} />
         </View>
         <View style={s.categoryInner2}>
           <ButtonMain source={memo} text="장보기 메모" onPress={() => {}} />
