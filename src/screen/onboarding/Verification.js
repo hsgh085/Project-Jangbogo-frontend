@@ -145,15 +145,15 @@ const Verification = (props) => {
 
     const requestVerificationCode = async () => {
         try {
-            //console.log("재전송할때 phoneNumber 값: ", phoneNumber);
-            // const response = await fetch(
-            //     'http://3.34.24.220/auth/send-verification-code',
-            //     {
-            //         method: 'POST',
-            //         headers: { 'Content-Type': 'application/json' },
-            //         body: JSON.stringify({ hp: phoneNumber }),
-            //     }
-            // );
+            console.log("재전송할때 phoneNumber 값: ", phoneNumber);
+            const response = await fetch(
+                'http://3.34.24.220/auth/send-verification-code',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ hp: phoneNumber }),
+                }
+            );
 
             if (response.status === 200) {
                 // 인증번호 요청 성공

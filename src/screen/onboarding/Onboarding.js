@@ -118,10 +118,16 @@ const OnboardingScreen = (props) => {
                     </Pressable>
                     <Pressable
                         style={[styles.button, styles.buttonClose]}
-                        onPress={() => { navigation.navigate("SignInWPW"); }}
+                        onPress={() => { navigation.navigate("SignIn"); }}
                     // onPress={() => {setModalVisible(!modalVisible); setIsSignUpScreenOpen(true);}}
                     >
                         <Text style={styles.textStyle}>로그인</Text>
+                    </Pressable>
+                    <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => { navigation.navigate("SignUpForm"); }}
+                    >
+                        <Text style={styles.textStyle}>회원가입폼</Text>
                     </Pressable>
                 </View>
             </View>
