@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet, View, Text, TextInput, ScrollView,
-  Pressable, FlatList, TouchableOpacity
+  Pressable, FlatList, TouchableOpacity, Platform, KeyboardAvoidingView,
 } from 'react-native';
 import Header from '../../components/Header/Header';
 
@@ -20,7 +20,7 @@ const GENDER = [
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
-    <Text style={[{ fontSize: 20, fontWeight: 'bold' }, { color: textColor }]}>{item.title}</Text>
+    <Text style={[{ fontSize: 18, fontWeight: 'bold' }, { color: textColor }]}>{item.title}</Text>
   </TouchableOpacity>
 );
 
@@ -161,7 +161,10 @@ const SignUpForm = () => {
   };
 
   return (
-    <View>
+    <KeyboardAvoidingView
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    style={{flex: 1, paddingBottom: 50}}
+    >
       {/* 회원가입 헤더 */}
       <Header>
         <Header.Title size={18} style={styles.Header}>회원가입</Header.Title>
@@ -258,7 +261,7 @@ const SignUpForm = () => {
           </View>
         </ScrollView>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -266,8 +269,9 @@ const SignUpForm = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-    marginLeft: 60,
-    marginRight: 60,
+    marginHorizontal: 30,
+    // marginLeft: 60,
+    // marginRight: 60,
   },
   container_title: {
     marginBottom: 10,
@@ -303,7 +307,7 @@ const styles = StyleSheet.create({
   item: {
     alignItems: "center",
     justifyContent: "center",
-    width: '100%',
+    width: 100,
     height: 60,
     padding: 10,
     paddingHorizontal: 15,

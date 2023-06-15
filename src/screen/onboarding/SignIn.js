@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from '../../components/Header/Header';
-import Verification from "./Verification";
+
 
 const SignIn = () => {
   const navigation = useNavigation();
@@ -99,8 +99,9 @@ const SignIn = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-    marginLeft: 60,
-    marginRight: 60,
+    marginHorizontal: 30,
+    // marginLeft: 60,
+    // marginRight: 60,
   },
   container_title: {
     marginBottom: 30,
