@@ -181,7 +181,7 @@ const LatestMemoScreen = () => {
           <Text>작성하신 메모가 없습니다.😢</Text>
         </View>
       ) : (
-        <View>
+        <>
           <View style={s.title}>
             <Text style={s.text1}>{memo.date}</Text>
             <SingleLineInput style={s.text2} value={memo.title} onChangeText={handleChange} />
@@ -219,7 +219,7 @@ const LatestMemoScreen = () => {
               }}
             />
           </View>
-        </View>
+        </>
       )}
     </View>
   );
