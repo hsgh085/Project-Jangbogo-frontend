@@ -12,34 +12,36 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
 
   /** 백엔드와 통신하여 로그인 하는 함수 */
-  const signin = async (phoneNumber, Password) => {
+  const signin = async () => {
     // console.log("phoneNumber 값: ", phoneNumber);
     try {
       const response = await fetch(
-        'http://3.34.24.220/auth/send-verification-code',
+        'http://3.34.24.220/auth/signin',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ hp: phoneNumber }),
+          body: JSON.stringify({ hp: phoneNumber, pw: password, }),
         }
       );
 
       if (response.status === 200) {
-        navigation.navigate("Verify", { hp: phoneNumber });
+        const responseBody = await response.json();
+        if (responseBody.loginSucess) {
+          // 로그인 성공 시 인증 토큰 저장 및 페이지 이동
+          //const { token } = responseBody;
+          // TODO: 저장 처리 구현 (예: AsyncStorage)
+          navigation.navigate("BottomTab")
+          //navigation.navigate("Verification", { token: token }); // 필요하다면 다른 페이지로 이동하세요
+        } else {
+          console.error('Error logging in: ', response.status);
+        }
       } else {
-        console.error('Error requesting verification code: ', response.status);
+        console.error('Error logging in: ', response.status);
       }
     } catch (error) {
-      console.error('Error requesting verification code:', error);
+      console.error('Error logging in:', error);
     }
   };
-
-  // useEffect(() => {
-  //   if (isVerifyScreenOpen) {
-  //     // Verification.js screen 열기
-  //     navigation.navigate("Verify");
-  //   }
-  // }, [isVerifyScreenOpen]);
 
   return (
     <View>
@@ -54,7 +56,10 @@ const SignIn = () => {
           <Text style={styles.h1}>안녕하세요!👋{"\n"}반가워요🥰</Text>
         </View>
         {/* 휴대폰 번호 입력칸 */}
-        <View style={styles.inputContainer}>
+        <View>
+          <View style={styles.label_fields}>
+            <Text style={styles.label}>휴대폰 번호</Text>
+          </View>
           <TextInput style={styles.input}
             keyboardType="numeric"
             maxLength={11}
@@ -62,27 +67,25 @@ const SignIn = () => {
             value={phoneNumber}
             onChangeText={(text) => { setPhoneNumber(text); }} />
         </View>
-        <View style={styles.label_fields}>
-                <Text style={styles.label}>비밀번호</Text>
-                <Text style={styles.error}>잘못된 비밀번호입니다.</Text>
-              </View>
-              <View style={styles.input_notice}>
-                <Text style={styles.innertext}>8~12자리, 대문자, 특수문자 포함</Text>
-                <TextInput
-                  placeholder="비밀번호 입력"
-                  maxLength={12}
-                  value={password}
-                  onChangeText={(text) => setPassword(text)}
-                />
-              </View>
+        {/* 비밀번호 입력 */}
+        <View>
+          <View style={styles.label_fields}>
+            <Text style={styles.label}>비밀번호</Text>
+          </View>
+          <Text style={styles.innertext}>8~12자리, 대문자, 특수문자 포함</Text>
+          <TextInput style={[styles.input,]}
+            placeholder="확인 비밀번호 입력"
+            maxLength={15}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
+        </View>
         {/* 로그인 버튼 */}
-        <View style={styles.verification_verify}>
+        <View>
           <Pressable
-            style={styles.verification_button}
+            style={styles._button}
             onPress={() => {
-              // console.log("이전: ",phoneNumber)
-              // navigation.navigate("Verify", {hp: phoneNumber})
-              signin(phoneNumber, password)
+              signin();
             }}
           >
             <Text style={styles.h2}>로그인</Text>
@@ -94,7 +97,48 @@ const SignIn = () => {
 };
 
 const styles = StyleSheet.create({
-  
+  container: {
+    marginTop: 10,
+    marginLeft: 60,
+    marginRight: 60,
+  },
+  container_title: {
+    marginBottom: 30,
+  },
+  h1: {
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  h2: {
+    fontSize: 16,
+  },
+  innertext: {
+    paddingTop: 3,
+    paddingBottom: 2,
+  },
+  input: {
+    height: 60,
+    borderRadius: 16,
+    borderColor: "black",
+    borderWidth: 1,
+    fontSize: 18,
+    paddingHorizontal: 15,
+    paddingVertical: 18,
+    marginBottom: 10,
+  },
+  label_fields: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 2,
+  },
+  _button: {
+    backgroundColor: '#00FF9D',
+    alignItems: 'center',
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 20,
+  },
+
 
 });
 
