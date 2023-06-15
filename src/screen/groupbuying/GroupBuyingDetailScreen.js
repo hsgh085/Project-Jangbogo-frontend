@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, TouchableOpacity, ScrollView, StyleSheet, View, Text } from "react-native";
 import colors from "../../../assets/colors/colors";
 import Header from "../../components/Header/Header";
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
+import { ROOT_API, TOKEN } from "../../constants/api";
 
 const GroupBuyingDetailScreen = () => {
+  const route = useRoute();
+  const id = route.params?.id;
+  const [gb, setGB] = useState({});
   const toast = (message) => {
     Alert.alert("", `${message}`, [
       {
@@ -15,6 +20,22 @@ const GroupBuyingDetailScreen = () => {
   const handleClickParticipate = () => {
     toast("참여되었습니다😊");
   };
+  useEffect(() => {
+    fetch(`${ROOT_API}/grouppurchase/gpitem?gpId=${id}`, {
+      method: "GET",
+      headers: {
+        //TODO: 테스트 끝낸 후 token으로 바꾸기
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setGB(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <>
       <View style={{ flex: 1, backgroundColor: colors.white }}>
@@ -25,50 +46,62 @@ const GroupBuyingDetailScreen = () => {
         <View style={s.container}>
           <View style={s.creatorInform}>
             <View style={s.creatorInformTextLine}>
-              <Text style={{flex:1}}>작성자</Text>
-              <Text>heehee</Text>
+              <Text style={{ flex: 1 }}>작성자</Text>
+              <Text>{gb.nickname}</Text>
             </View>
             <View style={s.creatorInformTextLine}>
-              <Text style={{flex:1}}>등급</Text>
-              <Text>브론즈</Text>
+              <Text style={{ flex: 1 }}>등급</Text>
+              <Text>{gb.grade}</Text>
             </View>
           </View>
           <View style={s.cardContainer}>
             <View style={s.titleContainer}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <Text style={s.title}>너구리 2+1</Text>
+                <Text style={s.title}>{gb.name}</Text>
               </ScrollView>
             </View>
             <View>
               <View style={s.inform}>
                 <Ionicons name="person" size={20} color={colors.white} />
                 <Text style={s.informText}>공동구매 인원</Text>
-                <Text style={s.informText}>1</Text>
+                <Text style={s.informText}>{gb.participantCount}</Text>
                 <Text style={s.informText}>/</Text>
-                <Text style={s.informText}>3</Text>
+                <Text style={s.informText}>{gb.peoplenum}</Text>
               </View>
               <View style={s.inform}>
                 <MaterialCommunityIcons name="clock" size={20} color={colors.white} />
                 <Text style={s.informText}>종료시각</Text>
-                <Text style={s.informText}>2023.02.24 06:05PM</Text>
+                <Text style={s.informText}>{gb.endTime}</Text>
               </View>
               <View style={s.inform}>
                 <MaterialIcons name="location-on" size={20} color={colors.white} />
-                <Text style={s.informText}>서울 영등포구</Text>
+                <Text style={s.informText}>{gb.place}</Text>
               </View>
               <View style={s.detail}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                  <Text>
-                    gs 슈퍼 00점 너구리 2+1 같이 공구해요! 슈퍼앞에서 만나서 분배했으면 좋겠어요 gs 슈퍼 00점 너구리 2+1 같이 공구해요! 슈퍼앞에서
-                    만나서 분배했으면 좋겠어요 gs 슈퍼 00점 너구리 2+1 같이 공구해요! 슈퍼앞에서 만나서 분배했으면 좋겠어요 gs 슈퍼 00점 너구리 2+1
-                    같이 공구해요! 슈퍼앞에서 만나서 분배했으면 좋겠어요 gs 슈퍼 00점 너구리 2+1 같이 공구해요! 슈퍼앞에서 만나서 분배했으면 좋겠어요
-                    gs 슈퍼 00점 너구리 2+1 같이 공구해요! 슈퍼앞에서 만나서 분배했으면 좋겠어요
-                  </Text>
+                  <Text>{gb.content === "" ? "상세 내용이 없습니다." : gb.content}</Text>
                 </ScrollView>
               </View>
-              <TouchableOpacity style={s.btnContainer} onPress={handleClickParticipate}>
-                <Text>참여신청</Text>
+              {gb.authorization === null && (
+                <TouchableOpacity style={s.btnContainer} onPress={handleClickParticipate}>
+                  <Text>참여신청</Text>
+                </TouchableOpacity>
+              )}
+              {gb.authorization === 0 && (
+                <>
+                  <TouchableOpacity style={s.btnContainer} onPress={handleClickParticipate}>
+                    <Text>수정하기</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{ ...s.btnContainer, backgroundColor: colors.red }} onPress={handleClickParticipate}>
+                    <Text style={{ color: colors.white }}>삭제하기</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+              {gb.authorization === 1 &&(
+                <TouchableOpacity style={s.btnContainer} onPress={handleClickParticipate}>
+                <Text>참여취소</Text>
               </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>
@@ -137,18 +170,19 @@ const s = StyleSheet.create({
   },
   detail: {
     padding: 20,
+    marginBottom: 20,
     backgroundColor: colors.grayLL,
     borderRadius: 15,
     height: 150,
   },
   btnContainer: {
     alignItems: "center",
-    marginTop: 20,
+    marginBottom: 10,
     backgroundColor: colors.greenH,
     padding: 5,
     borderRadius: 20,
   },
-  creatorInformTextLine:{
+  creatorInformTextLine: {
     flexDirection: "row",
     marginBottom: 15,
   },

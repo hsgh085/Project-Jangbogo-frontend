@@ -37,11 +37,7 @@ const GroupBuyingListScreen = () => {
         console.log(error);
       });
   };
-  const handleClickDetail = useCallback((item) => {
-    navigation.navigate("GBDetail", { item });
-  });
   useEffect(() => {
-    console.log(new Date());
     fetch(`${ROOT_API}/grouppurchase/gplist`, {
       method: "GET",
       headers: {
@@ -116,10 +112,9 @@ const GroupBuyingListScreen = () => {
                     <View style={{ flexDirection: "row" }}>
                       <Text style={s.infoText1}>마감까지</Text>
                       <EndTimer endTime={item.endTime} createdAt={item.createdAt} />
-                      {/* <Text style={s.infoText2}>{item.endTime}</Text> */}
                     </View>
                   </View>
-                  <TouchableOpacity style={s.detailBtn} onPress={() => handleClickDetail(item)}>
+                  <TouchableOpacity style={s.detailBtn} onPress={() => {navigation.navigate("GBDetail", { id:item.id })}}>
                     <Text style={s.detailText}>상세보기</Text>
                   </TouchableOpacity>
                 </View>
