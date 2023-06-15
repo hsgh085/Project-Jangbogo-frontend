@@ -1,7 +1,7 @@
 import { Feather, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { TextInput, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import banner from "../../../assets/images/GroupBuyingBanner.png";
 import HeaderMain from "../../components/HeaderMain";
@@ -13,10 +13,29 @@ const GroupBuyingListScreen = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [token, setToken] = useContext(TokenContext);
-  const [place, setPlace]=useState("");
-  const [data, setData] = useState([]);
+  const [place, setPlace] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const [gbList, setGBList] = useState([]);
   const handleClickPost = () => {
     navigation.navigate("GBPost", { place: place });
+  };
+  const handleClickSearch = () => {
+    console.log(searchName);
+    fetch(`${ROOT_API}/grouppurchase/searchgplist?name=${searchName}`, {
+      method: "GET",
+      headers: {
+        //TODO: 테스트 끝낸 후 token으로 바꾸기
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        setGBList(data.gpSearchList);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   const handleClickDetail = useCallback((item) => {
     navigation.navigate("GBDetail", { item });
@@ -32,7 +51,7 @@ const GroupBuyingListScreen = () => {
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
-        setData(data.gpList);
+        setGBList(data.gpList);
         setPlace(data.userLocation);
       })
       .catch((error) => {
@@ -54,8 +73,8 @@ const GroupBuyingListScreen = () => {
             </View>
           </HeaderMain>
           <View style={s.searchContainer}>
-            <Feather name="search" size={20} color="black" />
-            <SingleLineInput placeholder="상품명을 입력해주세요." />
+            <Feather name="search" size={20} color="black" onPress={handleClickSearch} />
+            <TextInput placeholder="상품명을 입력해주세요." onChangeText={(text) => setSearchName(text)} onSubmitEditing={handleClickSearch} />
           </View>
         </View>
         <TouchableOpacity onPress={handleClickPost} style={s.btnSave}>
@@ -64,7 +83,7 @@ const GroupBuyingListScreen = () => {
         </TouchableOpacity>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={data}
+          data={gbList}
           ListHeaderComponent={
             <View style={{ marginBottom: 10 }}>
               <Image source={banner} />
@@ -72,7 +91,7 @@ const GroupBuyingListScreen = () => {
               <Text style={s.bannerText2}>공동구매를 통해</Text>
               <Text style={s.bannerText3}>비용 절감!</Text>
               <Text style={s.bannerText4}>자원 절약!</Text>
-              {data.length === 0 ? (
+              {gbList.length === 0 ? (
                 <View style={{ padding: 20, alignItems: "center" }}>
                   <Text>등록된 공동구매가 없습니다.😢</Text>
                 </View>
