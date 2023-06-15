@@ -1,48 +1,45 @@
-import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import colors from "../../../assets/colors/colors";
+import React, { useEffect, useState } from "react";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { BarChart } from "react-native-chart-kit";
+import colors from "../../../assets/colors/colors";
+import { ROOT_API, TOKEN } from "../../constants/api";
 
 const ExpenditureYearScreen = () => {
-  const [selectedYear, setSelectedYear] = useState();
+  const currYear = new Date().getFullYear().toString();
+  const [selectedYear, setSelectedYear] = useState(currYear);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetch(`${ROOT_API}/expenditure/expendyear?year=${selectedYear}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [selectedYear]);
   return (
     <View style={s.container}>
-      <Picker
-        selectedValue={selectedYear}
-        onValueChange={(itemValue, itemIndex) => setSelectedYear(itemValue)}
-        style={s.selectYear}
-      >
-        <Picker.Item label="2023년" value="2023" />
-        <Picker.Item label="2022년" value="2022" />
-        <Picker.Item label="2021년" value="2021" />
-        <Picker.Item label="2020년" value="2020" />
-        <Picker.Item label="2019년" value="2019" />
+      <Picker mode='dropdown' selectedValue={selectedYear} onValueChange={(itemValue, itemIndex) => setSelectedYear(itemValue)} style={s.selectYear}>
+        <Picker.Item label={`${currYear}년`} value={currYear} />
+        <Picker.Item label={`${currYear - 1}년`} value={currYear - 1} />
+        <Picker.Item label={`${currYear - 2}년`} value={currYear - 2} />
+        <Picker.Item label={`${currYear - 3}년`} value={currYear - 3} />
+        <Picker.Item label={`${currYear - 4}년`} value={currYear - 4} />
       </Picker>
-      <ScrollView
-        style={s.chartConatiner}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-      >
+      <ScrollView style={s.chartConatiner} horizontal={true} showsHorizontalScrollIndicator={false}>
         <BarChart
           data={{
-            labels: [
-              "1월",
-              "2월",
-              "3월",
-              "4월",
-              "5월",
-              "6월",
-              "7월",
-              "8월",
-              "9월",
-              "10월",
-              "11월",
-              "12월",
-            ],
+            labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
             datasets: [
               {
-                data: [20, 45, 28, 80, 99, 43, 77, 62, 12, 10, 90, 50],
+                data: data,
               },
             ],
           }}
@@ -50,7 +47,7 @@ const ExpenditureYearScreen = () => {
           height={Dimensions.get("window").width - 50}
           fromZero={true}
           showValuesOnTopOfBars={true}
-          yAxisSuffix={"만원"}
+          yAxisSuffix={"원"}
           horizontalLabelRotation={270}
           verticalLabelRotation={270}
           chartConfig={{

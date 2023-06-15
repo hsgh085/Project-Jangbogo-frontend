@@ -195,9 +195,9 @@ const MemoScreen = (props) => {
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <Header>
         <Header.Title size={18}>장보기 작성</Header.Title>
-        <Pressable onPress={handleDeleteMemo}>
+        {route.params?.type === "detail" ? (<Pressable onPress={handleDeleteMemo}>
           <FontAwesome5 name="trash" size={18} color={colors.red} />
-        </Pressable>
+        </Pressable>):(<View/>)}
       </Header>
       <View style={s.title}>
         <Text style={s.text1}>{memo.date}</Text>
