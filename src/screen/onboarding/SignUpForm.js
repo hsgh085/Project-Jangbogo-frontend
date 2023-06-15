@@ -139,8 +139,8 @@ const SignUpForm = () => {
         },
         body: JSON.stringify({
           nickname: NickName,
-          hp: testhp,
-          // hp: phoneNumber,
+          //hp: testhp,
+          hp: phoneNumber,
           pw: Password,
           gender: selectedGender,
           location: '서울시 구로구', // 이 부분을 필요한 값으로 바꾸세요.
@@ -178,8 +178,8 @@ const SignUpForm = () => {
             {/* 휴대폰 번호 */}
             <View>
               <Text style={styles.h3}>휴대폰 번호</Text>
-              <Text style={[styles.input, styles.fixinput]}>{testhp}</Text>
-              {/* <Text style={[styles.input, styles.fixinput]}>{phoneNumber}</Text> */}
+              {/* <Text style={[styles.input, styles.fixinput]}>{testhp}</Text> */}
+              <Text style={[styles.input, styles.fixinput]}>{phoneNumber}</Text>
             </View>
             {/* 닉네임 입력 */}
             <View>

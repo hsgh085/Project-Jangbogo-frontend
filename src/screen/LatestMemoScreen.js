@@ -1,15 +1,17 @@
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import colors from "../../assets/colors/colors";
 import Header from "../components/Header/Header";
 import ShoppingItem from "../components/ShoppingItem";
 import SingleLineInput from "../components/SingleLineInput";
 import Spacer from "../components/Spacer";
-import { ROOT_API, TOKEN } from "../constants/api";
+import { ROOT_API } from "../constants/api";
+import { TokenContext } from "../contexts/TokenContext";
 
 const LatestMemoScreen = () => {
+  const [token, setToken] = useContext(TokenContext);
   let flatListRef = useRef();
   const navigate = useNavigation();
   const isFocused = useIsFocused();
@@ -75,7 +77,7 @@ const LatestMemoScreen = () => {
             fetch(`${ROOT_API}/memo/deletememo?memoId=${memo.id}`, {
               method: "DELETE",
               headers: {
-                Authorization: `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${token}`,
               },
             })
               .then(() => {
@@ -110,7 +112,7 @@ const LatestMemoScreen = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           memoId: memo.id,
@@ -144,7 +146,7 @@ const LatestMemoScreen = () => {
     fetch(`${ROOT_API}/memo/recentmemo`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
@@ -175,7 +177,7 @@ const LatestMemoScreen = () => {
         )}
       </Header>
       {error ? (
-        <View style={{ padding: 20, alignItems:"center"}}>
+        <View style={{ padding: 20, alignItems: "center" }}>
           <Text>작성하신 메모가 없습니다.😢</Text>
         </View>
       ) : (

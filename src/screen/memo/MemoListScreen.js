@@ -1,13 +1,15 @@
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { FlatList, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import colors from "../../../assets/colors/colors";
 import HeaderMain from "../../components/HeaderMain";
-import { ROOT_API, TOKEN } from "../../constants/api";
+import { ROOT_API } from "../../constants/api";
+import { TokenContext } from '../../contexts/TokenContext';
 
 const MemoListScreen = () => {
+  const [token, setToken] = useContext(TokenContext);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [data, setData] = useState([]);
@@ -35,7 +37,7 @@ const MemoListScreen = () => {
     fetch(`${ROOT_API}/memo/memolist?date=${date}`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
