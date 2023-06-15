@@ -34,6 +34,7 @@ const MemoListScreen = () => {
     });
   });
   useEffect(() => {
+    console.log(token)
     fetch(`${ROOT_API}/memo/memolist?date=${date}`, {
       method: "GET",
       headers: {
