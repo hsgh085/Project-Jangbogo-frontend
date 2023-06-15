@@ -13,11 +13,11 @@ const MemoStackNavigation = () => {
       }}
     >
       <Stack.Screen name="MemoList" component={MemoListScreen} />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Memo"
         component={MemoScreen}
         options={{ tabBarStyle: { display: "none" } }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };

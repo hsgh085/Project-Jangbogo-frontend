@@ -3,12 +3,13 @@ import { Alert, TouchableOpacity, ScrollView, StyleSheet, View, Text } from "rea
 import colors from "../../../assets/colors/colors";
 import Header from "../../components/Header/Header";
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { ROOT_API, TOKEN } from "../../constants/api";
 
 const GroupBuyingDetailScreen = () => {
   const route = useRoute();
   const id = route.params?.id;
+  const navigation=useNavigation();
   const [gb, setGB] = useState({});
   const toast = (message) => {
     Alert.alert("", `${message}`, [
@@ -89,7 +90,7 @@ const GroupBuyingDetailScreen = () => {
               )}
               {gb.authorization === 0 && (
                 <>
-                  <TouchableOpacity style={s.btnContainer} onPress={handleClickParticipate}>
+                  <TouchableOpacity style={s.btnContainer} onPress={()=>{navigation.navigate("GBPost", {type:'update',place:gb.place})}}>
                     <Text>수정하기</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={{ ...s.btnContainer, backgroundColor: colors.red }} onPress={handleClickParticipate}>
