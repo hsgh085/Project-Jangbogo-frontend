@@ -5,7 +5,8 @@ import PippScreen from "../screen/onboarding/PIPP";
 import TcsScreen from "../screen/onboarding/TCS";
 import SignUpScreen from "../screen/onboarding/SignUp";
 import VerificationScreen from "../screen/onboarding/Verification";
-import SignInWPasswordScreen from "../screen/onboarding/SignInWPassword";
+import SignUpFormScreen from "../screen/onboarding/SignUpForm";
+import SignInWPasswordScreen from "../screen/onboarding/SignIn";
 import SignInWCodeNumScreen from "../screen/onboarding/SignInWCodeNum";
 
 
@@ -25,7 +26,8 @@ const SignStackNavigation = () => {
       <Stack.Screen name="PIPP" component={PippScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="Verify" component={VerificationScreen} />
-      <Stack.Screen name="SignInWPW" component={SignInWPasswordScreen} />
+      <Stack.Screen name="SignUpForm" component={SignUpFormScreen} />
+      <Stack.Screen name="SignIn" component={SignInWPasswordScreen} />
       <Stack.Screen name="SignInWCN" component={SignInWCodeNumScreen} />
     </Stack.Navigator>
   );

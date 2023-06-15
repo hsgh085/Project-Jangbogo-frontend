@@ -7,6 +7,7 @@ const PIPP = () => {
     <View>
         <Header>
           <Header.Title size={18} style={styles.Header}>개인정보 처리방침</Header.Title>
+          <View></View>
         </Header>
         <ScrollView style={styles.scrollView}>
         <Text style={styles.Text1}>이용자님의 권리 및 의무를 이해하기 위하여 애플리케이션 소프트웨어 개인정보 처리방침(이하 "본 약관")을 주의 깊게 읽어주시길 바랍니다.</Text>
