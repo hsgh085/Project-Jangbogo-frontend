@@ -44,7 +44,7 @@ const MainScreen = () => {
         </View>
         <View style={s.categoryInner2}>
           <ButtonMain source={memo} text="장보기 메모" onPress={() => {}} />
-          <ButtonMain source={price} text="가격예측" onPress={() => {}} />
+          <ButtonMain source={price} text="가격예측" onPress={() => {navigation.navigate("MainStack", { screen: "Prediction" });}} />
           <ButtonMain
             source={ripe}
             text="후숙도예측"
