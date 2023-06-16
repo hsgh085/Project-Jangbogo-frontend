@@ -74,7 +74,7 @@ const SignIn = () => {
           </View>
           <Text style={styles.innertext}>8~12자리, 대문자, 특수문자 포함</Text>
           <TextInput style={[styles.input,]}
-            placeholder="확인 비밀번호 입력"
+            placeholder="비밀번호 입력"
             maxLength={15}
             value={password}
             onChangeText={(text) => setPassword(text)}
@@ -99,8 +99,9 @@ const SignIn = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-    marginLeft: 60,
-    marginRight: 60,
+    marginHorizontal: 30,
+    // marginLeft: 60,
+    // marginRight: 60,
   },
   container_title: {
     marginBottom: 30,
