@@ -87,8 +87,9 @@ const SignUp = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 100,
-    marginLeft: 60,
-    marginRight: 60,
+    marginHorizontal: 30,
+    // marginLeft: 60,
+    // marginRight: 60,
   },
   container_title: {
 

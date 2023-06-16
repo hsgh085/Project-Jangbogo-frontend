@@ -19,6 +19,7 @@ const OnboardingScreen = (props) => {
 
     const [isPIPPScreenOpen, setIsPIPPScreenOpen] = useState(false);
     const [isTCSScreenOpen, setIsTCSScreenOpen] = useState(false);
+    const [isAgree, setIsAgree] = useState(false);
     const [isSignUpScreenOpen, setIsSignUpScreenOpen] = useState(false);
     const [isSignInScreenOpen, setIsSignInScreenOpen] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
@@ -27,6 +28,7 @@ const OnboardingScreen = (props) => {
         if (isPIPPScreenOpen) {
             // Open PIPP.js screen
             navigation.navigate("PIPP");
+            //setIsPIPPScreenOpen(false);
         }
     }, [isPIPPScreenOpen]);
 
@@ -34,6 +36,7 @@ const OnboardingScreen = (props) => {
         if (isTCSScreenOpen) {
             // Open TCS.js screen
             navigation.navigate("TCS");
+            //setIsTCSScreenOpen(false);
         }
     }, [isTCSScreenOpen]);
 
@@ -123,12 +126,12 @@ const OnboardingScreen = (props) => {
                     >
                         <Text style={styles.textStyle}>로그인</Text>
                     </Pressable>
-                    {/* <Pressable
+                    <Pressable
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => { navigation.navigate("SignUpForm"); }}
                     >
                         <Text style={styles.textStyle}>회원가입폼</Text>
-                    </Pressable> */}
+                    </Pressable>
                 </View>
             </View>
         </SafeAreaProvider>
