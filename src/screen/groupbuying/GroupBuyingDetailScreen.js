@@ -1,15 +1,16 @@
+import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Alert, TouchableOpacity, ScrollView, StyleSheet, View, Text } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import Header from "../../components/Header/Header";
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation, useRoute } from "@react-navigation/native";
 import { ROOT_API, TOKEN } from "../../constants/api";
 
 const GroupBuyingDetailScreen = () => {
+  const isFocused = useIsFocused();
   const route = useRoute();
   const id = route.params?.id;
-  const navigation=useNavigation();
+  const navigation = useNavigation();
   const [gb, setGB] = useState({});
   const toast = (message) => {
     Alert.alert("", `${message}`, [
@@ -19,7 +20,28 @@ const GroupBuyingDetailScreen = () => {
     ]);
   };
   const handleClickParticipate = () => {
-    toast("참여되었습니다😊");
+    fetch(`${ROOT_API}/grouppurchase/participategp`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //TODO: 테스트 후 토큰 바꾸기
+        Authorization: `Bearer ${TOKEN}`,
+      },
+      body: JSON.stringify({ gpId: id }),
+    })
+      .then(() => {
+        Alert.alert("참여완료", "공동구매 인원 모집이 마감되면 알람을 통해 알려드릴께요😊", [
+          {
+            text: "확인",
+            onPress: () => {
+              navigate.goBack();
+            },
+          },
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   useEffect(() => {
     fetch(`${ROOT_API}/grouppurchase/gpitem?gpId=${id}`, {
@@ -36,7 +58,7 @@ const GroupBuyingDetailScreen = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [isFocused]);
   return (
     <>
       <View style={{ flex: 1, backgroundColor: colors.white }}>
@@ -85,12 +107,17 @@ const GroupBuyingDetailScreen = () => {
               </View>
               {gb.authorization === null && (
                 <TouchableOpacity style={s.btnContainer} onPress={handleClickParticipate}>
-                  <Text>참여신청</Text>
+                  <Text>참여하기</Text>
                 </TouchableOpacity>
               )}
               {gb.authorization === 0 && (
                 <>
-                  <TouchableOpacity style={s.btnContainer} onPress={()=>{navigation.navigate("GBPost", {type:'update',place:gb.place})}}>
+                  <TouchableOpacity
+                    style={s.btnContainer}
+                    onPress={() => {
+                      navigation.navigate("GBPost", { type: "update", gb: gb });
+                    }}
+                  >
                     <Text>수정하기</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={{ ...s.btnContainer, backgroundColor: colors.red }} onPress={handleClickParticipate}>
@@ -98,10 +125,10 @@ const GroupBuyingDetailScreen = () => {
                   </TouchableOpacity>
                 </>
               )}
-              {gb.authorization === 1 &&(
+              {gb.authorization === 1 && (
                 <TouchableOpacity style={s.btnContainer} onPress={handleClickParticipate}>
-                <Text>참여취소</Text>
-              </TouchableOpacity>
+                  <Text>참여취소</Text>
+                </TouchableOpacity>
               )}
             </View>
           </View>
