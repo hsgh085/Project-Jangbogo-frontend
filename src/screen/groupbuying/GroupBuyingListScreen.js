@@ -1,32 +1,44 @@
 import { Feather, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import React, { useCallback, useState } from "react";
-import { TouchableOpacity, FlatList, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import banner from "../../../assets/images/GroupBuyingBanner.png";
 import HeaderMain from "../../components/HeaderMain";
 import SingleLineInput from "../../components/SingleLineInput";
-import { useNavigation } from '@react-navigation/native';
+import { ROOT_API, TOKEN } from "../../constants/api";
+import { TokenContext } from "../../contexts/TokenContext";
 
 const GroupBuyingListScreen = () => {
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
-  const [data, setData] = useState([
-    { id: 0, name: "너구리 2+1", currPeople: 1, people: 3, endTime: "2023-06-12" },
-    { id: 1, name: "세제 공구해여", currPeople: 1, people: 3, endTime: "2023-06-12" },
-    { id: 2, name: "롤휴지 한박스 공구", currPeople: 1, people: 3, endTime: "2023-06-12" },
-    { id: 3, name: "test3 ejleafiliefjelfjlaefiefialejflafjlseajflsifjdslafjlkdslkfajj", currPeople: 1, people: 3, endTime: "2023-06-12" },
-    { id: 4, name: "test4", currPeople: 1, people: 3, endTime: "2023-06-12" },
-    { id: 5, name: "test5", currPeople: 1, people: 3, endTime: "2023-06-12" },
-    { id: 6, name: "test6", currPeople: 1, people: 3, endTime: "2023-06-12" },
-    { id: 7, name: "test7", currPeople: 1, people: 3, endTime: "2023-06-12" },
-    { id: 8, name: "test8", currPeople: 1, people: 3, endTime: "2023-06-12" },
-    { id: 9, name: "test9", currPeople: 1, people: 3, endTime: "2023-06-12" },
-  ]);
+  const [token, setToken] = useContext(TokenContext);
+  const [place, setPlace]=useState("");
+  const [data, setData] = useState([]);
   const handleClickPost = () => {
-    navigation.navigate("GBPost");
+    navigation.navigate("GBPost", { place: place });
   };
   const handleClickDetail = useCallback((item) => {
     navigation.navigate("GBDetail", { item });
   });
+  useEffect(() => {
+    fetch(`${ROOT_API}/grouppurchase/gplist`, {
+      method: "GET",
+      headers: {
+        //TODO: 테스트 끝낸 후 token으로 바꾸기
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        setData(data.gpList);
+        setPlace(data.userLocation);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [isFocused]);
   return (
     <>
       <View style={s.container}>
@@ -36,7 +48,7 @@ const GroupBuyingListScreen = () => {
             <View>
               <Text>동네위치</Text>
               <View style={s.locationContainer}>
-                <Text style={s.locationText}>서울 영등포구</Text>
+                <Text style={s.locationText}>{place}</Text>
                 <MaterialIcons name="location-on" size={20} color={colors.greenH} />
               </View>
             </View>
@@ -60,6 +72,11 @@ const GroupBuyingListScreen = () => {
               <Text style={s.bannerText2}>공동구매를 통해</Text>
               <Text style={s.bannerText3}>비용 절감!</Text>
               <Text style={s.bannerText4}>자원 절약!</Text>
+              {data.length === 0 ? (
+                <View style={{ padding: 20, alignItems: "center" }}>
+                  <Text>등록된 공동구매가 없습니다.😢</Text>
+                </View>
+              ) : null}
             </View>
           }
           renderItem={({ item }) => {
@@ -72,9 +89,9 @@ const GroupBuyingListScreen = () => {
                   <View style={s.infoContainer}>
                     <View style={{ flexDirection: "row" }}>
                       <Text style={s.infoText1}>공동구매인원</Text>
-                      <Text style={s.infoText2}>{item.currPeople}</Text>
+                      <Text style={s.infoText2}>{item.participantsCount}</Text>
                       <Text style={s.infoText2}>/</Text>
-                      <Text style={s.infoText2}>{item.people}</Text>
+                      <Text style={s.infoText2}>{item.peoplenum}</Text>
                     </View>
                     <View style={{ flexDirection: "row" }}>
                       <Text style={s.infoText1}>마감까지</Text>
@@ -99,7 +116,7 @@ export default GroupBuyingListScreen;
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom:110,
+    paddingBottom: 110,
     backgroundColor: colors.white,
   },
   header: {
@@ -189,9 +206,9 @@ const s = StyleSheet.create({
     color: colors.white,
     fontSize: 12,
   },
-  infoText1: { 
-    fontSize: 12, 
-    marginRight: 5 
+  infoText1: {
+    fontSize: 12,
+    marginRight: 5,
   },
   infoText2: {
     fontSize: 12,

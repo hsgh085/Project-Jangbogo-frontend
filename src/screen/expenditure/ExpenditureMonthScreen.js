@@ -1,21 +1,24 @@
 import { Picker } from "@react-native-picker/picker";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 import colors from "../../../assets/colors/colors";
-import { ROOT_API, TOKEN } from "../../constants/api";
+import { ROOT_API } from "../../constants/api";
+import { TokenContext } from "../../contexts/TokenContext";
 
 const ExpenditureMonthScreen = () => {
+  const [token, setToken] = useContext(TokenContext);
   const currYear = new Date().getFullYear().toString();
   const [selectedYear, setSelectedYear] = useState(currYear);
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [labels, setLabels] = useState([]);
   const [data, setData] = useState([]);
   useEffect(() => {
+    console.log(token);
     fetch(`${ROOT_API}/expenditure/expendmonth?year=${selectedYear}&month=${selectedMonth}`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
@@ -136,14 +139,24 @@ const ExpenditureMonthScreen = () => {
   return (
     <View style={s.container}>
       <View style={{ flexDirection: "row" }}>
-        <Picker mode='dropdown' selectedValue={selectedYear} onValueChange={(itemValue, itemIndex) => setSelectedYear(itemValue)} style={s.selectYear}>
+        <Picker
+          mode="dropdown"
+          selectedValue={selectedYear}
+          onValueChange={(itemValue, itemIndex) => setSelectedYear(itemValue)}
+          style={s.selectYear}
+        >
           <Picker.Item label={`${currYear}년`} value={currYear} />
           <Picker.Item label={`${currYear - 1}년`} value={currYear - 1} />
           <Picker.Item label={`${currYear - 2}년`} value={currYear - 2} />
           <Picker.Item label={`${currYear - 3}년`} value={currYear - 3} />
           <Picker.Item label={`${currYear - 4}년`} value={currYear - 4} />
         </Picker>
-        <Picker mode='dropdown' selectedValue={selectedMonth} onValueChange={(itemValue, itemIndex) => setSelectedMonth(itemValue)} style={s.selectYear}>
+        <Picker
+          mode="dropdown"
+          selectedValue={selectedMonth}
+          onValueChange={(itemValue, itemIndex) => setSelectedMonth(itemValue)}
+          style={s.selectYear}
+        >
           <Picker.Item label={"1월"} value={1} />
           <Picker.Item label={"2월"} value={2} />
           <Picker.Item label={"3월"} value={3} />

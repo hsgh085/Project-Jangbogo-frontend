@@ -1,13 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from '../../components/Header/Header';
-
+import Verification from "./Verification";
+import { TokenContext } from '../../contexts/TokenContext';
 
 const SignIn = () => {
   const navigation = useNavigation();
-
+  const[token, setToken]=useContext(TokenContext);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
 
@@ -28,8 +29,7 @@ const SignIn = () => {
         const responseBody = await response.json();
         if (responseBody.loginSucess) {
           // 로그인 성공 시 인증 토큰 저장 및 페이지 이동
-          //const { token } = responseBody;
-          // TODO: 저장 처리 구현 (예: AsyncStorage)
+          setToken(responseBody.token);
           navigation.navigate("BottomTab")
           //navigation.navigate("Verification", { token: token }); // 필요하다면 다른 페이지로 이동하세요
         } else {

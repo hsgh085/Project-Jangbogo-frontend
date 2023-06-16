@@ -1,15 +1,17 @@
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import Header from "../../components/Header/Header";
 import ShoppingItem from "../../components/ShoppingItem";
 import SingleLineInput from "../../components/SingleLineInput";
 import Spacer from "../../components/Spacer";
-import { ROOT_API, TOKEN } from "../../constants/api";
+import { ROOT_API } from "../../constants/api";
+import { TokenContext } from '../../contexts/TokenContext';
 
 const MemoScreen = (props) => {
+  const [token, setToken] = useContext(TokenContext);
   let flatListRef = useRef();
   const route = useRoute();
   const navigate = useNavigation();
@@ -73,7 +75,7 @@ const MemoScreen = (props) => {
             fetch(`${ROOT_API}/memo/deletememo?memoId=${route.params?.id}`, {
               method: "DELETE",
               headers: {
-                Authorization: `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${token}`,
               },
             })
               .then(() => {
@@ -109,7 +111,7 @@ const MemoScreen = (props) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             memoId: route.params?.id,
@@ -138,7 +140,7 @@ const MemoScreen = (props) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             memoListName: memo.title,
@@ -174,7 +176,7 @@ const MemoScreen = (props) => {
       fetch(`${ROOT_API}/memo/memolist/memoitem?fk_memo_id=${route.params?.id}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => res.json())
