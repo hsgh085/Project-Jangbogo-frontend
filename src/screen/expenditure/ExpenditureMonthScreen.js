@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 import colors from "../../../assets/colors/colors";
-import { ROOT_API } from "../../constants/api";
+import { ROOT_API, TOKEN } from "../../constants/api";
 import { TokenContext } from "../../contexts/TokenContext";
 
 const ExpenditureMonthScreen = () => {
@@ -18,7 +18,8 @@ const ExpenditureMonthScreen = () => {
     fetch(`${ROOT_API}/expenditure/expendmonth?year=${selectedYear}&month=${selectedMonth}`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        //TODO: change to token
+        Authorization: `Bearer ${TOKEN}`,
       },
     })
       .then((res) => res.json())

@@ -7,7 +7,7 @@ import Header from "../../components/Header/Header";
 import ShoppingItem from "../../components/ShoppingItem";
 import SingleLineInput from "../../components/SingleLineInput";
 import Spacer from "../../components/Spacer";
-import { ROOT_API } from "../../constants/api";
+import { ROOT_API, TOKEN } from "../../constants/api";
 import { TokenContext } from '../../contexts/TokenContext';
 
 const MemoScreen = (props) => {
@@ -75,7 +75,8 @@ const MemoScreen = (props) => {
             fetch(`${ROOT_API}/memo/deletememo?memoId=${route.params?.id}`, {
               method: "DELETE",
               headers: {
-                Authorization: `Bearer ${token}`,
+                //TODO: change to token
+                Authorization: `Bearer ${TOKEN}`,
               },
             })
               .then(() => {
@@ -111,7 +112,8 @@ const MemoScreen = (props) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            //TODO: change to token
+            Authorization: `Bearer ${TOKEN}`,
           },
           body: JSON.stringify({
             memoId: route.params?.id,
@@ -140,7 +142,8 @@ const MemoScreen = (props) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            //TODO: change to token
+            Authorization: `Bearer ${TOKEN}`,
           },
           body: JSON.stringify({
             memoListName: memo.title,
@@ -176,7 +179,8 @@ const MemoScreen = (props) => {
       fetch(`${ROOT_API}/memo/memolist/memoitem?fk_memo_id=${route.params?.id}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          //TODO: change to token
+          Authorization: `Bearer ${TOKEN}`,
         },
       })
         .then((res) => res.json())

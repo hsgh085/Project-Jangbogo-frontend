@@ -7,7 +7,7 @@ import Header from "../components/Header/Header";
 import ShoppingItem from "../components/ShoppingItem";
 import SingleLineInput from "../components/SingleLineInput";
 import Spacer from "../components/Spacer";
-import { ROOT_API } from "../constants/api";
+import { ROOT_API, TOKEN } from "../constants/api";
 import { TokenContext } from "../contexts/TokenContext";
 
 const LatestMemoScreen = () => {
@@ -146,7 +146,8 @@ const LatestMemoScreen = () => {
     fetch(`${ROOT_API}/memo/recentmemo`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        //TODO: change to token
+        Authorization: `Bearer ${TOKEN}`,
       },
     })
       .then((res) => res.json())

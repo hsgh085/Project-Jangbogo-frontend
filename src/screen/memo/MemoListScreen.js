@@ -5,7 +5,7 @@ import { FlatList, Platform, Pressable, StyleSheet, Text, View } from "react-nat
 import DateTimePicker from "react-native-modal-datetime-picker";
 import colors from "../../../assets/colors/colors";
 import HeaderMain from "../../components/HeaderMain";
-import { ROOT_API } from "../../constants/api";
+import { ROOT_API, TOKEN } from "../../constants/api";
 import { TokenContext } from '../../contexts/TokenContext';
 
 const MemoListScreen = () => {
@@ -34,11 +34,11 @@ const MemoListScreen = () => {
     });
   });
   useEffect(() => {
-    console.log(token)
     fetch(`${ROOT_API}/memo/memolist?date=${date}`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        //TODO: change to token
+        Authorization: `Bearer ${TOKEN}`,
       },
     })
       .then((res) => res.json())

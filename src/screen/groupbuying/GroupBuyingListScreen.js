@@ -1,11 +1,11 @@
 import { Feather, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import banner from "../../../assets/images/GroupBuyingBanner.png";
+import EndTimer from '../../components/EndTimer';
 import HeaderMain from "../../components/HeaderMain";
-import SingleLineInput from "../../components/SingleLineInput";
 import { ROOT_API, TOKEN } from "../../constants/api";
 import { TokenContext } from "../../contexts/TokenContext";
 
@@ -13,14 +13,30 @@ const GroupBuyingListScreen = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [token, setToken] = useContext(TokenContext);
-  const [place, setPlace]=useState("");
-  const [data, setData] = useState([]);
+  const [place, setPlace] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const [gbList, setGBList] = useState([]);
   const handleClickPost = () => {
     navigation.navigate("GBPost", { place: place });
   };
-  const handleClickDetail = useCallback((item) => {
-    navigation.navigate("GBDetail", { item });
-  });
+  const handleClickSearch = () => {
+    console.log(searchName);
+    fetch(`${ROOT_API}/grouppurchase/searchgplist?name=${searchName}`, {
+      method: "GET",
+      headers: {
+        //TODO: 테스트 끝낸 후 token으로 바꾸기
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        setGBList(data.gpSearchList);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
     fetch(`${ROOT_API}/grouppurchase/gplist`, {
       method: "GET",
@@ -31,8 +47,8 @@ const GroupBuyingListScreen = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
-        setData(data.gpList);
+        console.log("재갱신");
+        setGBList(data.gpList);
         setPlace(data.userLocation);
       })
       .catch((error) => {
@@ -54,8 +70,8 @@ const GroupBuyingListScreen = () => {
             </View>
           </HeaderMain>
           <View style={s.searchContainer}>
-            <Feather name="search" size={20} color="black" />
-            <SingleLineInput placeholder="상품명을 입력해주세요." />
+            <Feather name="search" size={20} color="black" onPress={handleClickSearch} />
+            <TextInput placeholder="상품명을 입력해주세요." onChangeText={(text) => setSearchName(text)} onSubmitEditing={handleClickSearch} />
           </View>
         </View>
         <TouchableOpacity onPress={handleClickPost} style={s.btnSave}>
@@ -64,7 +80,7 @@ const GroupBuyingListScreen = () => {
         </TouchableOpacity>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={data}
+          data={gbList}
           ListHeaderComponent={
             <View style={{ marginBottom: 10 }}>
               <Image source={banner} />
@@ -72,7 +88,7 @@ const GroupBuyingListScreen = () => {
               <Text style={s.bannerText2}>공동구매를 통해</Text>
               <Text style={s.bannerText3}>비용 절감!</Text>
               <Text style={s.bannerText4}>자원 절약!</Text>
-              {data.length === 0 ? (
+              {gbList.length === 0 ? (
                 <View style={{ padding: 20, alignItems: "center" }}>
                   <Text>등록된 공동구매가 없습니다.😢</Text>
                 </View>
@@ -95,10 +111,10 @@ const GroupBuyingListScreen = () => {
                     </View>
                     <View style={{ flexDirection: "row" }}>
                       <Text style={s.infoText1}>마감까지</Text>
-                      <Text style={s.infoText2}>{item.endTime}</Text>
+                      <EndTimer endTime={item.endTime} createdAt={item.createdAt} />
                     </View>
                   </View>
-                  <TouchableOpacity style={s.detailBtn} onPress={() => handleClickDetail(item)}>
+                  <TouchableOpacity style={s.detailBtn} onPress={() => {navigation.navigate("GBDetail", { id:item.id })}}>
                     <Text style={s.detailText}>상세보기</Text>
                   </TouchableOpacity>
                 </View>
@@ -116,7 +132,7 @@ export default GroupBuyingListScreen;
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 110,
+    paddingBottom: 100,
     backgroundColor: colors.white,
   },
   header: {
