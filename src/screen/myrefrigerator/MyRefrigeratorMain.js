@@ -31,7 +31,7 @@ const MyRefrigeratorMain = () => {
                 source={button1}
                 text="바코드 스캔하기"
                 onPress={() => {
-                  navigation.navigate("MainStack", { screen: "MemoList" });
+                  navigation.navigate("BarcordScanner");
                 }}
                 />
                 <ButtonRef 
@@ -48,7 +48,7 @@ const MyRefrigeratorMain = () => {
                         style={styles.button}
                         onPress={() => {openWebPage();}}
                     >
-                        <Text style={styles.h2}>다른 품목 예측하기</Text>
+                        <Text style={styles.h2}>요리 추천 받기</Text>
                     </Pressable>
                 </View>
             <Text>냉장고</Text>
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default MyRefrigeratorMain
+export default MyRefrigeratorMain;

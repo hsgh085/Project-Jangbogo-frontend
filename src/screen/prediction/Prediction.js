@@ -40,7 +40,7 @@ const Prediction = () => {
             }); // 결과 페이지로 이동하고 결과 데이터와 이미지 id를 전달
         } else {
             console.log("Error: Prediction failed");
-            // 에러 처리를 여기에 작성하세요.
+            // 에러 처리 작성
         }
     };
 
@@ -67,9 +67,9 @@ const Prediction = () => {
                 <Pressable onPress={() => handleImageClick("양파")}>
                     <Image source={item3} style={styles.imageStyle} />
                 </Pressable>
-                <Pressable onPress={() => navigation.navigate('Loading')}>
+                {/* <Pressable onPress={() => navigation.navigate('Loading')}>
                     <Text>다음페이지</Text>
-                </Pressable>
+                </Pressable> */}
             </ScrollView>
         </View>
     );

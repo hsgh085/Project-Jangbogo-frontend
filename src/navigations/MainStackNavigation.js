@@ -6,7 +6,7 @@ import ExpenditureNavigation from "./ExpenditureNavigation";
 import GroupBuyingStackNavigation from "./GroupBuyingStackNavigation";
 import RipenessStackNavigation from "./RipenessStackNavigation";
 import PredictionStackNavigation from "./PredictionStackNavigation";
-import MyRefrigeratorMain from "../screen/myrefrigerator/MyRefrigeratorMain";
+import RefrigeratorStackNavigation from "./RefrigeratorStackNavigation";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,7 +24,7 @@ const MainStackNavigation = () => {
       <Stack.Screen name="RipenessStack" component={RipenessStackNavigation} />
       <Stack.Screen name="GroupBuyingStack" component={GroupBuyingStackNavigation} />
       <Stack.Screen name="Prediction" component={PredictionStackNavigation} />
-      <Stack.Screen name="Refrigerator" component={MyRefrigeratorMain} />
+      <Stack.Screen name="Refrigerator" component={RefrigeratorStackNavigation} />
     </Stack.Navigator>
   );
 };
