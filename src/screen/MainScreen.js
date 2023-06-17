@@ -43,7 +43,7 @@ const MainScreen = () => {
           <ButtonMain source={theme} text=" 테마별장보기" onPress={()=>{navigation.navigate("Sign", { screen: "Onboarding" });}} />
         </View>
         <View style={s.categoryInner2}>
-          <ButtonMain source={memo} text="장보기 메모" onPress={() => {}} />
+          <ButtonMain source={memo} text="나의 냉장고" onPress={() => {navigation.navigate("Refrigerator")}} />
           <ButtonMain source={price} text="가격예측" onPress={() => {navigation.navigate("MainStack", { screen: "Prediction" });}} />
           <ButtonMain
             source={ripe}
