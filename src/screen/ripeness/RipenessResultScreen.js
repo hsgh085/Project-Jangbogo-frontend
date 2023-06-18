@@ -20,7 +20,7 @@ const RipenessResultScreen = () => {
       </View>
       <View style={s.container}>
         <View style={s.imageContainer}>{imageUri && <Image source={{ uri: imageUri }} style={s.image} />}</View>
-        <Text style={s.text}>아보카도의 신선도는</Text>
+        <Text style={s.text}>아보카도의 후숙도는</Text>
         <View style={s.textRackContainer}>
           <Text style={s.textRank}>A등급 </Text>
           <Text style={s.text}>입니다.</Text>
