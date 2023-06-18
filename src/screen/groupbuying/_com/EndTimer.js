@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Text } from "react-native";
 import colors from "../../../../assets/colors/colors";
 import { ROOT_API, TOKEN } from "../../../constants/api";
-import { useNavigation } from '@react-navigation/native';
 
 const EndTimer = (props) => {
   const now = new Date();
@@ -13,7 +12,6 @@ const EndTimer = (props) => {
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const [timer, setTimer] = useState(diff);
   const [timeOut, setTimeOut] = useState(false);
-  const navigation=useNavigation();
 
   const handleTimeOut = useCallback(() => {
     fetch(`${ROOT_API}/grouppurchase/timeoutgp?gpId=${props.id}`, {
@@ -24,8 +22,8 @@ const EndTimer = (props) => {
       },
     })
       .then(() => {
-        console.log('삭제')
-        props.setRender((prev)=>!prev)
+        console.log("삭제");
+        props.setRender((prev) => !prev);
       })
       .catch((err) => {
         console.log(err);
@@ -36,7 +34,7 @@ const EndTimer = (props) => {
     const interval = setInterval(() => {
       if (timer > 0) {
         setTimer(timer - 1);
-      }else {
+      } else {
         setTimeOut(true);
       }
     }, 1000);

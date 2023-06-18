@@ -21,7 +21,6 @@ const GroupBuyingListScreen = () => {
     navigation.navigate("GBPost", { place: place });
   };
   const handleClickSearch = () => {
-    console.log(searchName);
     fetch(`${ROOT_API}/grouppurchase/searchgplist?name=${searchName}`, {
       method: "GET",
       headers: {
