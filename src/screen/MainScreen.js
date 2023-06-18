@@ -9,6 +9,7 @@ import memo from "../../assets/images/ButtonMemo.png";
 import ripe from "../../assets/images/ButtonRipe.png";
 import theme from "../../assets/images/ButtonTheme.png";
 import price from "../../assets/images/ButtonPrice.png";
+import ref from "../../assets/images/ButtonRef.png";
 import ButtonMain from "../components/ButtonMain";
 import HeaderMain from "../components/HeaderMain";
 const { width } = Dimensions.get("window");
@@ -43,7 +44,7 @@ const MainScreen = () => {
           <ButtonMain source={theme} text=" 테마별장보기" onPress={()=>{navigation.navigate("Sign", { screen: "Onboarding" });}} />
         </View>
         <View style={s.categoryInner2}>
-          <ButtonMain source={memo} text="장보기 메모" onPress={() => {}} />
+          <ButtonMain source={ref} text="나의 냉장고" onPress={() => {navigation.navigate("Refrigerator")}} />
           <ButtonMain source={price} text="가격예측" onPress={() => {navigation.navigate("MainStack", { screen: "Prediction" });}} />
           <ButtonMain
             source={ripe}
