@@ -20,21 +20,20 @@ const GroupBuyingDetailScreen = () => {
     ]);
   };
   const handleClickParticipate = () => {
-    fetch(`${ROOT_API}/grouppurchase/participategp`, {
+    fetch(`${ROOT_API}/grouppurchase/participategp?gpId=${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         //TODO: 테스트 후 토큰 바꾸기
         Authorization: `Bearer ${TOKEN}`,
       },
-      body: JSON.stringify({ gpId: id }),
     })
       .then(() => {
         Alert.alert("참여완료", "공동구매 인원 모집이 마감되면 알람을 통해 알려드릴께요😊", [
           {
             text: "확인",
             onPress: () => {
-              navigate.goBack();
+              navigation.goBack();
             },
           },
         ]);
@@ -43,6 +42,44 @@ const GroupBuyingDetailScreen = () => {
         console.log(err);
       });
   };
+  const handleClickCancle=()=>{
+    fetch(`${ROOT_API}/grouppurchase/dparticipategp?gpId=${id}`, {
+      method: "DELETE",
+      headers: {
+        //TODO: 테스트 끝낸 후 token으로 바꾸기
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    })
+      .then(() => {
+        Alert.alert("", "참여를 취소하셨습니다😢", [
+          {
+            text: "확인",
+            onPress: () => {
+              navigation.goBack()
+            },
+          },
+        ]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  const handleClickDelete=()=>{
+    fetch(`${ROOT_API}/grouppurchase/deletegp?gpId=${id}`, {
+      method: "DELETE",
+      headers: {
+        //TODO: 테스트 끝낸 후 token으로 바꾸기
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    })
+      .then(() => {
+        toast("공동구매 글이 성공적으로 삭제되었습니다😊")
+        navigation.navigate("GBList")
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   useEffect(() => {
     fetch(`${ROOT_API}/grouppurchase/gpitem?gpId=${id}`, {
       method: "GET",
@@ -120,13 +157,13 @@ const GroupBuyingDetailScreen = () => {
                   >
                     <Text>수정하기</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{ ...s.btnContainer, backgroundColor: colors.red }} onPress={handleClickParticipate}>
+                  <TouchableOpacity style={{ ...s.btnContainer, backgroundColor: colors.red }} onPress={handleClickDelete}>
                     <Text style={{ color: colors.white }}>삭제하기</Text>
                   </TouchableOpacity>
                 </>
               )}
               {gb.authorization === 1 && (
-                <TouchableOpacity style={s.btnContainer} onPress={handleClickParticipate}>
+                <TouchableOpacity style={s.btnContainer} onPress={handleClickCancle}>
                   <Text>참여취소</Text>
                 </TouchableOpacity>
               )}

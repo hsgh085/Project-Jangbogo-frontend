@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import banner from "../../../assets/images/GroupBuyingBanner.png";
-import EndTimer from '../../components/EndTimer';
+import EndTimer from "./_com/EndTimer";
 import HeaderMain from "../../components/HeaderMain";
 import { ROOT_API, TOKEN } from "../../constants/api";
 import { TokenContext } from "../../contexts/TokenContext";
@@ -16,11 +16,11 @@ const GroupBuyingListScreen = () => {
   const [place, setPlace] = useState("");
   const [searchName, setSearchName] = useState("");
   const [gbList, setGBList] = useState([]);
+  const [render,setRender]=useState(false);
   const handleClickPost = () => {
     navigation.navigate("GBPost", { place: place });
   };
   const handleClickSearch = () => {
-    console.log(searchName);
     fetch(`${ROOT_API}/grouppurchase/searchgplist?name=${searchName}`, {
       method: "GET",
       headers: {
@@ -47,14 +47,13 @@ const GroupBuyingListScreen = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("재갱신");
         setGBList(data.gpList);
         setPlace(data.userLocation);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [isFocused]);
+  }, [isFocused,render]);
   return (
     <>
       <View style={s.container}>
@@ -111,10 +110,15 @@ const GroupBuyingListScreen = () => {
                     </View>
                     <View style={{ flexDirection: "row" }}>
                       <Text style={s.infoText1}>마감까지</Text>
-                      <EndTimer endTime={item.endTime} createdAt={item.createdAt} />
+                      <EndTimer id={item.id} endTime={item.endTime} setRender={setRender}/>
                     </View>
                   </View>
-                  <TouchableOpacity style={s.detailBtn} onPress={() => {navigation.navigate("GBDetail", { id:item.id })}}>
+                  <TouchableOpacity
+                    style={s.detailBtn}
+                    onPress={() => {
+                      navigation.navigate("GBDetail", { id: item.id });
+                    }}
+                  >
                     <Text style={s.detailText}>상세보기</Text>
                   </TouchableOpacity>
                 </View>

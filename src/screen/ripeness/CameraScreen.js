@@ -4,21 +4,21 @@ import Header from "../../components/Header/Header";
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import colors from "../../../assets/colors/colors";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 const CameraScreen = () => {
   const navigation = useNavigation();
   const [camera, setCamera] = useState(null);
   const [imageUri, setImageUri] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const handleTakePicture=async()=>{
+  const handleTakePicture = async () => {
     if (camera) {
       const data = await camera.takePictureAsync(null);
       // console.log(data);
       setImageUri(data.uri);
-      navigation.navigate("Ripeness", {screen: 'RipenessResult', params: { imageUri: data.uri },});
+      navigation.navigate("RipenessResult", { imageUri: data.uri });
     }
-  }
+  };
   return (
     <>
       <View style={styles.container}>
