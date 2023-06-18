@@ -22,7 +22,6 @@ const GroupBuyingPostScreen = () => {
   });
   const handleChange = (key, value) => {
     setGB({ ...gb, [key]: value });
-    console.log(gb);
   };
   const toast = (message) => {
     Alert.alert("", `${message}`, [
