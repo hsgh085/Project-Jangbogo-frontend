@@ -129,7 +129,12 @@ const MypageMainScreen = () => {
           <Ionicons name="md-document-text-outline" size={35} color="black" />
           <Text style={{ marginTop: 5 }}>공동구매 확인</Text>
         </Pressable>
-        <Pressable style={s.btn}>
+        <Pressable
+          style={s.btn}
+          onPress={() => {
+            navigation.navigate("MypageAsk");
+          }}
+        >
           <AntDesign name="questioncircleo" size={35} color="black" />
           <Text style={{ marginTop: 5 }}>문의</Text>
         </Pressable>
