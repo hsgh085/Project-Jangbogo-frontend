@@ -32,6 +32,7 @@ const MainScreen = () => {
             }}
           >
             <Image source={icon} style={s.icon}/>
+            <Text style={s.logoText}>장보고</Text>
           </View>
         </View>
       )}
@@ -91,6 +92,12 @@ const s = StyleSheet.create({
     width:40,
     height:40,
     borderRadius:20,
+  },
+  logoText:{
+    marginLeft:5,
+    fontSize:25,
+    fontWeight:"900",
+    color:colors.green
   },
   categoryContainer: {
     padding: 20,
