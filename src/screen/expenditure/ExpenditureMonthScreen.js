@@ -1,3 +1,6 @@
+
+
+
 import { Picker } from "@react-native-picker/picker";
 import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
@@ -14,7 +17,6 @@ const ExpenditureMonthScreen = () => {
   const [labels, setLabels] = useState([]);
   const [data, setData] = useState([]);
   useEffect(() => {
-    console.log(token);
     fetch(`${ROOT_API}/expenditure/expendmonth?year=${selectedYear}&month=${selectedMonth}`, {
       method: "GET",
       headers: {

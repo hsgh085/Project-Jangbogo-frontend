@@ -6,8 +6,8 @@ import { StyleSheet, View } from "react-native";
 import colors from "../../assets/colors/colors";
 import AlarmScreen from "../screen/AlarmScreen";
 import LatestMemoScreen from "../screen/LatestMemoScreen";
-import MypageMainScreen from "../screen/mypage/MypageMainScreen";
 import MainStackNavigation from "./MainStackNavigation";
+import MypageStackNavigation from "./MypageStackNavigation";
 
 const Tabs = createBottomTabNavigator();
 
@@ -29,7 +29,7 @@ const BottomTabNavigation = () => {
               );
             }
             return <MaterialIcons name="home-filled" size={25} color={colors.gray} />;
-          } else if (route.name === "MyPageMain") {
+          } else if (route.name === "MyPage") {
             if (focused) {
               return (
                 <View style={styles.icons}>
@@ -73,7 +73,7 @@ const BottomTabNavigation = () => {
           },
         }}
       />
-      <Tabs.Screen name="MyPageMain" component={MypageMainScreen} />
+      <Tabs.Screen name="MyPage" component={MypageStackNavigation} />
       <Tabs.Screen name="LatestMemo" component={LatestMemoScreen} />
       <Tabs.Screen name="Alarm" component={AlarmScreen} />
     </Tabs.Navigator>

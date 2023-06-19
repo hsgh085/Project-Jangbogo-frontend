@@ -10,17 +10,32 @@ import ripe from "../../assets/images/ButtonRipe.png";
 import theme from "../../assets/images/ButtonTheme.png";
 import price from "../../assets/images/ButtonPrice.png";
 import ref from "../../assets/images/ButtonRef.png";
+import icon from "../../assets/icon.png"
 import ButtonMain from "../components/ButtonMain";
 import HeaderMain from "../components/HeaderMain";
+import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 const { width } = Dimensions.get("window");
 
 const MainScreen = () => {
   const navigation = useNavigation();
   return (
     <View style={s.container}>
-      <HeaderMain>
-        <Text>메인로고</Text>
-      </HeaderMain>
+      <SafeAreaInsetsContext.Consumer>
+      {(insets) => (
+        <View style={{ paddingTop: insets.top }}>
+          <View
+            style={{
+              width: width,
+              flexDirection: "row",
+              alignItems: "center",
+              padding:10,
+            }}
+          >
+            <Image source={icon} style={s.icon}/>
+          </View>
+        </View>
+      )}
+    </SafeAreaInsetsContext.Consumer>
       <View>
         <Image source={banner1} />
       </View>
@@ -71,6 +86,11 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
+  },
+  icon:{
+    width:40,
+    height:40,
+    borderRadius:20,
   },
   categoryContainer: {
     padding: 20,
