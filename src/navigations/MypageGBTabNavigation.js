@@ -12,7 +12,7 @@ const MypageGBTabNavigation = () => {
     <>
       <View style={s.container}>
         <Header>
-          <Header.Title>공동구매 확인</Header.Title>
+          <Header.Title size={18}>공동구매 확인</Header.Title>
           <View />
         </Header>
       </View>
