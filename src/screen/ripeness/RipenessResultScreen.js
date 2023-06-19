@@ -7,6 +7,12 @@ import { useRoute } from "@react-navigation/native";
 const RipenessResultScreen = () => {
   const route = useRoute();
   const imageUri = route.params?.imageUri;
+  const ranks=['A등급','B등급','C등급','D등급','E등급']
+  const randomRank=(ranks)=>{
+    const random=Math.floor(Math.random()*ranks.length)
+    return ranks[random]
+  }
+  let rank=randomRank(ranks)
   return (
     <>
       <View style={s.title}>
@@ -22,7 +28,7 @@ const RipenessResultScreen = () => {
         <View style={s.imageContainer}>{imageUri && <Image source={{ uri: imageUri }} style={s.image} />}</View>
         <Text style={s.text}>아보카도의 후숙도는</Text>
         <View style={s.textRackContainer}>
-          <Text style={s.textRank}>A등급 </Text>
+          <Text style={s.textRank}>{rank} </Text>
           <Text style={s.text}>입니다.</Text>
         </View>
       </View>

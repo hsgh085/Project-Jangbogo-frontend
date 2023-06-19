@@ -17,7 +17,6 @@ const RipenessScreen = () => {
   const [galleryPermission, setGalleryPermission] = useState(null);
   const [imageUri, setImageUri] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [isClick, setIsClick] = useState(false);
   const handleClick = () => {
     setModalVisible(true);
   };
@@ -33,7 +32,6 @@ const RipenessScreen = () => {
     }
   };
   const handlePickImage = async () => {
-    setIsClick((prev) => !prev);
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -56,7 +54,7 @@ const RipenessScreen = () => {
   }
   useEffect(() => {
     permisionFunction();
-  }, [isClick]);
+  }, []);
   return (
     <>
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
