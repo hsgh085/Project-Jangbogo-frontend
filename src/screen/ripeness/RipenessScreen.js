@@ -28,7 +28,14 @@ const RipenessScreen = () => {
     setGalleryPermission(imagePermission.status === "granted");
 
     if (imagePermission.status !== "granted" && cameraPermission.status !== "granted") {
-      alert("권한을 허용한 유저만 사용할 수 있는 기능입니다.");
+      Alert.alert("", "권한을 허용한 사용자만 이용할 수 있는 기능입니다. 휴대폰 설정에서 수동으로 해당 앱에 대해 카메라 권한을 허용해주세요.", [
+        {
+          text: "확인",
+          onPress: () => {
+            navigation.goBack();
+          },
+        },
+      ]);
     }
   };
   const handlePickImage = async () => {
@@ -42,16 +49,16 @@ const RipenessScreen = () => {
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
       setModalVisible(false);
-      navigation.navigate("RipenessResult", { imageUri: result.assets[0].uri});
+      navigation.navigate("RipenessResult", { imageUri: result.assets[0].uri });
     }
   };
-  const toastReady=()=>{
+  const toastReady = () => {
     Alert.alert("", "해당 품목은 준비 중입니다.😊", [
       {
         text: "확인",
       },
     ]);
-  }
+  };
   useEffect(() => {
     permisionFunction();
   }, []);
@@ -170,7 +177,7 @@ const s = StyleSheet.create({
     flex: 1,
     padding: 20,
     paddingTop: 0,
-    paddingBottom:110,
+    paddingBottom: 110,
     backgroundColor: colors.white,
   },
   textContainer: {

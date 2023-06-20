@@ -1,26 +1,24 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet, View, Text, TextInput, ScrollView,
-  Pressable, FlatList, TouchableOpacity, Platform, KeyboardAvoidingView,
-} from 'react-native';
-import Header from '../../components/Header/Header';
-
+import { Alert, StyleSheet, View, Text, TextInput, ScrollView, Pressable, FlatList, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
+import Header from "../../components/Header/Header";
+import colors from "../../../assets/colors/colors";
+import * as Location from "expo-location";
 
 const GENDER = [
   {
     id: 0,
-    title: '남자',
+    title: "남자",
   },
   {
     id: 1,
-    title: '여자',
+    title: "여자",
   },
 ];
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
-    <Text style={[{ fontSize: 18, fontWeight: 'bold' }, { color: textColor }]}>{item.title}</Text>
+    <Text style={[{ fontSize: 18, fontWeight: "bold" }, { color: textColor }]}>{item.title}</Text>
   </TouchableOpacity>
 );
 
@@ -29,42 +27,47 @@ const SignUpForm = () => {
   const route = useRoute();
 
   const phoneNumber = route.params?.hp;
-  const [testhp, setTesthp] = useState("01098769876");
   const [NickName, setNickName] = useState("");
   const [editable, setEditable] = useState(true);
   const [selectedGender, setSelectedGender] = useState();
   const [Password, setPassword] = useState("");
   const [chkPassword, setchkPassword] = useState("");
+  const [location, setLocation] = useState(null);
 
   /** 에러 메세지 상태 변수 */
   const [errorMessage, setErrorMessage] = useState("");
   const [errorPMessage, setPErrorMessage] = useState("");
-  const [ErrorColor, setErrorColor] = useState('black');
+  const [ErrorColor, setErrorColor] = useState("black");
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedGender ? '#00FF9D' : '#fff';
-    const color = item.id === selectedGender ? 'white' : 'black';
+    const backgroundColor = item.id === selectedGender ? "#00FF9D" : "#fff";
+    const color = item.id === selectedGender ? "white" : "black";
 
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedGender(item.id)}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
-    );
+    return <Item item={item} onPress={() => setSelectedGender(item.id)} backgroundColor={backgroundColor} textColor={color} />;
   };
 
+  // 위치 찾기 클릭
+  const handleClickLocation = async() => {
+    const {granted} = await Location.requestForegroundPermissionsAsync();
+    if (!granted) {
+      Alert.alert("", "권한을 허용한 사용자만 이용할 수 있는 기능입니다. 휴대폰 설정에서 수동으로 해당 앱에 대해 위치 권한을 허용해주세요.", [
+        {
+          text: "확인",
+        },
+      ]);
+    } else {
+      const {coords:{latitude,longitude}} = await Location.getCurrentPositionAsync({ accuracy: 5 });
+      const loc=await Location.reverseGeocodeAsync({latitude,longitude},{useGoogleMaps:false})
+      const address=loc[0].region+" "+loc[0].city+" "+loc[0].street
+      setLocation(address)
+    }
+  };
   /** 닉네임 중복검사 */
   const checkNickname = async (nickname) => {
     //console.log("닉네임 확인: ", nickname)
     if (nickname !== "") {
       try {
-        const response = await fetch(
-          `http://3.34.24.220/auth/checknickname?nickname=${encodeURIComponent(
-            nickname
-          )}`
-        );
+        const response = await fetch(`http://3.34.24.220/auth/checknickname?nickname=${encodeURIComponent(nickname)}`);
 
         if (response.status === 200) {
           // 성공했을 때 처리
@@ -122,7 +125,7 @@ const SignUpForm = () => {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   useEffect(() => {
-    if (!editable && passwordBorderColor === "blue" && isPasswordSame) {
+    if (!editable && passwordBorderColor === "blue" && isPasswordSame && location) {
       setIsButtonEnabled(true);
     } else {
       setIsButtonEnabled(false);
@@ -132,27 +135,26 @@ const SignUpForm = () => {
   /** 회원가입 백엔드 */
   const signUp = async () => {
     try {
-      const response = await fetch('http://3.34.24.220/auth/signup', {
-        method: 'POST',
+      const response = await fetch("http://3.34.24.220/auth/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           nickname: NickName,
-          //hp: testhp,
           hp: phoneNumber,
           pw: Password,
           gender: selectedGender,
-          location: '강원도 원주시', // 이 부분을 필요한 값으로 바꾸세요.
+          location: location,
         }),
       });
-  
+
       if (response.status === 200) {
         const message = await response.text();
         alert(message);
-        navigation.navigate('SignIn');
+        navigation.navigate("SignIn");
       } else {
-        throw new Error('잘못된 요청');
+        throw new Error("잘못된 요청");
       }
     } catch (error) {
       // 에러 처리
@@ -161,13 +163,12 @@ const SignUpForm = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    style={{flex: 1, paddingBottom: 50}}
-    >
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
       {/* 회원가입 헤더 */}
       <Header>
-        <Header.Title size={18} style={styles.Header}>회원가입</Header.Title>
+        <Header.Title size={18} style={styles.Header}>
+          회원가입
+        </Header.Title>
         <View></View>
       </Header>
       <View style={styles.container}>
@@ -175,7 +176,7 @@ const SignUpForm = () => {
         <View style={styles.container_title}>
           <Text style={styles.h1}>안녕하세요!👋{"\n"}회원가입을 진행합니다</Text>
         </View>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           {/* 회원가입 정보 번호 입력 */}
           <View style={styles.input_fields}>
             {/* 휴대폰 번호 */}
@@ -191,20 +192,24 @@ const SignUpForm = () => {
                 <Text style={{ borderColor: ErrorColor }}>{errorMessage}</Text>
               </View>
               <View style={styles.horizon}>
-                <TextInput style={styles.input}
+                <TextInput
+                  style={styles.input}
                   width={170}
                   placeholder="닉네임 입력"
                   maxLength={10}
                   value={NickName}
-                  onChangeText={(text) => { setNickName(text); //console.log(text)
+                  onChangeText={(text) => {
+                    setNickName(text); //console.log(text)
                   }}
                   editable={editable}
                 />
-                <Pressable style={styles._button}
+                <Pressable
+                  style={styles._button}
                   borderWidth={1}
                   onPress={() => {
                     checkNickname(NickName);
-                  }}>
+                  }}
+                >
                   <Text style={styles.h2}>중복확인</Text>
                 </Pressable>
               </View>
@@ -213,23 +218,16 @@ const SignUpForm = () => {
             <View style={styles.label_fields}>
               <Text>성별</Text>
             </View>
-            <FlatList
-              data={GENDER}
-              renderItem={renderItem}
-              keyExtractor={item => item.id}
-              extraData={selectedGender}
-              horizontal
-            />
+            <FlatList data={GENDER} renderItem={renderItem} keyExtractor={(item) => item.id} extraData={selectedGender} horizontal />
             {/* 비밀번호 입력 */}
             <View>
               <View style={styles.label_fields}>
                 <Text style={styles.label}>비밀번호</Text>
-                {!isValidPassword(Password) && Password !== "" && (
-                  <Text style={styles.error}>잘못된 비밀번호입니다.</Text>
-                )}
+                {!isValidPassword(Password) && Password !== "" && <Text style={styles.error}>잘못된 비밀번호입니다.</Text>}
               </View>
               <Text style={styles.innertext}>8~12자리, 대문자, 특수문자 포함</Text>
-              <TextInput style={[styles.input, { borderColor: passwordBorderColor }]}
+              <TextInput
+                style={[styles.input, { borderColor: passwordBorderColor }]}
                 placeholder="확인 비밀번호 입력"
                 maxLength={15}
                 value={Password}
@@ -242,7 +240,8 @@ const SignUpForm = () => {
                 <Text style={styles.label}>비밀번호 확인</Text>
                 {!isPasswordSame && <Text style={styles.error}>비밀번호가 다릅니다.</Text>}
               </View>
-              <TextInput style={[styles.input, { borderColor: chkPasswordBorderColor }]}
+              <TextInput
+                style={[styles.input, { borderColor: chkPasswordBorderColor }]}
                 placeholder="확인 비밀번호 입력"
                 maxLength={15}
                 value={chkPassword}
@@ -253,22 +252,10 @@ const SignUpForm = () => {
             <View>
               <View style={styles.label_fields}>
                 <Text>현재 위치</Text>
-                <Text style={{ borderColor: ErrorColor }}>{errorMessage}</Text>
               </View>
               <View style={styles.horizon}>
-                <TextInput style={styles.input}
-                  width={170}
-                  placeholder="강원도 원주시"
-                  value={NickName}
-                  onChangeText={(text) => { setNickName(text); //console.log(text)
-                  }}
-                  editable={false}
-                />
-                <Pressable style={styles._button}
-                  borderWidth={1}
-                  onPress={() => {
-                    checkNickname(NickName);
-                  }}>
+                <View style={styles.input}>{location ? <Text style={styles.textLoc}>{location}</Text> : <Text style={styles.textLoc}>위치 찾기를 눌러주세요</Text>}</View>
+                <Pressable style={styles._button} borderWidth={1} onPress={handleClickLocation}>
                   <Text style={styles.h2}>위치찾기</Text>
                 </Pressable>
               </View>
@@ -276,26 +263,27 @@ const SignUpForm = () => {
           </View>
           {/* 회원가입 버튼 */}
           <View>
-            <Pressable style={[styles._button, {backgroundColor: isButtonEnabled ? "#00FF9D" : "#747474",},]}
+            <Pressable
+              style={[styles._button, { backgroundColor: isButtonEnabled ? "#00FF9D" : "#747474" }]}
               disabled={!isButtonEnabled}
-              onPress={() => {signUp()
-              }}>
+              onPress={() => {
+                signUp();
+              }}
+            >
               <Text style={styles.h2}>회원가입</Text>
             </Pressable>
           </View>
         </ScrollView>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     marginTop: 10,
     marginHorizontal: 30,
-    // marginLeft: 60,
-    // marginRight: 60,
   },
   container_title: {
     marginBottom: 10,
@@ -315,18 +303,18 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   highlight: {
-    color: '#00FF9D',
+    color: "#00FF9D",
   },
   error: {
-    color: 'red',
+    color: "red",
   },
   label_fields: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 2,
   },
   horizon: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   item: {
     alignItems: "center",
@@ -343,7 +331,7 @@ const styles = StyleSheet.create({
   },
   fixinput: {
     //backgroundColor: '#DEDEDE',
-    color: '#8C8C8C',
+    color: "#8C8C8C",
   },
   input: {
     height: 60,
@@ -366,14 +354,16 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   _button: {
-    backgroundColor: '#00FF9D',
-    alignItems: 'center',
+    backgroundColor: "#00FF9D",
+    alignItems: "center",
     padding: 20,
     borderRadius: 16,
     marginBottom: 20,
   },
-
+  textLoc: {
+    fontSize: 18,
+    color: colors.gray,
+  },
 });
-
 
 export default SignUpForm;
