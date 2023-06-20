@@ -33,7 +33,6 @@ const SignUpForm = () => {
   const [Password, setPassword] = useState("");
   const [chkPassword, setchkPassword] = useState("");
   const [location, setLocation] = useState(null);
-  const [ok, setOk] = useState(false);
 
   /** 에러 메세지 상태 변수 */
   const [errorMessage, setErrorMessage] = useState("");
@@ -46,29 +45,21 @@ const SignUpForm = () => {
 
     return <Item item={item} onPress={() => setSelectedGender(item.id)} backgroundColor={backgroundColor} textColor={color} />;
   };
-  const ask = async () => {
+
+  // 위치 찾기 클릭
+  const handleClickLocation = async() => {
     const {granted} = await Location.requestForegroundPermissionsAsync();
     if (!granted) {
       Alert.alert("", "권한을 허용한 사용자만 이용할 수 있는 기능입니다. 휴대폰 설정에서 수동으로 해당 앱에 대해 위치 권한을 허용해주세요.", [
         {
           text: "확인",
-          onPress: () => {
-            // navigation.goBack();
-          },
         },
       ]);
     } else {
-      setOk(true)
-      const location = await Location.getCurrentPositionAsync({ accuracy: 5 });
-      console.log(location);
-    }
-  };
-  // 위치 찾기 클릭
-  const handleClickLocation = () => {
-    if (ok) {
-      console.log(ok);
-    } else {
-      ask();
+      const {coords:{latitude,longitude}} = await Location.getCurrentPositionAsync({ accuracy: 5 });
+      const loc=await Location.reverseGeocodeAsync({latitude,longitude},{useGoogleMaps:false})
+      const address=loc[0].region+" "+loc[0].city+" "+loc[0].street
+      setLocation(address)
     }
   };
   /** 닉네임 중복검사 */
@@ -134,7 +125,7 @@ const SignUpForm = () => {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   useEffect(() => {
-    if (!editable && passwordBorderColor === "blue" && isPasswordSame) {
+    if (!editable && passwordBorderColor === "blue" && isPasswordSame && location) {
       setIsButtonEnabled(true);
     } else {
       setIsButtonEnabled(false);
@@ -261,10 +252,9 @@ const SignUpForm = () => {
             <View>
               <View style={styles.label_fields}>
                 <Text>현재 위치</Text>
-                <Text style={{ borderColor: ErrorColor }}>{errorMessage}</Text>
               </View>
               <View style={styles.horizon}>
-                <View style={styles.input}>{location ? <Text>{location}</Text> : <Text style={styles.textLoc}>위치 찾기를 눌러주세요</Text>}</View>
+                <View style={styles.input}>{location ? <Text style={styles.textLoc}>{location}</Text> : <Text style={styles.textLoc}>위치 찾기를 눌러주세요</Text>}</View>
                 <Pressable style={styles._button} borderWidth={1} onPress={handleClickLocation}>
                   <Text style={styles.h2}>위치찾기</Text>
                 </Pressable>
