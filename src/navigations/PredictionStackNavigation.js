@@ -17,7 +17,7 @@ const PredictionStackNavigation = () => {
       }}
     >
       <Stack.Screen name="PredictionMain" component={PredictionScreen} />
-      <Stack.Screen name="Loading" component={LoadingScreen} />
+      {/* <Stack.Screen name="Loading" component={LoadingScreen} /> */}
       <Stack.Screen name="PredictionResult" component={PredictionResultScreen} />
     </Stack.Navigator>
   );

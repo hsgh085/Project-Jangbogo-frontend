@@ -132,6 +132,7 @@ const OnboardingScreen = (props) => {
                     >
                         <Text style={styles.textStyle}>회원가입폼</Text>
                     </Pressable>
+                    
                 </View>
             </View>
         </SafeAreaProvider>
