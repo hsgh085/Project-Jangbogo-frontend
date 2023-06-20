@@ -1,12 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useContext } from "react";
 import { Alert, StyleSheet, Pressable, View, Text } from "react-native";
 import Header from "../../components/Header/Header";
 import colors from "../../../assets/colors/colors";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { TokenContext } from "../../contexts/TokenContext";
+import * as SecureStore from "expo-secure-store";
 
 const MypageMainScreen = () => {
   const navigation = useNavigation();
+  const [token, setToken] = useContext(TokenContext);
   const handleClickLogout = () => {
     Alert.alert(
       "주의",
@@ -14,7 +17,13 @@ const MypageMainScreen = () => {
       [
         {
           text: "예",
-          onPress: () => {
+          // 토큰 삭제
+          onPress: async () => {
+            console.log(token);
+            await SecureStore.deleteItemAsync("token").then(() => {
+              setToken(null);
+              navigation.navigate("Onboarding");
+            });
             // fetch(`${ROOT_API}/memo/deletememo?memoId=${route.params?.id}`, {
             //   method: "DELETE",
             //   headers: {
@@ -52,7 +61,13 @@ const MypageMainScreen = () => {
       [
         {
           text: "예",
-          onPress: () => {
+          // 토큰 삭제
+          onPress: async () => {
+            console.log(token);
+            await SecureStore.deleteItemAsync("token").then(() => {
+              setToken(null);
+              navigation.navigate("Onboarding");
+            });
             // fetch(`${ROOT_API}/memo/deletememo?memoId=${route.params?.id}`, {
             //   method: "DELETE",
             //   headers: {
