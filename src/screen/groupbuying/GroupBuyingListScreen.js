@@ -5,7 +5,7 @@ import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } 
 import colors from "../../../assets/colors/colors";
 import banner from "../../../assets/images/GroupBuyingBanner.png";
 import HeaderMain from "../../components/HeaderMain";
-import { ROOT_API, TOKEN } from "../../constants/api";
+import { ROOT_API } from "../../constants/api";
 import { TokenContext } from "../../contexts/TokenContext";
 import EndTimer from "./_com/EndTimer";
 
@@ -24,8 +24,7 @@ const GroupBuyingListScreen = () => {
     fetch(`${ROOT_API}/grouppurchase/searchgplist?name=${searchName}`, {
       method: "GET",
       headers: {
-        //TODO: 테스트 끝낸 후 token으로 바꾸기
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
@@ -41,8 +40,7 @@ const GroupBuyingListScreen = () => {
     fetch(`${ROOT_API}/grouppurchase/gplist`, {
       method: "GET",
       headers: {
-        //TODO: 테스트 끝낸 후 token으로 바꾸기
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())

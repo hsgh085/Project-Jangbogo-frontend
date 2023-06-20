@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Pressable, Alert, TouchableOpacity, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { useContext, useEffect, useState } from "react";
+import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import Header from "../../components/Header/Header";
 import SingleLineInput from "../../components/SingleLineInput";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { ROOT_API, TOKEN } from "../../constants/api";
+import { ROOT_API } from "../../constants/api";
+import { TokenContext } from "../../contexts/TokenContext";
 
 const GroupBuyingPostScreen = () => {
+  const [token, setToken] = useContext(TokenContext);
   const navigation = useNavigation();
   const route = useRoute();
   const isUpdate = route.params?.type === "update";
@@ -41,8 +43,7 @@ const GroupBuyingPostScreen = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          //TODO: 테스트 후 토큰 바꾸기
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(gb),
       })
@@ -70,8 +71,7 @@ const GroupBuyingPostScreen = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          //TODO: 테스트 후 토큰 바꾸기
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(gb),
       })
@@ -92,7 +92,7 @@ const GroupBuyingPostScreen = () => {
   };
   useEffect(() => {
     const gb = route.params?.gb;
-    if(isUpdate) {
+    if (isUpdate) {
       setGB({
         name: gb.name,
         kakaoadd: gb.kakaoadd,
@@ -104,7 +104,6 @@ const GroupBuyingPostScreen = () => {
       });
       setId(gb.gpId);
     }
-      
   }, []);
   return (
     <>
