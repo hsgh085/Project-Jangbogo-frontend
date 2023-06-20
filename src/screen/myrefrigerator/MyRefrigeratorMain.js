@@ -4,10 +4,12 @@ import {
     View, Text, Image, StyleSheet,
     Pressable, Button
 } from "react-native";
-import Header from '../../components/Header/Header';
-import * as WebBrowser from 'expo-web-browser';
-import ButtonRef from "../../components/ButtonRef";
 
+import Header from '../../components/Header/Header';
+
+import * as WebBrowser from 'expo-web-browser';
+
+import ButtonRef from "../../components/ButtonRef";
 import button1 from "../../../assets/images/Button_Ref.png";
 import button2 from "../../../assets/images/Button_Ref2.png";
 
@@ -31,7 +33,8 @@ const MyRefrigeratorMain = () => {
                 source={button1}
                 text="바코드 스캔하기"
                 onPress={() => {
-                  navigation.navigate("BarcordScanner");
+                    navigation.navigate("BarcordTest");
+                //   navigation.navigate("BarcordScanner");
                 }}
                 />
                 <ButtonRef 

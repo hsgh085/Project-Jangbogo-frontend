@@ -67,11 +67,8 @@ const Prediction = () => {
                 <Pressable onPress={() => handleImageClick("양파")}>
                     <Image source={item3} style={styles.imageStyle} />
                 </Pressable>
-                <Pressable onPress={() => {navigation.navigate("Loading");}}>
+                {/* <Pressable onPress={() => {navigation.navigate("Loading");}}>
                     <Image source={item3} style={styles.imageStyle} />
-                </Pressable>
-                {/* <Pressable onPress={() => navigation.navigate('Loading')}>
-                    <Text>다음페이지</Text>
                 </Pressable> */}
             </ScrollView>
         </View>
