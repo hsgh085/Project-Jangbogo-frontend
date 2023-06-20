@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 import colors from "../../../assets/colors/colors";
-import { ROOT_API, TOKEN } from "../../constants/api";
-import { TokenContext } from '../../contexts/TokenContext';
+import { ROOT_API } from "../../constants/api";
+import { TokenContext } from "../../contexts/TokenContext";
 
 const ExpenditureYearScreen = () => {
   const [token, setToken] = useContext(TokenContext);
@@ -15,8 +15,7 @@ const ExpenditureYearScreen = () => {
     fetch(`${ROOT_API}/expenditure/expendyear?year=${selectedYear}`, {
       method: "GET",
       headers: {
-        //TODO: change to token
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())

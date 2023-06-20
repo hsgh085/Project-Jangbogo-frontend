@@ -1,12 +1,14 @@
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import Header from "../../components/Header/Header";
-import { ROOT_API, TOKEN } from "../../constants/api";
+import { ROOT_API } from "../../constants/api";
+import { TokenContext } from "../../contexts/TokenContext";
 
 const GroupBuyingDetailScreen = () => {
+  const [token, setToken] = useContext(TokenContext);
   const isFocused = useIsFocused();
   const route = useRoute();
   const id = route.params?.id;
@@ -24,8 +26,7 @@ const GroupBuyingDetailScreen = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        //TODO: 테스트 후 토큰 바꾸기
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(() => {
@@ -42,12 +43,11 @@ const GroupBuyingDetailScreen = () => {
         console.log(err);
       });
   };
-  const handleClickCancle=()=>{
+  const handleClickCancle = () => {
     fetch(`${ROOT_API}/grouppurchase/dparticipategp?gpId=${id}`, {
       method: "DELETE",
       headers: {
-        //TODO: 테스트 끝낸 후 token으로 바꾸기
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(() => {
@@ -55,7 +55,7 @@ const GroupBuyingDetailScreen = () => {
           {
             text: "확인",
             onPress: () => {
-              navigation.goBack()
+              navigation.goBack();
             },
           },
         ]);
@@ -63,29 +63,27 @@ const GroupBuyingDetailScreen = () => {
       .catch((error) => {
         console.log(error);
       });
-  }
-  const handleClickDelete=()=>{
+  };
+  const handleClickDelete = () => {
     fetch(`${ROOT_API}/grouppurchase/deletegp?gpId=${id}`, {
       method: "DELETE",
       headers: {
-        //TODO: 테스트 끝낸 후 token으로 바꾸기
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(() => {
-        toast("공동구매 글이 성공적으로 삭제되었습니다😊")
-        navigation.navigate("GBList")
+        toast("공동구매 글이 성공적으로 삭제되었습니다😊");
+        navigation.navigate("GBList");
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
   useEffect(() => {
     fetch(`${ROOT_API}/grouppurchase/gpitem?gpId=${id}`, {
       method: "GET",
       headers: {
-        //TODO: 테스트 끝낸 후 token으로 바꾸기
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())

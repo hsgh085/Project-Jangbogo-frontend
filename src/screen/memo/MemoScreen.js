@@ -7,8 +7,8 @@ import Header from "../../components/Header/Header";
 import ShoppingItem from "../../components/ShoppingItem";
 import SingleLineInput from "../../components/SingleLineInput";
 import Spacer from "../../components/Spacer";
-import { ROOT_API, TOKEN } from "../../constants/api";
-import { TokenContext } from '../../contexts/TokenContext';
+import { ROOT_API } from "../../constants/api";
+import { TokenContext } from "../../contexts/TokenContext";
 
 const MemoScreen = (props) => {
   const [token, setToken] = useContext(TokenContext);
@@ -75,8 +75,7 @@ const MemoScreen = (props) => {
             fetch(`${ROOT_API}/memo/deletememo?memoId=${route.params?.id}`, {
               method: "DELETE",
               headers: {
-                //TODO: change to token
-                Authorization: `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${token}`,
               },
             })
               .then(() => {
@@ -107,13 +106,12 @@ const MemoScreen = (props) => {
     if (shoppingList.length === 0) {
       toast("장보기 리스트를 추가해주세요😊");
     } else {
-      if(route.params?.type === "detail"){
+      if (route.params?.type === "detail") {
         fetch(`${ROOT_API}/memo/updatememo`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            //TODO: change to token
-            Authorization: `Bearer ${TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             memoId: route.params?.id,
@@ -136,14 +134,12 @@ const MemoScreen = (props) => {
           .catch((err) => {
             console.log(err);
           });
-      }
-      else{
+      } else {
         fetch(`${ROOT_API}/memo/creatememo`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            //TODO: change to token
-            Authorization: `Bearer ${TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             memoListName: memo.title,
@@ -179,8 +175,7 @@ const MemoScreen = (props) => {
       fetch(`${ROOT_API}/memo/memolist/memoitem?fk_memo_id=${route.params?.id}`, {
         method: "GET",
         headers: {
-          //TODO: change to token
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => res.json())
@@ -201,9 +196,13 @@ const MemoScreen = (props) => {
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <Header>
         <Header.Title size={18}>장보기 작성</Header.Title>
-        {route.params?.type === "detail" ? (<Pressable onPress={handleDeleteMemo}>
-          <FontAwesome5 name="trash" size={18} color={colors.red} />
-        </Pressable>):(<View/>)}
+        {route.params?.type === "detail" ? (
+          <Pressable onPress={handleDeleteMemo}>
+            <FontAwesome5 name="trash" size={18} color={colors.red} />
+          </Pressable>
+        ) : (
+          <View />
+        )}
       </Header>
       <View style={s.title}>
         <Text style={s.text1}>{memo.date}</Text>

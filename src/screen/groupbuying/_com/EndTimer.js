@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Text } from "react-native";
 import colors from "../../../../assets/colors/colors";
-import { ROOT_API, TOKEN } from "../../../constants/api";
+import { ROOT_API } from "../../../constants/api";
+import { TokenContext } from "../../../contexts/TokenContext";
 
 const EndTimer = (props) => {
   const now = new Date();
@@ -13,13 +14,13 @@ const EndTimer = (props) => {
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24) + days * 24; // 전체 일수에 따른 hours 계산
   const [timer, setTimer] = useState(diff);
   const [timeOut, setTimeOut] = useState(false);
+  const [token, setToken] = useContext(TokenContext);
 
   const handleTimeOut = useCallback(() => {
     fetch(`${ROOT_API}/grouppurchase/timeoutgp?gpId=${props.id}`, {
       method: "POST",
       headers: {
-        //TODO: 테스트 후 토큰 바꾸기
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(() => {
