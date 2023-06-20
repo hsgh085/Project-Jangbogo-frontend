@@ -1,8 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TextInput, ScrollView, Pressable, FlatList, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
+import { Alert, StyleSheet, View, Text, TextInput, ScrollView, Pressable, FlatList, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
 import Header from "../../components/Header/Header";
 import colors from "../../../assets/colors/colors";
+import * as Location from "expo-location";
 
 const GENDER = [
   {
@@ -26,12 +27,13 @@ const SignUpForm = () => {
   const route = useRoute();
 
   const phoneNumber = route.params?.hp;
-  const [testhp, setTesthp] = useState("01098769876");
   const [NickName, setNickName] = useState("");
   const [editable, setEditable] = useState(true);
   const [selectedGender, setSelectedGender] = useState();
   const [Password, setPassword] = useState("");
   const [chkPassword, setchkPassword] = useState("");
+  const [location, setLocation] = useState(null);
+  const [ok, setOk] = useState(false);
 
   /** 에러 메세지 상태 변수 */
   const [errorMessage, setErrorMessage] = useState("");
@@ -44,7 +46,31 @@ const SignUpForm = () => {
 
     return <Item item={item} onPress={() => setSelectedGender(item.id)} backgroundColor={backgroundColor} textColor={color} />;
   };
-
+  const ask = async () => {
+    const {granted} = await Location.requestForegroundPermissionsAsync();
+    if (!granted) {
+      Alert.alert("", "권한을 허용한 사용자만 이용할 수 있는 기능입니다. 휴대폰 설정에서 수동으로 해당 앱에 대해 위치 권한을 허용해주세요.", [
+        {
+          text: "확인",
+          onPress: () => {
+            // navigation.goBack();
+          },
+        },
+      ]);
+    } else {
+      setOk(true)
+      const location = await Location.getCurrentPositionAsync({ accuracy: 5 });
+      console.log(location);
+    }
+  };
+  // 위치 찾기 클릭
+  const handleClickLocation = () => {
+    if (ok) {
+      console.log(ok);
+    } else {
+      ask();
+    }
+  };
   /** 닉네임 중복검사 */
   const checkNickname = async (nickname) => {
     //console.log("닉네임 확인: ", nickname)
@@ -125,11 +151,10 @@ const SignUpForm = () => {
         },
         body: JSON.stringify({
           nickname: NickName,
-          //hp: testhp,
           hp: phoneNumber,
           pw: Password,
           gender: selectedGender,
-          location: "강원도 원주시", // 이 부분을 필요한 값으로 바꾸세요.
+          location: location,
         }),
       });
 
@@ -239,23 +264,8 @@ const SignUpForm = () => {
                 <Text style={{ borderColor: ErrorColor }}>{errorMessage}</Text>
               </View>
               <View style={styles.horizon}>
-                <TextInput
-                  style={styles.input}
-                  width={170}
-                  placeholder="강원도 원주시"
-                  value={NickName}
-                  onChangeText={(text) => {
-                    setNickName(text); //console.log(text)
-                  }}
-                  editable={false}
-                />
-                <Pressable
-                  style={styles._button}
-                  borderWidth={1}
-                  onPress={() => {
-                    console.log("위치찾기")
-                  }}
-                >
+                <View style={styles.input}>{location ? <Text>{location}</Text> : <Text style={styles.textLoc}>위치 찾기를 눌러주세요</Text>}</View>
+                <Pressable style={styles._button} borderWidth={1} onPress={handleClickLocation}>
                   <Text style={styles.h2}>위치찾기</Text>
                 </Pressable>
               </View>
@@ -281,7 +291,7 @@ const SignUpForm = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     marginTop: 10,
     marginHorizontal: 30,
   },
@@ -359,6 +369,10 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 16,
     marginBottom: 20,
+  },
+  textLoc: {
+    fontSize: 18,
+    color: colors.gray,
   },
 });
 
