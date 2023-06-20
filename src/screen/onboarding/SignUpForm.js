@@ -143,7 +143,7 @@ const SignUpForm = () => {
           hp: phoneNumber,
           pw: Password,
           gender: selectedGender,
-          location: '서울시 구로구', // 이 부분을 필요한 값으로 바꾸세요.
+          location: '강원도 원주시', // 이 부분을 필요한 값으로 바꾸세요.
         }),
       });
   
@@ -248,6 +248,30 @@ const SignUpForm = () => {
                 value={chkPassword}
                 onChangeText={(text) => setchkPassword(text)}
               />
+            </View>
+            {/* 위치 가져오기 */}
+            <View>
+              <View style={styles.label_fields}>
+                <Text>현재 위치</Text>
+                <Text style={{ borderColor: ErrorColor }}>{errorMessage}</Text>
+              </View>
+              <View style={styles.horizon}>
+                <TextInput style={styles.input}
+                  width={170}
+                  placeholder="강원도 원주시"
+                  value={NickName}
+                  onChangeText={(text) => { setNickName(text); //console.log(text)
+                  }}
+                  editable={false}
+                />
+                <Pressable style={styles._button}
+                  borderWidth={1}
+                  onPress={() => {
+                    checkNickname(NickName);
+                  }}>
+                  <Text style={styles.h2}>위치찾기</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
           {/* 회원가입 버튼 */}

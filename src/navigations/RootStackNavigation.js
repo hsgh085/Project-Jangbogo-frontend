@@ -5,6 +5,7 @@ import BottomTabNavigation from "./BottomTabNavigation";
 import SignStackNavigation from "./SignStackNavigation";
 import CameraScreen from '../screen/ripeness/CameraScreen';
 import GroupBuyingPostScreen from '../screen/groupbuying/GroupBuyingPostScreen';
+import LoadingScreen from '../screen/prediction/Loading';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ const RootStackNavigation = () => {
       <Stack.Screen name="Memo" component={MemoScreen} /> 
       <Stack.Screen name="Camera" component={CameraScreen}/>
       <Stack.Screen name="GBPost" component={GroupBuyingPostScreen}/>
+      <Stack.Screen name="Loading" component={LoadingScreen} />
     </Stack.Navigator>
   );
 };
