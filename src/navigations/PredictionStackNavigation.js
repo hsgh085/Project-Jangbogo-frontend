@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import PredictionScreen from "../screen/prediction/Prediction";
-import LoadingScreen from "../screen/prediction/Loading";
+// import LoadingScreen from "../screen/prediction/Loading";
 import PredictionResultScreen from "../screen/prediction/PredictionResult";
 
 
