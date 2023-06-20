@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from '../../components/Header/Header';
 import Verification from "./Verification";
 import { TokenContext } from '../../contexts/TokenContext';
+import * as SecureStore from 'expo-secure-store';
 
 const SignIn = () => {
   const navigation = useNavigation();
@@ -30,6 +31,8 @@ const SignIn = () => {
         if (responseBody.loginSucess) {
           // 로그인 성공 시 인증 토큰 저장 및 페이지 이동
           setToken(responseBody.token);
+          await SecureStore.setItemAsync("token", responseBody.token)
+          console.log(responseBody.token);
           navigation.navigate("BottomTab")
           //navigation.navigate("Verification", { token: token }); // 필요하다면 다른 페이지로 이동하세요
         } else {

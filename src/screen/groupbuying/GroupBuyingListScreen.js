@@ -1,13 +1,13 @@
 import { Feather, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import colors from "../../../assets/colors/colors";
 import banner from "../../../assets/images/GroupBuyingBanner.png";
-import EndTimer from "./_com/EndTimer";
 import HeaderMain from "../../components/HeaderMain";
 import { ROOT_API, TOKEN } from "../../constants/api";
 import { TokenContext } from "../../contexts/TokenContext";
+import EndTimer from "./_com/EndTimer";
 
 const GroupBuyingListScreen = () => {
   const isFocused = useIsFocused();
@@ -16,7 +16,7 @@ const GroupBuyingListScreen = () => {
   const [place, setPlace] = useState("");
   const [searchName, setSearchName] = useState("");
   const [gbList, setGBList] = useState([]);
-  const [render,setRender]=useState(false);
+  const [render, setRender] = useState(false);
   const handleClickPost = () => {
     navigation.navigate("GBPost", { place: place });
   };
@@ -53,7 +53,7 @@ const GroupBuyingListScreen = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [isFocused,render]);
+  }, [isFocused, render]);
   return (
     <>
       <View style={s.container}>
@@ -110,7 +110,7 @@ const GroupBuyingListScreen = () => {
                     </View>
                     <View style={{ flexDirection: "row" }}>
                       <Text style={s.infoText1}>마감까지</Text>
-                      <EndTimer id={item.id} endTime={item.endTime} setRender={setRender}/>
+                      <EndTimer id={item.id} endTime={item.endTime} setRender={setRender} />
                     </View>
                   </View>
                   <TouchableOpacity
