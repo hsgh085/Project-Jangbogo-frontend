@@ -26,7 +26,8 @@ const SignUpForm = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const phoneNumber = route.params?.hp;
+  // const phoneNumber = route.params?.hp;
+  const phoneNumber="01056917586"
   const [NickName, setNickName] = useState("");
   const [editable, setEditable] = useState(true);
   const [selectedGender, setSelectedGender] = useState();
@@ -62,6 +63,9 @@ const SignUpForm = () => {
       setLocation(address)
     }
   };
+  useEffect(()=>{
+
+  },[location,errorMessage])
   /** 닉네임 중복검사 */
   const checkNickname = async (nickname) => {
     //console.log("닉네임 확인: ", nickname)
@@ -125,12 +129,12 @@ const SignUpForm = () => {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   useEffect(() => {
-    if (!editable && passwordBorderColor === "blue" && isPasswordSame && location) {
+    if (!editable && passwordBorderColor === "blue" && isPasswordSame && location!==null) {
       setIsButtonEnabled(true);
     } else {
       setIsButtonEnabled(false);
     }
-  }, [editable, passwordBorderColor, isPasswordSame]);
+  }, [editable, passwordBorderColor, isPasswordSame,location]);
 
   /** 회원가입 백엔드 */
   const signUp = async () => {
