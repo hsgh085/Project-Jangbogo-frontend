@@ -6,6 +6,8 @@ import colors from "../../../assets/colors/colors";
 import Header from "../../components/Header/Header";
 import { ROOT_API } from "../../constants/api";
 import { TokenContext } from "../../contexts/TokenContext";
+import * as WebBrowser from "expo-web-browser";
+import { Pressable } from 'react-native';
 
 const GroupBuyingDetailScreen = () => {
   const [token, setToken] = useContext(TokenContext);
@@ -14,8 +16,20 @@ const GroupBuyingDetailScreen = () => {
   const id = route.params?.id;
   const type = route.params?.type;
   const navigation = useNavigation();
-  const [gb, setGB] = useState({
-  });
+  const [gb, setGB] = useState({});
+  const openWebPage = async () => {
+    try {
+      await WebBrowser.openBrowserAsync(gb.kakaoadd);
+      // 성공적으로 링크를 열었을 때 수행할 작업
+    } catch (error) {
+      // 잘못된 링크에 대한 에러 처리
+      Alert.alert("", "올바르지 않은 링크입니다🥲", [
+        {
+          text: "확인",
+        },
+      ]);
+    }
+  };
   const toast = (message) => {
     Alert.alert("", `${message}`, [
       {
@@ -92,7 +106,6 @@ const GroupBuyingDetailScreen = () => {
         .then((res) => res.json())
         .then((data) => {
           setGB(data);
-          // setGB({...gb,["authorization"]:3})
         })
         .catch((error) => {
           console.log(error);
@@ -138,6 +151,15 @@ const GroupBuyingDetailScreen = () => {
               </ScrollView>
             </View>
             <View>
+              {type === "alarm" && (
+                <Pressable onPress={openWebPage}>
+                  <View style={{flexDirection:"row"}}>
+                  <Ionicons name="chatbubble-sharp" size={20} color={colors.greenLL} />
+                    <Text style={[s.informText, {color:colors.greenLL}]}>카카오톡 오픈채팅 링크 바로가기</Text>
+                  </View>
+                  <Text style={[s.informText, {marginLeft:27, marginBottom:10, color:colors.greenLL}]}>{gb.kakaoadd}</Text>
+                </Pressable>
+              )}
               <View style={s.inform}>
                 <Ionicons name="person" size={20} color={colors.white} />
                 <Text style={s.informText}>공동구매 인원</Text>
@@ -159,12 +181,12 @@ const GroupBuyingDetailScreen = () => {
                   <Text>{gb.content === "" ? "상세 내용이 없습니다." : gb.content}</Text>
                 </ScrollView>
               </View>
-              {gb.authorization === null && (
+              {type === undefined && gb.authorization === null && (
                 <TouchableOpacity style={s.btnContainer} onPress={handleClickParticipate}>
                   <Text>참여하기</Text>
                 </TouchableOpacity>
               )}
-              {gb.authorization === 0 && (
+              {type === undefined && gb.authorization === 0 && (
                 <>
                   <TouchableOpacity
                     style={s.btnContainer}
@@ -179,7 +201,7 @@ const GroupBuyingDetailScreen = () => {
                   </TouchableOpacity>
                 </>
               )}
-              {gb.authorization === 1 && (
+              {type === undefined && gb.authorization === 1 && (
                 <TouchableOpacity style={s.btnContainer} onPress={handleClickCancle}>
                   <Text>참여취소</Text>
                 </TouchableOpacity>
