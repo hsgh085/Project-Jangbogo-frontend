@@ -85,6 +85,7 @@ const SignInWCodeNum = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:"white",
     width: 250,
     marginTop: 100,
     marginLeft: 50,
