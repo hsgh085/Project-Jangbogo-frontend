@@ -1,5 +1,6 @@
+import { TokenContext } from "../../contexts/TokenContext";
 import { useNavigation } from "@react-navigation/native";
-import React from 'react'
+import React, {useContext,} from 'react'
 import {
     View, Text, Image, StyleSheet,
     Pressable, Button
@@ -15,6 +16,7 @@ import button2 from "../../../assets/images/Button_Ref2.png";
 
 const MyRefrigeratorMain = () => {
     const navigation = useNavigation();
+    const [token, setToken] = useContext(TokenContext);
 
     const openWebPage = async () => {
         const result = await WebBrowser.openBrowserAsync('https://wrtn.ai/store/details/646a0a4aecdacbf9742d91a9');
