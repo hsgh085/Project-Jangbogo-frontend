@@ -1,56 +1,69 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Header from '../../components/Header/Header';
+import { StyleSheet, View, Text, TextInput, Pressable, Alert } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import Header from "../../components/Header/Header";
 import Verification from "./Verification";
-import { TokenContext } from '../../contexts/TokenContext';
-import * as SecureStore from 'expo-secure-store';
+import { TokenContext } from "../../contexts/TokenContext";
+import * as SecureStore from "expo-secure-store";
 
 const SignIn = () => {
   const navigation = useNavigation();
-  const[token, setToken]=useContext(TokenContext);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
+  const [token, setToken] = useContext(TokenContext);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
 
   /** 백엔드와 통신하여 로그인 하는 함수 */
   const signin = async () => {
     // console.log("phoneNumber 값: ", phoneNumber);
     try {
-      const response = await fetch(
-        'http://3.34.24.220/auth/signin',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ hp: phoneNumber, pw: password, }),
-        }
-      );
+      const response = await fetch("http://3.34.24.220/auth/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hp: phoneNumber, pw: password }),
+      });
 
       if (response.status === 200) {
         const responseBody = await response.json();
         if (responseBody.loginSucess) {
           // 로그인 성공 시 인증 토큰 저장 및 페이지 이동
           setToken(responseBody.token);
-          await SecureStore.setItemAsync("token", responseBody.token)
+          await SecureStore.setItemAsync("token", responseBody.token);
           console.log(responseBody.token);
-          navigation.navigate("BottomTab")
+          navigation.navigate("BottomTab");
           //navigation.navigate("Verification", { token: token }); // 필요하다면 다른 페이지로 이동하세요
         } else {
-          console.error('Error logging in: ', response.status);
+          // console.error("Error logging in: ", response.status);
+          // Alert.alert("", "0올바르지 않은 정보입니다. 다시 입력해주세요.", [
+          //   {
+          //     text: "확인",
+          //   },
+          // ]);
         }
       } else {
-        console.error('Error logging in: ', response.status);
+        Alert.alert("", "올바르지 않은 정보입니다. 다시 입력해주세요.", [
+          {
+            text: "확인",
+          },
+        ]);
       }
     } catch (error) {
-      console.error('Error logging in:', error);
+      // console.error("Error logging in:", error);
+      // Alert.alert("", "2올바르지 않은 정보입니다. 다시 입력해주세요.", [
+      //   {
+      //     text: "확인",
+      //   },
+      // ]);
     }
   };
 
   return (
-    <View>
+    <View style={{flex:1, backgroundColor:"white"}}>
       {/* 회원가입 헤더 */}
       <Header>
-        <Header.Title size={18} style={styles.Header}>로그인</Header.Title>
+        <Header.Title size={18} style={styles.Header}>
+          로그인
+        </Header.Title>
         <View></View>
       </Header>
       <View style={styles.container}>
@@ -63,12 +76,16 @@ const SignIn = () => {
           <View style={styles.label_fields}>
             <Text style={styles.label}>휴대폰 번호</Text>
           </View>
-          <TextInput style={styles.input}
+          <TextInput
+            style={styles.input}
             keyboardType="numeric"
             maxLength={11}
-            placeholder='휴대폰 번호 입력'
+            placeholder="휴대폰 번호 입력"
             value={phoneNumber}
-            onChangeText={(text) => { setPhoneNumber(text); }} />
+            onChangeText={(text) => {
+              setPhoneNumber(text);
+            }}
+          />
         </View>
         {/* 비밀번호 입력 */}
         <View>
@@ -76,12 +93,7 @@ const SignIn = () => {
             <Text style={styles.label}>비밀번호</Text>
           </View>
           <Text style={styles.innertext}>8~12자리, 대문자, 특수문자 포함</Text>
-          <TextInput style={[styles.input,]}
-            placeholder="비밀번호 입력"
-            maxLength={15}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
+          <TextInput style={[styles.input]} placeholder="비밀번호 입력" maxLength={15} value={password} onChangeText={(text) => setPassword(text)} />
         </View>
         {/* 로그인 버튼 */}
         <View>
@@ -131,19 +143,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   label_fields: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 2,
   },
   _button: {
-    backgroundColor: '#00FF9D',
-    alignItems: 'center',
+    backgroundColor: "#00FF9D",
+    alignItems: "center",
     padding: 20,
     borderRadius: 16,
     marginBottom: 20,
   },
-
-
 });
 
 export default SignIn;
