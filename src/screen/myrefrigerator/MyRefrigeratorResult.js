@@ -95,8 +95,8 @@ const MyRefrigeratorResult = () => {
             value={manufactureDate}
             mode="date"
             onChange={onChangeManufactureDate}
-            display="spinner"
-            textColor='black'
+            display="default"
+            //textColor='black'
           />
         )}
         <Text style={styles.modalText}>식품 유형: {productType}</Text>
