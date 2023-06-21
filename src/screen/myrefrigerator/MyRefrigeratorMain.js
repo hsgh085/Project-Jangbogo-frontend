@@ -33,8 +33,8 @@ const MyRefrigeratorMain = () => {
                 source={button1}
                 text="바코드 스캔하기"
                 onPress={() => {
-                    navigation.navigate("BarcordTest");
-                //   navigation.navigate("BarcordScanner");
+                    // navigation.navigate("BarcordTest");
+                    navigation.navigate("BarcordScanner");
                 }}
                 />
                 <ButtonRef 

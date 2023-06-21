@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Modal } from 'react-native';
 import { Camera } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../../components/Header/Header';
@@ -9,13 +9,17 @@ const API_ENDPOINT = `http://openapi.foodsafetykorea.go.kr/api/${API_KEY}/C005/j
 
 const BarcordTest = () => {
 
+    const navigation = useNavigation();
+
     /** 카메라 관련 상태변수 */
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
 
     /** 바코드 관련 상태변수 */
-    // 8801019005909
+    // 예시: 8801019005909
     const [barcord, setBarcord] = useState('8801043034562');
+    const [productData, setProductData] = useState({});
+    const [modalVisible, setModalVisible] = useState(false);
 
     /** 카메라 Permission */
     useEffect(() => {
@@ -56,6 +60,7 @@ const BarcordTest = () => {
 
         if (response.status === 200) {
             const responseJson = await response.json();
+            setProductData(responseJson.C005.row[0]);
             // console.log(responseJson.C005.row[0])
             console.log('===바코드정보===');
             console.log(responseJson.C005.row[0].BAR_CD);
@@ -63,8 +68,10 @@ const BarcordTest = () => {
             console.log(responseJson.C005.row[0].BSSH_NM);
             console.log(responseJson.C005.row[0].PRDLST_DCNM);
             console.log(responseJson.C005.row[0].POG_DAYCNT);
+            setModalVisible(true);
             return responseJson.C005.row[0];
         } else {
+            setModalVisible(false);
             return 0;
             // throw new Error('unable to get');
         }
@@ -72,24 +79,71 @@ const BarcordTest = () => {
 
     return (
         <View style={styles.container}>
+            {/* 모달 */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.h1}>다음 제품이 맞나요?</Text>
+                        <Text style={styles.modalText}>제품명: {productData.PRDLST_NM}</Text>
+                        <Text style={styles.modalText}>제조사명: {productData.BSSH_NM}</Text>
+                        <Text style={styles.modalText}>식품 유형: {productData.PRDLST_DCNM}</Text>
+                        <Text style={styles.modalText}>유통/소비기한: {productData.POG_DAYCNT}</Text>
+                        {/* 재스캔 */}
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => {
+                                setModalVisible(!modalVisible);
+                                setScanned(true);
+                            }}
+                        >
+                            <Text style={styles.textStyle}>바코드 재스캔</Text>
+                        </Pressable>
+                        {/* 성공 */}
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => {
+                                setModalVisible(!modalVisible);
+                                setScanned(false);
+                                navigation.navigate("MyRefrigeratorResult", {
+                                    barcord: BAR_CD,
+                                    productName: productData.PRDLST_NM,
+                                    manufacturer: productData.BSSH_NM,
+                                    productType: productData.PRDLST_DCNM,
+                                    expirationDate: productData.POG_DAYCNT
+                                });
+                            }}
+                        >
+                            <Text style={styles.textStyle}>제품이 맞아요</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
             {/* 헤더 */}
             <Header>
                 <Header.Title size={18}>나의 냉장고</Header.Title>
                 <View></View>
             </Header>
             {/* 카메라 */}
-            <Text>{console.log(hasPermission)}</Text>
-            <View style={{ flex: 1, justifyContent: 'center', marginVertical: 10 }}>
-                <Camera
+            <View style={{ flex: 1, justifyContent: 'center', marginVertical: 20 }}>
+                <Camera style={{ flex: 1, marginTop: 50, marginBottom: 50 }}
                     onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 />
-                {scanned && (
+                <Pressable style={styles.button}
+                    onPress={() => setScanned(false)}
+                >
+                    <Text>바코드 스캔하기</Text>
+                </Pressable>
+                {/* {scanned && (
                     <Pressable style={styles.button}
                         onPress={() => setScanned(false)}
                     >
                         <Text>바코드 재스캔</Text>
                     </Pressable>
-                )}
+                )} */}
             </View>
         </View>
     )
@@ -97,20 +151,51 @@ const BarcordTest = () => {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'center',
+        flex: 1,
+        justifyContent: 'center',
     },
     button: {
-      backgroundColor: '#00FF9D',
-      alignItems: 'center',
-      padding: 20,
-      borderRadius: 16,
-      marginBottom: 20,
+        backgroundColor: '#00FF9D',
+        alignItems: 'center',
+        padding: 20,
+        borderRadius: 16,
+        marginBottom: 20,
+    },
+    h1: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 15,
     },
     h2: {
-      fontSize: 22,
-      color: '#ffffff',
+        fontSize: 22,
+        color: '#ffffff',
     },
-  })
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        //alignItems: "center",
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center",
+    },
+    buttonClose: {
+        backgroundColor: "#00FF9D",
+        marginTop: 10,
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+})
 
 export default BarcordTest;
