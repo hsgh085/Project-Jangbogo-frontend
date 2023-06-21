@@ -114,7 +114,7 @@ const MypageMainScreen = () => {
     );
   };
   useEffect(() => {
-    fetch(`${ROOT_API}/mypage/userinfo`, {
+    fetch(`${ROOT_API}/mypage/info`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

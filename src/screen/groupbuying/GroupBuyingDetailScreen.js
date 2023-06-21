@@ -151,7 +151,7 @@ const GroupBuyingDetailScreen = () => {
               </ScrollView>
             </View>
             <View>
-              {type === "alarm" && (
+              {(type === "alarm"||type==="done") && (
                 <Pressable onPress={openWebPage}>
                   <View style={{flexDirection:"row"}}>
                   <Ionicons name="chatbubble-sharp" size={20} color={colors.greenLL} />
