@@ -12,6 +12,7 @@ const GroupBuyingPostScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const isUpdate = route.params?.type === "update";
+  const regexPattern = /^https:\/\/open\.kakao\.com\//;
   const [id, setId] = useState();
   const [gb, setGB] = useState({
     name: "",
@@ -34,7 +35,7 @@ const GroupBuyingPostScreen = () => {
   };
   const handlePost = () => {
     if (gb.name === "") toast("상품명을 입력해주세요");
-    else if (gb.kakaoadd === "") toast("카카오톡 오픈채팅 링크를 입력해주세요");
+    else if (!regexPattern.test(gb.kakaoadd)) toast("카카오톡 링크를 올바르게 입력해주세요.");
     else if (gb.peoplenum < 2) toast("공동구매 인원은 최소 2명 이상으로 입력해주세요");
     else if (parseInt(gb.deadline_hour) === 0 && parseInt(gb.deadline_min) === 0) toast("마감까지 타이머 설정을 1분 이상으로 입력해주세요");
     else if (parseInt(gb.deadline_min) > 59) toast("마감까지 타이머 설정의 분 단위를 59분 이하로 입력해주세요");
@@ -65,7 +66,7 @@ const GroupBuyingPostScreen = () => {
   //TODO: 수정하기 버튼
   const handleUpdate = () => {
     if (gb.name === "") toast("상품명을 입력해주세요");
-    else if (gb.kakaoadd === "") toast("카카오톡 오픈채팅 링크를 입력해주세요");
+    else if (!regexPattern.test(gb.kakaoadd)) toast("카카오톡 링크를 올바르게 입력해주세요.");
     else {
       fetch(`${ROOT_API}/grouppurchase/updategp?gpId=${id}`, {
         method: "PUT",

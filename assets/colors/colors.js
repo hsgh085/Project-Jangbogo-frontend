@@ -10,5 +10,7 @@ const colors = {
   white: "#FFFFFF",
   black: "#000000",
   bronze: "#B08A5D",
+  silver: "#dbe4eb",
+  gold: "#ffbf00",
 };
 export default colors;

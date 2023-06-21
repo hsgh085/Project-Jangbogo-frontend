@@ -1,15 +1,28 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useContext } from "react";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import React, { useContext, useEffect, useState } from "react";
 import { Alert, StyleSheet, Pressable, View, Text } from "react-native";
 import Header from "../../components/Header/Header";
 import colors from "../../../assets/colors/colors";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { TokenContext } from "../../contexts/TokenContext";
 import * as SecureStore from "expo-secure-store";
+import { ROOT_API } from "../../constants/api";
 
 const MypageMainScreen = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const [token, setToken] = useContext(TokenContext);
+  const [userInfo, setUserInfo] = useState({});
+  const calcRankText = () => {
+    if (userInfo.grade === 0) return "브론즈";
+    else if (userInfo.grade === 1) return "실버";
+    else if (userInfo.grade === 2) return "골드";
+  };
+  const calcRankColor = () => {
+    if (userInfo.grade === 0) return colors.bronze;
+    else if (userInfo.grade === 1) return colors.silver;
+    else if (userInfo.grade === 2) return colors.gold;
+  };
   const handleClickLogout = () => {
     Alert.alert(
       "주의",
@@ -20,30 +33,31 @@ const MypageMainScreen = () => {
           // 토큰 삭제
           onPress: async () => {
             console.log(token);
-            await SecureStore.deleteItemAsync("token").then(() => {
-              setToken(null);
-              navigation.navigate("Onboarding");
-            });
-            // fetch(`${ROOT_API}/memo/deletememo?memoId=${route.params?.id}`, {
-            //   method: "DELETE",
-            //   headers: {
-            //     //TODO: change to token
-            //     Authorization: `Bearer ${TOKEN}`,
-            //   },
-            // })
-            //   .then(() => {
-            //     Alert.alert("", "로그아웃 되었습니다😊", [
-            //       {
-            //         text: "확인",
-            //         onPress: () => {
-            //           navigate.goBack();
-            //         },
-            //       },
-            //     ]);
-            //   })
-            //   .catch((err) => {
-            //     console.log(err);
-            //   });
+            await SecureStore.deleteItemAsync("token")
+              .then(() => {
+                setToken(null);
+              })
+              .then(
+                fetch(`${ROOT_API}/auth/signout`, {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                })
+                  .then(() => {
+                    Alert.alert("", "로그아웃 되었습니다😊", [
+                      {
+                        text: "확인",
+                        onPress: () => {
+                          navigation.navigate("Onboarding");
+                        },
+                      },
+                    ]);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  })
+              );
           },
         },
         {
@@ -64,30 +78,31 @@ const MypageMainScreen = () => {
           // 토큰 삭제
           onPress: async () => {
             console.log(token);
-            await SecureStore.deleteItemAsync("token").then(() => {
-              setToken(null);
-              navigation.navigate("Onboarding");
-            });
-            // fetch(`${ROOT_API}/memo/deletememo?memoId=${route.params?.id}`, {
-            //   method: "DELETE",
-            //   headers: {
-            //     //TODO: change to token
-            //     Authorization: `Bearer ${TOKEN}`,
-            //   },
-            // })
-            //   .then(() => {
-            //     Alert.alert("", "로그아웃 되었습니다😊", [
-            //       {
-            //         text: "확인",
-            //         onPress: () => {
-            //           navigate.goBack();
-            //         },
-            //       },
-            //     ]);
-            //   })
-            //   .catch((err) => {
-            //     console.log(err);
-            //   });
+            await SecureStore.deleteItemAsync("token")
+              .then(() => {
+                setToken(null);
+              })
+              .then(
+                fetch(`${ROOT_API}/auth/deleteauth`, {
+                  method: "DELETE",
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                })
+                  .then(() => {
+                    Alert.alert("", "탈퇴되었습니다. 그동안 앱을 이용해주셔서 감사합니다😊", [
+                      {
+                        text: "확인",
+                        onPress: () => {
+                          navigation.navigate("Onboarding");
+                        },
+                      },
+                    ]);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  })
+              );
           },
         },
         {
@@ -98,6 +113,21 @@ const MypageMainScreen = () => {
       { cancelable: false }
     );
   };
+  useEffect(() => {
+    fetch(`${ROOT_API}/mypage/info`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUserInfo(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [isFocused]);
   return (
     <>
       <View style={s.headerContainer}>
@@ -111,13 +141,13 @@ const MypageMainScreen = () => {
           <Text style={s.text1}>안녕하세요</Text>
           <View style={s.userInfo}>
             <View style={{ flexDirection: "row" }}>
-              <Text style={s.text1}>닉네임</Text>
+              <Text style={s.text1}>{userInfo.nickname}</Text>
               <Text style={s.text1}>님</Text>
             </View>
             <View style={{ flexDirection: "row" }}>
               <Text style={{ marginRight: 20 }}>등급</Text>
-              <Text style={{ marginRight: 5 }}>브론즈</Text>
-              <Ionicons name="ribbon" size={20} color={colors.bronze} />
+              <Text style={{ marginRight: 5 }}>{calcRankText()}</Text>
+              <Ionicons name="ribbon" size={20} color={calcRankColor()} />
             </View>
           </View>
         </View>
