@@ -89,6 +89,7 @@ const MyRefrigeratorResult = () => {
         // 성공적으로 제품 정보를 전송한 후 수행할 작업을 여기에 추가하세요.
         console.log("제품 정보가 성공적으로 등록되었습니다.");
         console.log(result);
+        navigation.navigate("MyRefrigeratorMain")
       } else {
         throw new Error(`Request failed with status ${response.status}`);
       }
@@ -105,142 +106,128 @@ const MyRefrigeratorResult = () => {
         <View></View>
       </Header>
       <ScrollView>
-      <View style={styles.container}>
-        {/* 넘어온 제품정보 */}
-        <View style={styles.productContainer}>
-          {/* 제품 이미지 */}
-          <View style={styles.productImg}>
+        <View style={styles.container}>
+          {/* 넘어온 제품정보 */}
+          <View style={styles.productContainer}>
+            {/* 제품 이미지 */}
+            <View style={styles.productImg}>
+              <Pressable
+                onPress={() => { }}>
+                <Image source={defaultImg} />
+              </Pressable>
+              {/* 수량 */}
+              <View style={styles.quantityContainer}>
+                <Pressable
+                  onPress={() => { decreaseQuantity(); }}>
+                  <Image source={minus} />
+                </Pressable>
+                <Text style={{ backgroundColor: 'white', paddingHorizontal: 5 }}>{quantity}</Text>
+                <Pressable
+                  onPress={() => { increaseQuantity(); }}>
+                  <Image source={plus} />
+                </Pressable>
+              </View>
+            </View>
+            {/* 제품 기본정보 */}
+            <View style={styles.productInfo}>
+              {/* 바코드 */}
+              <View style={styles.barcode}>
+                <Text>{barcode}</Text>
+              </View>
+              {/* 제조사명 */}
+              <Text style={styles.modalText}>제조사명</Text>
+              <Text style={{
+                borderColor: "#CCCCCC", borderWidth: 1,
+                paddingHorizontal: 6, paddingVertical: 6, marginBottom: 4,
+              }}>{manufacturer}</Text>
+              {/* 제품이름 */}
+              <Text style={styles.modalText}>제품명</Text>
+              <View style={styles.productName}>
+                <TextInput style={styles.h3}
+                  onChangeText={onChangeProductName}
+                  value={productName}
+                />
+              </View>
+            </View>
+          </View>
+          {/* 입력 제품 정보 */}
+          <View>
+            <View>
+              <Text style={styles.modalText}>유통/소비기한 정보</Text>
+              <Text style={[styles.productName,
+              {
+                backgroundColor: '#F1F1F1',
+                borderColor: "#CCCCCC",
+                borderWidth: 1
+              }]}>
+                {expirationDate}
+              </Text>
+            </View>
+            {/* 유통기한 선택 버튼 */}
+            <Text style={styles.modalText}>유통기한 입력</Text>
+            <View style={styles.buttonWithImg}>
+              <Image
+                source={datepicker}
+                style={styles.buttonImg}
+              />
+              <Button title={buttonTitle} onPress={() => setShowDatePicker(true)} />
+            </View>
+            {showDatePicker && (
+              <DateTimePicker
+                value={manufactureDate}
+                mode="date"
+                onChange={onChangeManufactureDate}
+                display="spinner"
+                textColor='black'
+              />
+            )}
+            {/* 식품유형 */}
+            <View>
+              <Text style={styles.modalText}>식품 유형</Text>
+              <View style={[styles.buttonWithImg, { paddingVertical: 12, }]}>
+                <Image
+                  source={pin}
+                  style={styles.buttonImg}
+                />
+                <Text style={{ fontSize: 20 }}>{productType}</Text>
+              </View>
+            </View>
+            {/* 메모 */}
+            <View>
+              <Text style={styles.modalText}>메모</Text>
+              <View style={[styles.buttonWithImg, { paddingVertical: 12, }]}>
+                <Image
+                  source={memo}
+                  style={styles.buttonImg}
+                />
+                <TextInput style={{ fontSize: 20 }}
+                  placeholder='메모를 입력해주세요'
+                  onChangeText={onChangePrdlstMemo}
+                  value={prdlstMemo}>{prdlstMemo}</TextInput>
+              </View>
+            </View>
+          </View>
+          {/* 제품 등록 버튼 */}
+          <View>
             <Pressable
-              onPress={() => { }}>
-              <Image source={defaultImg} />
+              style={styles.button}
+              onPress={() => {
+                submitProductInfo();
+                // console.log('=========')
+                // console.log('버튼클릭')
+                // console.log(productName)
+                // console.log(quantity)
+                // console.log(buttonTitle)
+                // console.log(manufacturer)
+                // console.log(productType)
+                // console.log(barcode)
+                // console.log(prdlstMemo)
+              }}
+            >
+              <Text>제품등록</Text>
             </Pressable>
-            {/* 수량 */}
-            <View style={styles.quantityContainer}>
-              <Pressable
-                onPress={() => { decreaseQuantity(); }}>
-                <Image source={minus} />
-              </Pressable>
-              <Text style={{ backgroundColor: 'white', paddingHorizontal: 5 }}>{quantity}</Text>
-              <Pressable
-                onPress={() => { increaseQuantity(); }}>
-                <Image source={plus} />
-              </Pressable>
-            </View>
-          </View>
-          {/* 제품 기본정보 */}
-          <View style={styles.productInfo}>
-            {/* 바코드 */}
-            <View style={styles.barcode}>
-              <Text>{barcode}</Text>
-            </View>
-            {/* 제조사명 */}
-            <Text style={styles.modalText}>제조사명</Text>
-            <Text style={{
-              borderColor: "#CCCCCC", borderWidth: 1,
-              paddingHorizontal: 6, paddingVertical: 6, marginBottom: 4,
-            }}>{manufacturer}</Text>
-            {/* 제품이름 */}
-            <Text style={styles.modalText}>제품명</Text>
-            <View style={styles.productName}>
-              <TextInput style={styles.h3}
-                onChangeText={onChangeProductName}
-                value={productName}
-              />
-            </View>
           </View>
         </View>
-        {/* 입력 제품 정보 */}
-        <View>
-          <View>
-            <Text style={styles.modalText}>유통/소비기한 정보</Text>
-            <Text style={[styles.productName,
-            {
-              backgroundColor: '#F1F1F1',
-              borderColor: "#CCCCCC",
-              borderWidth: 1
-            }]}>
-              {expirationDate}
-            </Text>
-          </View>
-          {/* 유통기한 선택 버튼 */}
-          <Text style={styles.modalText}>유통기한 입력</Text>
-          <View style={styles.buttonWithImg}>
-            <Image
-              source={datepicker}
-              style={styles.buttonImg}
-            />
-            <Button title={buttonTitle} onPress={() => setShowDatePicker(true)} />
-          </View>
-          {showDatePicker && (
-            <DateTimePicker
-              value={manufactureDate}
-              mode="date"
-              onChange={onChangeManufactureDate}
-              display="spinner"
-              textColor='black'
-            />
-          )}
-          {/* 식품유형 */}
-          <View>
-            <Text style={styles.modalText}>식품 유형</Text>
-            <View style={[styles.buttonWithImg, { paddingVertical: 12, }]}>
-              <Image
-                source={pin}
-                style={styles.buttonImg}
-              />
-              <Text style={{ fontSize: 20 }}>{productType}</Text>
-            </View>
-          </View>
-          {/* 메모 */}
-          <View>
-            <Text style={styles.modalText}>메모</Text>
-            <View style={[styles.buttonWithImg, { paddingVertical: 12, }]}>
-              <Image
-                source={memo}
-                style={styles.buttonImg}
-              />
-              <TextInput style={{ fontSize: 20 }}
-                placeholder='메모를 입력해주세요'>{prdlstMemo}</TextInput>
-            </View>
-          </View>
-        </View>
-        {/* 제품 등록 버튼 */}
-        <View>
-        <Pressable
-          style={styles.button}
-          onPress={() => {submitProductInfo();
-            // console.log('=========')
-            // console.log('버튼클릭')
-            console.log(productName)
-            console.log(quantity)
-            console.log(buttonTitle)
-            console.log(manufacturer)
-            console.log(productType)
-            console.log(barcode)
-            console.log(prdlstMemo)
-          }}
-        >
-          <Text>제품등록</Text>
-        </Pressable>
-      </View>
-      </View>
-      {/* <View>
-        <Pressable
-          style={styles.button}
-          onPress={() => {
-            console.log('버튼클릭')
-            console.log(productName)
-            console.log(quantity)
-            console.log(buttonTitle)
-            console.log(manufacturer)
-            console.log(productType)
-            console.log(barcode)
-            console.log(prdlstMemo)
-          }}
-        >
-          <Text>제품등록</Text>
-        </Pressable>
-      </View> */}
       </ScrollView>
     </View>
   );
