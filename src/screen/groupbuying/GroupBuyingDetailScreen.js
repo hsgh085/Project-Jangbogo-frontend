@@ -12,8 +12,10 @@ const GroupBuyingDetailScreen = () => {
   const isFocused = useIsFocused();
   const route = useRoute();
   const id = route.params?.id;
+  const type = route.params?.type;
   const navigation = useNavigation();
-  const [gb, setGB] = useState({});
+  const [gb, setGB] = useState({
+  });
   const toast = (message) => {
     Alert.alert("", `${message}`, [
       {
@@ -80,19 +82,36 @@ const GroupBuyingDetailScreen = () => {
       });
   };
   useEffect(() => {
-    fetch(`${ROOT_API}/grouppurchase/gpitem?gpId=${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setGB(data);
+    if (type === "alarm") {
+      fetch(`${ROOT_API}/notice/noticeitem?gpId=${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          setGB(data);
+          // setGB({...gb,["authorization"]:3})
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      fetch(`${ROOT_API}/grouppurchase/gpitem?gpId=${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setGB(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }, [isFocused]);
   return (
     <>
