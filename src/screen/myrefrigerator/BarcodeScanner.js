@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { TokenContext } from "../../contexts/TokenContext";
+import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, Pressable, StyleSheet, Modal } from 'react-native';
 import { Camera } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
@@ -10,6 +11,7 @@ const API_ENDPOINT = `http://openapi.foodsafetykorea.go.kr/api/${API_KEY}/C005/j
 const BarcordScanner = () => {
 
   const navigation = useNavigation();
+  const [token, setToken] = useContext(TokenContext);
 
   /** 카메라 관련 상태변수 */
   const [hasPermission, setHasPermission] = useState(null);
