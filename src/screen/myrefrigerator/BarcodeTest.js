@@ -7,7 +7,7 @@ import Header from '../../components/Header/Header';
 const API_KEY = '2e778ab5ba2240679524';
 const API_ENDPOINT = `http://openapi.foodsafetykorea.go.kr/api/${API_KEY}/C005/json/1/5/`;
 
-const BarcordTest = () => {
+const BarcodeTest = () => {
 
     const navigation = useNavigation();
 
@@ -198,4 +198,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default BarcordTest;
+export default BarcodeTest;

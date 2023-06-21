@@ -26,36 +26,44 @@ const MyRefrigeratorMain = () => {
                 <Header.Title size={18}>나의 냉장고</Header.Title>
                 <View></View>
             </Header>
-            <View style = {styles.container}>
-            {/* 메인버튼 */}
-            <View style = {styles.button_main}>
-                <ButtonRef 
-                source={button1}
-                text="바코드 스캔하기"
-                onPress={() => {
-                    // navigation.navigate("BarcordTest");
-                    navigation.navigate("BarcordScanner");
-                }}
-                />
-                <ButtonRef 
-                source={button2}
-                text="   직접 입력하기"
-                onPress={() => {
-                  navigation.navigate("MainStack", { screen: "MemoList" });
-                }}
-                />
-            </View>
-            {/* 냉털버튼 */}
-            <View>
+            <View style={styles.container}>
+                {/* 메인버튼 */}
+                <View style={styles.button_main}>
+                    <ButtonRef
+                        source={button1}
+                        text="바코드 스캔하기"
+                        onPress={() => {
+                            // navigation.navigate("BarcodeTest");
+                            navigation.navigate("BarcodeScanner");
+                        }}
+                    />
+                    <ButtonRef
+                        source={button2}
+                        text="   직접 입력하기"
+                        onPress={() => {
+                            navigation.navigate("MainStack", { screen: "MemoList" });
+                        }}
+                    />
+                </View>
+                {/* 냉털버튼 */}
+                <View>
                     <Pressable
                         style={styles.button}
-                        onPress={() => {openWebPage();}}
+                        onPress={() => { openWebPage(); }}
                     >
                         <Text style={styles.h2}>요리 추천 받기</Text>
                     </Pressable>
                 </View>
-            <Text>냉장고</Text>
-            {/* <Button title="웹사이트 열기" onPress={openWebPage} /> */}
+                <View>
+                    <Pressable
+                        style={styles.button}
+                        onPress={() => { navigation.navigate('MyRefrigeratorResult')}}
+                    >
+                        <Text style={styles.h2}>바코드 제품</Text>
+                    </Pressable>
+                </View>
+                <Text>냉장고</Text>
+                {/* <Button title="웹사이트 열기" onPress={openWebPage} /> */}
             </View>
         </View>
     )
