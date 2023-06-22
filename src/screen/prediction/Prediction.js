@@ -17,13 +17,33 @@ const Prediction = () => {
 
     /** 백엔드와 통신하여 파이썬 코드 실행 시키는 함수 */
     const fetchPrediction = async (id) => {
+        const randomCounts = {
+            count0: Math.floor(Math.random() * (100 - 3 + 1)) + 3,
+            count1: Math.floor(Math.random() * (100 - 3 + 1)) + 3,
+            count2: Math.floor(Math.random() * (100 - 3 + 1)) + 3,
+        };
+
+        let data;
+        if (randomCounts.count0 > randomCounts.count1) {
+            data = "상승";
+        } else if (randomCounts.count0 < randomCounts.count1) {
+            data = "하락";
+        } else {
+            data = "모름";
+        }
         // 백엔드 서버와 통신하는 코드를 여기에 작성하세요.
 
         // 서버 통신 결과 예시, 실제로는 서버의 응답을 사용해야 합니다.
-        const result = { success: true, data: "상승" };
+        const result = {
+            success: true,
+            data,
+            count0: randomCounts.count0,
+            count1: randomCounts.count1,
+            count2: randomCounts.count2,
+        };
 
         return new Promise((resolve) => {
-            setTimeout(() => resolve(result), 3000); // 결과를 3초 후에 반환합니다.
+            setTimeout(() => resolve(result), 5000); // 결과를 5초 후에 반환합니다.
         });
     };
 
@@ -34,9 +54,15 @@ const Prediction = () => {
         const predictionResult = await fetchPrediction(id); // 백엔드 서버와 통신
 
         if (predictionResult.success) {
+            // console.log(predictionResult.count0)
+            // console.log(predictionResult.count1)
+            // console.log(predictionResult.count2)
             navigation.navigate("PredictionResult", {
                 data: predictionResult.data,
                 id,
+                count0: predictionResult.count0, // 추가됨
+                count1: predictionResult.count1, // 추가됨
+                count2: predictionResult.count2, // 추가됨
             }); // 결과 페이지로 이동하고 결과 데이터와 이미지 id를 전달
         } else {
             console.log("Error: Prediction failed");
