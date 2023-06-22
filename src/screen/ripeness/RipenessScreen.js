@@ -50,6 +50,28 @@ const RipenessScreen = () => {
       setImageUri(result.assets[0].uri);
       setModalVisible(false);
       navigation.navigate("RipenessResult", { imageUri: result.assets[0].uri });
+      // const localUri = result.assets[0].uri
+      // const filename=localUri.split('/').pop();
+      // const match =/\.(\w+)$/.exec(filename??'');
+      // const type=match?`image/${match[1]}`:`image`;
+      // const formData=new FormData();
+      // formData.append('image',{uri:localUri, name:filename, type});
+
+      // fetch(`${ROOT_API}/`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      //   body:formData,
+      // })
+      // .then(response=>response.json())
+      // .then(data=>{
+      //   console.log(data)
+      // })
+      // .catch(error=>{
+      //   console.log(error)
+      // })
     }
   };
   const toastReady = () => {
