@@ -161,7 +161,7 @@ const MypageMainScreen = () => {
         </Pressable>
       </View>
       <View style={s.btnContainer}>
-        <Pressable style={s.btn}>
+        <Pressable style={s.btn} onPress={()=>{navigation.navigate("MypageCheck")}}>
           <Ionicons name="person-outline" size={35} color="black" />
           <Text style={{ marginTop: 5 }}>내 정보 수정</Text>
         </Pressable>

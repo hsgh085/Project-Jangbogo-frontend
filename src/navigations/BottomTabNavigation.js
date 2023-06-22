@@ -29,7 +29,7 @@ const BottomTabNavigation = () => {
               );
             }
             return <MaterialIcons name="home-filled" size={25} color={colors.gray} />;
-          } else if (route.name === "MyPage") {
+          } else if (route.name === "MyPageStack") {
             if (focused) {
               return (
                 <View style={styles.icons}>
@@ -73,7 +73,7 @@ const BottomTabNavigation = () => {
           },
         }}
       />
-      <Tabs.Screen name="MyPage" component={MypageStackNavigation} />
+      <Tabs.Screen name="MyPageStack" component={MypageStackNavigation} />
       <Tabs.Screen name="LatestMemo" component={LatestMemoScreen} />
       <Tabs.Screen name="Alarm" component={AlarmScreen} />
     </Tabs.Navigator>
