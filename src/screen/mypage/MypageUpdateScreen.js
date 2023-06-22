@@ -212,7 +212,7 @@ const MypageUpdateScreen = () => {
               handleChange("pw", text);
             }}
           />
-          <Text style={s.innertext}>8~12자리, 대문자, 특수문자 포함</Text>
+          <Text style={s.innertext}>8~12자리, 문자, 특수문자 포함</Text>
         </View>
         <View style={s.inputContainer}>
           <View style={s.label_fields}>

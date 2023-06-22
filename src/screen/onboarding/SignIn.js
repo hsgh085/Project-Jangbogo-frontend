@@ -7,6 +7,8 @@ import Verification from "./Verification";
 import { TokenContext } from "../../contexts/TokenContext";
 import * as SecureStore from "expo-secure-store";
 
+
+
 const SignIn = () => {
   const navigation = useNavigation();
   const [token, setToken] = useContext(TokenContext);
@@ -92,7 +94,7 @@ const SignIn = () => {
           <View style={styles.label_fields}>
             <Text style={styles.label}>비밀번호</Text>
           </View>
-          <Text style={styles.innertext}>8~12자리, 대문자, 특수문자 포함</Text>
+          <Text style={styles.innertext}>8~12자리, 문자, 특수문자 포함</Text>
           <TextInput style={[styles.input]} placeholder="비밀번호 입력" maxLength={15} value={password} onChangeText={(text) => setPassword(text)} />
         </View>
         {/* 로그인 버튼 */}

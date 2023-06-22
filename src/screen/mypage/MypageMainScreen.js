@@ -153,35 +153,40 @@ const MypageMainScreen = () => {
         </View>
       </View>
       <View style={s.mainContainer}>
+        <View style={s.btnContainer}>
+          <Pressable
+            style={s.btn}
+            onPress={() => {
+              navigation.navigate("MypageCheck");
+            }}
+          >
+            <Ionicons name="person-outline" size={35} color="black" />
+            <Text style={{ marginTop: 5 }}>내 정보 수정</Text>
+          </Pressable>
+          <Pressable
+            style={s.btn}
+            onPress={() => {
+              navigation.navigate("MypageGB");
+            }}
+          >
+            <Ionicons name="md-document-text-outline" size={35} color="black" />
+            <Text style={{ marginTop: 5 }}>공동구매 확인</Text>
+          </Pressable>
+          <Pressable
+            style={s.btn}
+            onPress={() => {
+              navigation.navigate("MypageAsk");
+            }}
+          >
+            <AntDesign name="questioncircleo" size={35} color="black" />
+            <Text style={{ marginTop: 5 }}>문의</Text>
+          </Pressable>
+        </View>
         <Pressable onPress={handleClickLogout}>
           <Text style={s.text2}>로그아웃</Text>
         </Pressable>
         <Pressable onPress={handleClickWithdrawal}>
           <Text style={s.text2}>회원탈퇴</Text>
-        </Pressable>
-      </View>
-      <View style={s.btnContainer}>
-        <Pressable style={s.btn} onPress={()=>{navigation.navigate("MypageCheck")}}>
-          <Ionicons name="person-outline" size={35} color="black" />
-          <Text style={{ marginTop: 5 }}>내 정보 수정</Text>
-        </Pressable>
-        <Pressable
-          style={s.btn}
-          onPress={() => {
-            navigation.navigate("MypageGB");
-          }}
-        >
-          <Ionicons name="md-document-text-outline" size={35} color="black" />
-          <Text style={{ marginTop: 5 }}>공동구매 확인</Text>
-        </Pressable>
-        <Pressable
-          style={s.btn}
-          onPress={() => {
-            navigation.navigate("MypageAsk");
-          }}
-        >
-          <AntDesign name="questioncircleo" size={35} color="black" />
-          <Text style={{ marginTop: 5 }}>문의</Text>
         </Pressable>
       </View>
     </>
@@ -193,7 +198,7 @@ export default MypageMainScreen;
 const s = StyleSheet.create({
   headerContainer: {
     backgroundColor: colors.greenH,
-    paddingBottom: 50,
+    paddingBottom: 30,
   },
   userContainer: {
     paddingHorizontal: 30,
@@ -208,14 +213,12 @@ const s = StyleSheet.create({
     fontSize: 20,
   },
   btnContainer: {
-    position: "absolute",
-    top: 190,
-    left: 18,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: 20,
     paddingHorizontal: 30,
+    marginBottom:10,
     width: "90%",
     backgroundColor: colors.white,
     borderRadius: 20,
@@ -236,7 +239,7 @@ const s = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
-    paddingTop: 80,
+    paddingTop: 10,
     alignItems: "center",
     backgroundColor: colors.white,
   },

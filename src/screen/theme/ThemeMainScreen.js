@@ -32,7 +32,7 @@ const ThemeMainScreen = () => {
             id: 2,
             title: '벚꽃놀이 장보기',
             detailImage: ThemeDetail2,
-            contentTitle: '벚꽃놀이에 어울리는 요리쟤료',
+            contentTitle: '벚꽃놀이에 어울리는 요리재료',
             content: '벚꽃놀이의 분위기를 더해줄 또 다른 벚꽃 음식으로는 벚꽃 디저트가 있습니다. 벚꽃 열매를 활용해 만든 젤리, 무스, 케이크 등 다양한 디저트가 있으며, 새콤달콤한 벚꽃 맛과 함께 아름다운 핑크빛으로 선물처럼 예쁜 시각적인 만족감을 줍니다. 벚꽃놀이를 더욱 즐겁게 할 수 있는 벚꽃 요리와 함께 특별한 추억을 만들어 보세요.',
             image: Theme2
         }
@@ -63,6 +63,7 @@ const ThemeMainScreen = () => {
 
 const styles = StyleSheet.create({
     back_container: {
+        flex:1,
         backgroundColor: 'white',
     },
     container: {
