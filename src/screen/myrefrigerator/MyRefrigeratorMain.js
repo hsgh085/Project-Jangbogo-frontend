@@ -45,9 +45,11 @@ const MyRefrigeratorMain = () => {
         fetchProducts();
     }, [isfocused]);
 
+
     const openWebPage = async () => {
         const result = await WebBrowser.openBrowserAsync('https://wrtn.ai/store/details/646a0a4aecdacbf9742d91a9');
     };
+
     return (
         <View style={styles.background}>
             {/* 헤더 */}
@@ -70,7 +72,8 @@ const MyRefrigeratorMain = () => {
                         source={button2}
                         text="  직접 입력하기"
                         onPress={() => {
-                            navigation.navigate("MainStack", { screen: "MemoList" });
+                            alert("해당기능은 아직 준비중입니다");
+                            // navigation.navigate("MainStack", { screen: "MemoList" });
                         }}
                     />
                 </View>
@@ -83,6 +86,14 @@ const MyRefrigeratorMain = () => {
                         <Text style={styles.h3}>요리 추천 받기</Text>
                     </Pressable>
                 </View>
+                <View>
+                    <Pressable
+                        style={styles.button}
+                        onPress={() => { navigation.navigate("MyRefrigeratorResult")}}
+                    >
+                        <Text style={styles.h3}>수정</Text>
+                    </Pressable>
+                </View>
                 {/*제품목록*/}
                 <View>
                     <Text style={styles.h2}>제품 목록</Text>
@@ -91,7 +102,7 @@ const MyRefrigeratorMain = () => {
                             {productList.map((product) => (
                                 <Pressable
                                     onPress={() => {
-                                        navigation.navigate("MyRefrigeratorDetail", { id: product.id });
+                                        navigation.navigate("MyRefrigeratorDetail", { id: product.id, buttonTitle: product.POG_DAYCNT});
                                     }}
                                     key={product.id}
                                 >
