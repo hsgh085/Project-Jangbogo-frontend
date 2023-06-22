@@ -7,6 +7,7 @@ import GroupBuyingStackNavigation from "./GroupBuyingStackNavigation";
 import RipenessStackNavigation from "./RipenessStackNavigation";
 import PredictionStackNavigation from "./PredictionStackNavigation";
 import RefrigeratorStackNavigation from "./RefrigeratorStackNavigation";
+import ThemeStackNavigation from "./ThemeStackNavigation";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ const MainStackNavigation = () => {
       <Stack.Screen name="GroupBuyingStack" component={GroupBuyingStackNavigation} />
       <Stack.Screen name="Prediction" component={PredictionStackNavigation} />
       <Stack.Screen name="Refrigerator" component={RefrigeratorStackNavigation} />
+      <Stack.Screen name="Theme" component={ThemeStackNavigation} />
     </Stack.Navigator>
   );
 };
