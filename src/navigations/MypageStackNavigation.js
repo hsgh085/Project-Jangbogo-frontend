@@ -8,12 +8,12 @@ const Stack = createNativeStackNavigator();
 const MypageStackNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Mypage"
+      initialRouteName="MypageMain"
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Mypage" component={MypageMainScreen} />
+      <Stack.Screen name="MypageMain" component={MypageMainScreen} />
       <Stack.Screen name="MypageGB" component={MypageGBTabNavigation}/>
       <Stack.Screen name="MypageAsk" component={MypageAskScreen}/>
     </Stack.Navigator>

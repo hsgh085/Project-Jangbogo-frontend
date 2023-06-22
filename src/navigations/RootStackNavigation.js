@@ -7,6 +7,8 @@ import CameraScreen from '../screen/ripeness/CameraScreen';
 import GroupBuyingPostScreen from '../screen/groupbuying/GroupBuyingPostScreen';
 import LoadingScreen from '../screen/prediction/Loading';
 import BarcodeScanner from "../screen/myrefrigerator/BarcodeScanner";
+import MypageCheckScreen from '../screen/mypage/MypageCheckScreen';
+import MypageUpdateScreen from '../screen/mypage/MypageUpdateScreen';
 // import BarcodeTest from "../screen/myrefrigerator/BarcodeTest";
 
 const Stack = createNativeStackNavigator();
@@ -28,6 +30,8 @@ const RootStackNavigation = () => {
       {/* <Stack.Screen name="BarcordTest" component={BarcodeTest} /> */}
       <Stack.Screen name="GBPost" component={GroupBuyingPostScreen}/>
       <Stack.Screen name="Loading" component={LoadingScreen} />
+      <Stack.Screen name="MypageCheck" component={MypageCheckScreen} />
+      <Stack.Screen name="MypageUpdate" component={MypageUpdateScreen} />
     </Stack.Navigator>
   );
 };

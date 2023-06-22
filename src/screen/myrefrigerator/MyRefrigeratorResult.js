@@ -203,7 +203,7 @@ const MyRefrigeratorResult = () => {
                 <TextInput style={{ fontSize: 20 }}
                   placeholder='메모를 입력해주세요'
                   onChangeText={onChangePrdlstMemo}
-                  value={prdlstMemo}>{prdlstMemo}</TextInput>
+                  value={prdlstMemo}></TextInput>
               </View>
             </View>
           </View>
