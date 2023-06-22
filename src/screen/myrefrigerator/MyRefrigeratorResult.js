@@ -24,7 +24,7 @@ const MyRefrigeratorResult = () => {
 
   // 테스트용
   // const barcode = '8801115114130';
-  // const productName = '서울우유500';
+  // // const productName = '서울우유500';
   // const manufacturer = '서울우유협동조합 안산공장공장장은 강 공장장이고 된장공장 어쩌구는 공장장';
   // const productType = '우유';
   // const expirationDate = '냉장(0~10℃) 12일';
@@ -56,7 +56,7 @@ const MyRefrigeratorResult = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [buttonTitle, setButtonTitle] = useState(manufactureDate.toISOString().split('T')[0]);
 
-
+  /** 유통기한 날짜선택 */
   const onChangeManufactureDate = (event, selectedDate) => {
     const currentDate = selectedDate || manufactureDate;
     setShowDatePicker(false);
@@ -181,9 +181,9 @@ const MyRefrigeratorResult = () => {
                 textColor='black'
               />
             )}
-            {/* 식품유형 */}
+            {/* 제품 유형 */}
             <View>
-              <Text style={styles.modalText}>식품 유형</Text>
+              <Text style={styles.modalText}>제품 유형</Text>
               <View style={[styles.buttonWithImg, { paddingVertical: 12, }]}>
                 <Image
                   source={pin}
