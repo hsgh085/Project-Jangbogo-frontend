@@ -5,7 +5,7 @@ const ButtonRef = (props) => {
     return (
         <Pressable onPress={props.onPress}>
             <Image source={props.source}/>
-            <Text style={{position:'absolute', top:'70%', paddingHorizontal: 15, fontSize:20,fontWeight:800}}>{props.text}</Text>
+            <Text style={{position:'absolute', top:'70%', paddingHorizontal: 15, fontSize:19,fontWeight:800}}>{props.text}</Text>
         </Pressable>
     );
 };

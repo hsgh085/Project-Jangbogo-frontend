@@ -26,8 +26,7 @@ const SignUpForm = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  // const phoneNumber = route.params?.hp;
-  const phoneNumber="01056917586"
+  const phoneNumber = route.params?.hp;
   const [NickName, setNickName] = useState("");
   const [editable, setEditable] = useState(true);
   const [selectedGender, setSelectedGender] = useState();
@@ -229,7 +228,7 @@ const SignUpForm = () => {
                 <Text style={styles.label}>비밀번호</Text>
                 {!isValidPassword(Password) && Password !== "" && <Text style={styles.error}>잘못된 비밀번호입니다.</Text>}
               </View>
-              <Text style={styles.innertext}>8~12자리, 대문자, 특수문자 포함</Text>
+              <Text style={styles.innertext}>8~12자리, 문자, 특수문자 포함</Text>
               <TextInput
                 style={[styles.input, { borderColor: passwordBorderColor }]}
                 placeholder="확인 비밀번호 입력"

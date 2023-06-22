@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { Alert, BackHandler, Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaInsetsContext } from "react-native-safe-area-context";
 import Swiper from "react-native-swiper";
 import colors from "../../assets/colors/colors";
@@ -26,6 +26,41 @@ const MainScreen = () => {
     { id: 1, src: banner2 },
     { id: 2, src: banner3 },
   ];
+  useEffect(()=>{
+    const backAction=()=>{
+      Alert.alert(
+        '종료',
+        '앱을 종료하시겠습니까?',
+        [
+          {
+            text: '아니오',
+            style: 'cancel',
+          },
+          {
+            text: '예',
+            onPress: () => {
+              // 예를 선택한 경우 앱 종료
+              BackHandler.exitApp();
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+      return true; // 이벤트 처리 완료를 알림
+    };
+
+    // 뒤로 가기 이벤트 리스너 등록
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => {
+      // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+      backHandler.remove();
+    };
+  }, []);
+
   return (
     <View style={s.container}>
       <SafeAreaInsetsContext.Consumer>

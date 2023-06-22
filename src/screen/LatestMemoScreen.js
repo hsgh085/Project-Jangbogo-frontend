@@ -23,6 +23,11 @@ const LatestMemoScreen = () => {
     totalPrice: 0,
   });
   const [shoppingList, setShoppingList] = useState([]);
+  const calcDate=(date)=>{
+    const edit=date.split('-')
+    const edit2=`${edit[0]}-${edit[1]}-${Number(edit[2])+1}`
+    return edit2
+  }
   const setShoppingListById = (id, key, value) => {
     const newList = shoppingList.map((e) => {
       if (e.id == id) {
@@ -183,7 +188,7 @@ const LatestMemoScreen = () => {
       ) : (
         <>
           <View style={s.title}>
-            <Text style={s.text1}>{memo.date}</Text>
+            <Text style={s.text1}>{calcDate(memo.date)}</Text>
             <SingleLineInput style={s.text2} value={memo.title} onChangeText={handleChange} />
             <Spacer space={15} />
             <View style={s.priceContainer}>
