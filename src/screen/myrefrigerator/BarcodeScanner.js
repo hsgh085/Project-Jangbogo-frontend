@@ -59,7 +59,7 @@ const BarcordScanner = () => {
    *  
    */
   const fetchBarcode = async () => {
-    //console.log('버튼눌림');
+    console.log('버튼눌림');
     const response = await fetch(
       API_ENDPOINT + 'BAR_CD=' +
       barcode,
@@ -70,7 +70,18 @@ const BarcordScanner = () => {
 
     if (response.status === 200) {
       const responseJson = await response.json();
-      setProductData(responseJson.C005.row[0]);
+      if(barcode == '8801043034562' ){
+        setProductData({
+          PRDLST_NM: '정보 없음',
+          BSSH_NM: '정보 없음',
+          PRDLST_DCNM: '정보 없음',
+          POG_DAYCNT: '정보 없음'
+        });
+
+      } else {
+        setProductData(responseJson.C005.row[0]);
+      }
+      // setProductData(responseJson.C005.row[0]);
       // console.log(responseJson.C005.row[0])
       console.log('===바코드정보===');
       console.log(responseJson.C005.row[0].BAR_CD);
@@ -144,10 +155,17 @@ const BarcordScanner = () => {
         <Camera style={{ flex: 1, marginTop: 50, marginBottom: 50 }}
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         />
-        <Pressable style={styles.button}
-          onPress={() => setScanned(false)}
-        >
-          <Text>바코드 스캔하기</Text>
+        <Pressable
+          onPress={() => {setScanned(false); console.log('버튼눌림', {scanned});}}
+          style={({pressed}) => [
+            {
+              backgroundColor: pressed ? '#DADADA' : '#00FF9D',
+            },
+            styles.button,
+          ]}>
+          {({pressed}) => (
+          <Text>{pressed ? '버튼 눌림' : '바코드 스캔하기'}</Text>
+          )}
         </Pressable>
         {/* {scanned && (
                     <Pressable style={styles.button}

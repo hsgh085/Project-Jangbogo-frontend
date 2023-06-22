@@ -87,12 +87,12 @@ const MyRefrigeratorMain = () => {
                     </Pressable>
                 </View>
                 <View>
-                    <Pressable
+                    {/* <Pressable
                         style={styles.button}
                         onPress={() => { navigation.navigate("MyRefrigeratorResult")}}
                     >
                         <Text style={styles.h3}>수정</Text>
-                    </Pressable>
+                    </Pressable> */}
                 </View>
                 {/*제품목록*/}
                 <View>
@@ -115,9 +115,12 @@ const MyRefrigeratorMain = () => {
                                             <Text style={styles.h3}>{product.PRDLST_NM}</Text>
                                             <Text style={styles.h3_cnt}>{product.CNT}</Text>
                                         </View>
-                                        <View style={styles.horizon_container}>
-                                            <Text>유통기한 </Text>
-                                            <Text>{product.POG_DAYCNT}</Text>
+                                        <View style={[styles.horizon_container, {justifyContent: 'space-between',}]}>
+                                            <View style={styles.horizon_container}>
+                                                <Text>유통기한 </Text>
+                                                <Text>{product.POG_DAYCNT}</Text>
+                                            </View>
+                                            <Text style = {{backgroundColor: 'red', paddingTop: 2, paddingHorizontal: 2}}>수정/삭제하기</Text>
                                         </View>
                                     </View>
                                 </Pressable>
