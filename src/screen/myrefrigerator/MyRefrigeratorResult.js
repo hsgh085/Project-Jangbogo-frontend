@@ -112,7 +112,7 @@ const MyRefrigeratorResult = () => {
             {/* 제품 이미지 */}
             <View style={styles.productImg}>
               <Pressable
-                onPress={() => { }}>
+                onPress={() => { alert("해당기능은 아직 준비중입니다");}}>
                 <Image source={defaultImg} />
               </Pressable>
               {/* 수량 */}

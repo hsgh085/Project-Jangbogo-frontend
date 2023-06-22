@@ -164,6 +164,7 @@ const MyRefrigeratorDetail = () => {
                 const data = await response.json();
                 console.log("물품이 성공적으로 삭제되었습니다.");
                 alert("물품이 성공적으로 삭제되었습니다.");
+                navigation.navigate("MyRefrigeratorMain")
             } else {
                 throw new Error(`Request failed with status ${response.status}`);
             }
@@ -185,7 +186,7 @@ const MyRefrigeratorDetail = () => {
                         <View style={styles.productContainer}>
                             <View style={styles.productImg}>
                                 <Pressable
-                                    onPress={() => { }}>
+                                    onPress={() => {alert("해당기능은 아직 준비중입니다"); }}>
                                     <Image source={defaultImg} />
                                 </Pressable>
                                 {/* 수량 */}

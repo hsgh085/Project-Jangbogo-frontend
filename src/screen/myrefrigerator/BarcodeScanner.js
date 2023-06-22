@@ -59,7 +59,7 @@ const BarcordScanner = () => {
    *  
    */
   const fetchBarcode = async () => {
-    console.log('버튼눌림');
+    //console.log('버튼눌림');
     const response = await fetch(
       API_ENDPOINT + 'BAR_CD=' +
       barcode,
