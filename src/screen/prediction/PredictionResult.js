@@ -6,11 +6,21 @@ import {
 } from "react-native";
 import Header from '../../components/Header/Header';
 import increase from '../../../assets/images/increase.png';
-import decrease from '../../../assets/images/increase.png';
+import decrease from '../../../assets/images/decrease.png';
 
 const PredictionResult = ({ route }) => {
-    const { data, id } = route.params; // 결과 데이터와 이미지 id 가져오기
+    const { data, id, count0, count1, count2} = route.params; // 결과 데이터와 이미지 id 가져오기
     const navigation = useNavigation();
+
+    const getBackgroundColor = () => {
+        if (data === "상승") {
+          return "#EAF3FF";
+        } else if (data === "하락") {
+          return "#FFEDEC";
+        } else {
+          return "#EDEDED";
+        }
+      };
 
     return (
         <View style={styles.background}>
@@ -29,8 +39,14 @@ const PredictionResult = ({ route }) => {
                         <Image source={decrease} style={styles.graph} />
                     )}
                 </View>
+                {/* 분석결과 */}
+                <View style = {[styles.resultbox, {backgroundColor: "#EDEDED", flexDirection: 'row', paddingHorizontal:20}]}>
+                    <Text>  부정문장: {count0}개  </Text>
+                    <Text>긍정문장: {count1}개  </Text>
+                    <Text>무관문장: {count2}개</Text>
+                </View>
                 {/* 예측 결과 텍스트 */}
-                <View style= {styles.resultbox} >
+                <View style= {[styles.resultbox, { backgroundColor: getBackgroundColor() }]} >
                     <Text style= {styles.h1}>가격 예측 결과: {data} </Text>
                     <Text style= {styles.h2}>{id}은(는)</Text>
                     <Text style= {styles.h2}>내일 가격이</Text>
@@ -75,7 +91,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 15,
         marginBottom: 15,
-        backgroundColor: '#EAF3FF',
+        // backgroundColor: '#EAF3FF',
     },
     button: {
         backgroundColor: '#00FF9D',

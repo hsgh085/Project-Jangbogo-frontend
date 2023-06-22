@@ -73,7 +73,8 @@ const MainScreen = () => {
             source={theme}
             text=" 테마별장보기"
             onPress={() => {
-              navigation.navigate("Sign", { screen: "Onboarding" });
+              navigation.navigate("MainStack", { screen: "Theme"});
+              // navigation.navigate("Sign", { screen: "Onboarding" });
             }}
           />
         </View>
