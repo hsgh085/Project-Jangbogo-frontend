@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, NavigationAction } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { Alert, BackHandler, Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaInsetsContext } from "react-native-safe-area-context";
@@ -28,25 +28,11 @@ const MainScreen = () => {
   ];
   useEffect(()=>{
     const backAction=()=>{
-      Alert.alert(
-        '종료',
-        '앱을 종료하시겠습니까?',
-        [
-          {
-            text: '아니오',
-            style: 'cancel',
-          },
-          {
-            text: '예',
-            onPress: () => {
-              // 예를 선택한 경우 앱 종료
-              BackHandler.exitApp();
-            },
-          },
-        ],
-        { cancelable: false }
-      );
-      return true; // 이벤트 처리 완료를 알림
+      if (navigation.isFocused()) {
+        BackHandler.exitApp();
+        return true; // 이벤트 처리 완료를 알림
+      }
+      return false;
     };
 
     // 뒤로 가기 이벤트 리스너 등록
@@ -59,7 +45,7 @@ const MainScreen = () => {
       // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
       backHandler.remove();
     };
-  }, []);
+  }, [navigation]);
 
   return (
     <View style={s.container}>
