@@ -35,12 +35,12 @@ const SignIn = () => {
           navigation.navigate("BottomTab");
           //navigation.navigate("Verification", { token: token }); // 필요하다면 다른 페이지로 이동하세요
         } else {
-          // console.error("Error logging in: ", response.status);
-          // Alert.alert("", "0올바르지 않은 정보입니다. 다시 입력해주세요.", [
-          //   {
-          //     text: "확인",
-          //   },
-          // ]);
+          console.error("Error logging in: ", response.status);
+          Alert.alert("", "올바르지 않은 정보입니다. 다시 입력해주세요.", [
+            {
+              text: "확인",
+            },
+          ]);
         }
       } else {
         Alert.alert("", "올바르지 않은 정보입니다. 다시 입력해주세요.", [
@@ -50,12 +50,12 @@ const SignIn = () => {
         ]);
       }
     } catch (error) {
-      // console.error("Error logging in:", error);
-      // Alert.alert("", "2올바르지 않은 정보입니다. 다시 입력해주세요.", [
-      //   {
-      //     text: "확인",
-      //   },
-      // ]);
+      console.error("Error logging in:", error);
+      Alert.alert("", "올바르지 않은 정보입니다. 다시 입력해주세요.", [
+        {
+          text: "확인",
+        },
+      ]);
     }
   };
 
