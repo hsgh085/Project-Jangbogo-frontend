@@ -9,6 +9,9 @@
 ### 👉 프로젝트 명
 
 - 장보기 보조 앱, 장보고
+
+<img src="https://github.com/Jangbogo-2NT/Jangbogo-frontend/assets/84820008/67ec6894-6158-41c2-afb4-1f7554fe3bb4" />
+  
   
 ### 👉 프로젝트 개요
 
@@ -19,8 +22,13 @@
 
 #  🔨 기술 스택
 
+### ⚙️Frontend
 - 프레임워크: React Native
 - 빌드 도구: Expo
+
+### ⚙️Backend
+
+### ⚙️AI
 
 <br/>
 <br/>
