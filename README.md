@@ -16,7 +16,7 @@
 
 - Android 데모 버전만 현재 배포
 
-  https://expo.dev/accounts/lynn917/projects/JangBoGo/builds/3aaf99eb-fd06-4b3b-9002-fdd2180dbf1b
+수정 중
   
 
 #  🔨 Stacks
