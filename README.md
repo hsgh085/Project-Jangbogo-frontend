@@ -36,14 +36,10 @@
 
 |제목|내용|
 |:---:|:---:|
-|온보딩|
-https://github.com/Jangbogo-2NT/Jangbogo-frontend/assets/84820008/a7d00032-f31c-4d9d-84ca-ecbde8f5fcd1|
-|장보기메모|
-https://github.com/Jangbogo-2NT/Jangbogo-frontend/assets/84820008/f358c5ce-7b72-4f3c-91b3-9c507d75b6ad|
-|지출내역|
-https://github.com/Jangbogo-2NT/Jangbogo-frontend/assets/84820008/d671e6a8-f45c-4ed1-bbfd-0de80bb99000|
-|테마별장보기|
-https://github.com/Jangbogo-2NT/Jangbogo-frontend/assets/84820008/48167a6b-3952-479d-878a-58c47b169a51|
+|온보딩|https://github.com/Jangbogo-2NT/Jangbogo-frontend/assets/84820008/a7d00032-f31c-4d9d-84ca-ecbde8f5fcd1|
+|장보기메모|https://github.com/Jangbogo-2NT/Jangbogo-frontend/assets/84820008/f358c5ce-7b72-4f3c-91b3-9c507d75b6ad|
+|지출내역|https://github.com/Jangbogo-2NT/Jangbogo-frontend/assets/84820008/d671e6a8-f45c-4ed1-bbfd-0de80bb99000|
+|테마별장보기|https://github.com/Jangbogo-2NT/Jangbogo-frontend/assets/84820008/48167a6b-3952-479d-878a-58c47b169a51|
 
 
 
