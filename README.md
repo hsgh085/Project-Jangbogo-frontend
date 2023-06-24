@@ -1,6 +1,9 @@
 <div align=center>
+  
   ![icon](https://github.com/Jangbogo-2NT/Jangbogo-frontend/assets/84820008/d61c595c-0a3e-489b-9453-3af36507416e)
+  
 </div>
+
 #  🌿 프로젝트 소개
 
 ### 👉 프로젝트 명
